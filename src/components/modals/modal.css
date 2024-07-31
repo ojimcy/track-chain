@@ -1,0 +1,53 @@
+
+.flyout {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  display: flex;
+  min-width: 320px;
+  height: 499px;
+  background: #FFFFFF;
+  border-radius: 20px 20px 0px 0px;
+  border-left: 1px solid #eee;
+  box-shadow: -3px 0px 5px rgba(0, 0, 0, 0.03);
+  z-index: 1031;
+  display: flex;
+  flex-direction: column;
+  min-height: 86vh;
+}
+
+.flyout-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.flyout-header-text {
+  display: flex;
+  align-items: center;
+  flex: 1 1;
+  justify-content: flex-start;
+}
+
+.flyout-header-icon {
+  display: flex;
+  align-items: center;
+  flex: 1 1;
+  justify-content: flex-end;
+}
+
+.flyout-header h1 {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #2d294e;
+}
+
+@media screen and (min-width: 768px) {
+  .flyout {
+    width: 94%;
+    left: 3%;
+  }
+}

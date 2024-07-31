@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+body {
+  color: #fff;
+  background: linear-gradient(180deg, #000000 0%, #3b083d 100%);
+  font-family: 'Inter', 'Montserrat', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  overflow: visible;
+  overflow-y: auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+}
+
+img,
+.img {
+  max-width: 100%;
+  transition: all 0.3s ease-out 0s;
+}
+
+header {
+  height: 100px;
+}
+
+footer {
+  width: 100%;
+}
+
+a {
+  text-decoration: none;
+}
+
+.main-layout-content {
+  min-height: calc(100vh - 202px);
+  overflow-y: auto;
+}
+
+.layout-content {
+  min-height: calc(100vh - 102px);
+  overflow-y: auto;
+  padding: 40px 10px;
+}
+
+section {
+  position: relative;
+  z-index: 1;
+}
+
+.section {
+  padding: 40px 50px;
+}

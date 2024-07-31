@@ -1,0 +1,174 @@
+.task-header .title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.task-header .title h3 {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 29px;
+  text-align: center;
+}
+
+.task-header .sub-title h6 {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 22px;
+  text-align: center;
+}
+
+.task-header .task-top-card {
+  margin-top: 2rem;
+  height: 246px;
+  padding: 10px;
+  border-radius: 5px;
+  background: #2f2f2f;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 23px;
+}
+
+.task-header .task-top-card h6 {
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: -0.4px;
+  text-align: left;
+}
+
+.task-header .task-top-card .task-img2 {
+  /* position: relative; */
+  top: -75%;
+  left: 15%;
+}
+
+.task-page .sub-title p {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 27.74px;
+  text-align: center;
+}
+
+.task-card .task-info .task-icon {
+  font-size: 35px;
+}
+
+.task-info .info {
+  margin-left: 15px;
+}
+
+.task-info .info .task-title {
+  font-weight: 700;
+}
+
+.task-info .info .task-reward {
+  color: #d8cdcd;
+  font-size: 14px;
+}
+
+.task-card {
+  background: linear-gradient(
+    270deg,
+    #001d87 57.5%,
+    #001d86 57.51%,
+    #03014c 100%
+  );
+  border-radius: 15px;
+  color: #ffffff;
+  padding: 20px 24px;
+}
+
+.task-modal {
+  min-height: 45%;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  overflow: hidden;
+  position: fixed !important;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  color: #03014c;
+  transition: transform 0.3s ease-in-out;
+  transform: translateY(100%);
+  margin: 0 !important;
+}
+
+.task-modal.show {
+  transform: translateY(0);
+}
+
+.task-modal .modal-header {
+  border-bottom: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.task-modal .modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-title p {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 22px;
+  text-align: center;
+}
+
+.reward {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 22px;
+  text-align: center;
+}
+
+.task-modal-logo {
+  margin: 20px 0;
+  max-width: 100px;
+}
+
+.task-modal .modal-btn {
+  width: 103px;
+  height: 42px;
+  padding: 10px 38px 10px 38px;
+  border-radius: 5px;
+  background: #03014c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.task-modal-error {
+  color: rgb(199, 16, 16);
+  font-size: 12px;
+}
+
+.task-modal-completed {
+  color: #44be0b;
+  font-size: 18px;
+}
+
+.task-page .react-tabs__tab-list {
+  border-bottom: none !important;
+  display: flex;
+  justify-content: space-between;
+  margin: 35px 0;
+} 
+
+.task-page .react-tabs__tab {
+  width: 55%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.task-page .react-tabs__tab {
+  border: none;
+}

@@ -1,0 +1,410 @@
+.crypto-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  height: 78px;
+  background: #fbfbfb;
+  border-radius: 10px;
+}
+
+.crypto-column {
+  display: flex;
+  align-items: center;
+}
+
+.crypto-column-icon {
+  justify-content: flex-start;
+}
+
+.crypto-column-amount {
+  justify-content: flex-end;
+}
+
+.crypto-column .walletIcon {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.crypto-column .walletIcon img {
+  width: 40px;
+}
+
+.crypto_type {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  align-items: flex-start;
+}
+
+.crypto_type p {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 21px;
+  color: #3a3a3a;
+  margin: 0;
+}
+
+.crypto_amount p {
+  font-weight: bold;
+  margin-bottom: 5px;
+  height: 21px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 21px;
+  color: #22b02e;
+}
+
+.crypto_amount span {
+  height: 18px;
+  font-weight: 500;
+  font-size: 12px;
+  text-align: right;
+  color: #3a3a3a;
+}
+
+.crypto-name {
+  font-weight: 400 !important;
+  font-size: 12px !important;
+  line-height: 18px !important;
+  color: #7f7f7f !important;
+  margin: 0;
+}
+
+.search-input {
+  height: 58px;
+  background: #fbfbfb;
+  border: 1.5px solid #d9d9d9;
+  border-radius: 10px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  color: #7f7f7f;
+}
+
+.search-icon {
+  position: relative;
+  left: -34px;
+  font-size: 20px;
+  top: 25px;
+}
+
+.icon-with-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.close-icon {
+  cursor: pointer;
+  color: #ffffff;
+  border-radius: 50%;
+  background: #7f7f7f;
+  font-size: 24px;
+  position: relative;
+  margin-left: 38%;
+}
+
+.icon-with-text .icon {
+  width: 32px;
+  height: 32px;
+  background: #2d294e;
+  color: #ffbf18;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+}
+
+.left-arrow {
+  cursor: pointer !important;
+  font-size: 21px !important;
+  margin-right: 16px !important;
+  margin-bottom: 5px !important;
+}
+
+.header h2 {
+  height: 27px !important;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 27px;
+  color: #3a3a3a;
+  margin-bottom: 35px !important;
+}
+
+.header p {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #7f7f7f;
+}
+
+.header .back-icon {
+  cursor: pointer;
+  font-size: 22px;
+}
+
+.proceed-btn {
+  width: 100%;
+}
+
+.proceed-btn .btn-primary {
+  width: 100%;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  height: 49px;
+  background: #ffbf18;
+  border-radius: 5px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.select-btn {
+  height: 45px;
+  background: #fbfbfb;
+  border: 1.5px solid #d9d9d9;
+  border-radius: 5px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.topup-input {
+  height: 45px;
+  background: #fbfbfb;
+  border: 1.5px solid #d9d9d9;
+  border-radius: 5px;
+}
+
+.select-btn:hover {
+  background: transparent !important;
+}
+
+.beneficiaries button {
+  width: 100%;
+}
+.select-btn span {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #7f7f7f;
+}
+
+.transaction-info {
+  width: 100%;
+  height: 44px;
+  background: #ffbf18;
+  opacity: 0.7;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3.5rem;
+}
+
+.transaction-info p {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 12px;
+  color: #3a3a3a;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  margin-bottom: 0;
+}
+
+.transaction-details {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10rem;
+}
+
+.transaction-details-item {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
+}
+
+.transaction-details-item p {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  color: #7f7f7f;
+}
+
+.transaction-details-item span {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  color: #3a3a3a;
+}
+
+.transaction-info .info-icon {
+  background: #ffbf18;
+  opacity: 1;
+  color: #ffffff;
+  margin-right: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .dashboard-items span {
+    font-size: 8px !important;
+  }
+  .flyout-header h1 {
+    font-size: 14px !important;
+  }
+  .crypto-name {
+    font-size: 8px !important;
+    text-align: left;
+  }
+}
+
+.main_wallet {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  color: #3a3659;
+}
+
+.fiat_wallet {
+  height: 100px;
+  background: linear-gradient(268.61deg, #56527f -3.39%, #2a2743 103.1%);
+  border-radius: 20px;
+  padding: 20px 53px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fiat-column {
+  display: flex;
+  align-items: center;
+  flex: 1 1;
+}
+
+.fiat-column .fiat-column-icon {
+  justify-content: flex-start;
+}
+
+.fiat-column-amount {
+  justify-content: flex-end !important;
+}
+
+.wallet_type {
+  margin-left: 10px;
+}
+
+.wallet_type p {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 17px;
+  color: #ffffff;
+  margin-bottom: 0;
+}
+
+.wallet_type span {
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  line-height: 15px;
+  color: #ffffff !important;
+  opacity: 0.65 !important;
+}
+
+.wallet_amount .eye-icon {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.walletIcon img {
+  width: 50px;
+}
+
+.fiat_wallet_crypt {
+  height: 100px;
+  border-radius: 20px;
+  padding: 20px 53px;
+  justify-content: space-between;
+  background: linear-gradient(270deg, #392ab0 -2.37%, #342e6e 104.87%);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.input {
+  height: 50px;
+  background: #fbfbfb;
+  border: 1.5px solid #d9d9d9;
+  border-radius: 10px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  color: #7f7f7f;
+  padding: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+Label {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  color: #3a3a3a;
+}
+
+.inputStyle {
+  width: 53px !important;
+  height: 53px;
+  border-radius: 10px;
+  font-size: 32px;
+  padding: 15px;
+  margin-right: 10px;
+  background: #fbfbfb;
+  border: 2px solid #d9d9d9;
+}
+
+.error-message {
+     width: 100%;
+    line-height: 59px;
+    color: red;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+@media screen and (max-width: 768) {
+  .inputStyle {
+    width: 40px !important;
+    height: 40px;
+    font-size: 24px;
+    padding: 8px;
+  }
+}
+
+.pull-right {
+  margin-left: auto;
+}
