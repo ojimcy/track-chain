@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import WOW from 'wowjs';
-import Mining from './pages/Mining';
-import Task from './pages/Task';
-import Squad from './pages/Squad';
+import Tap from './pages/Tap';
+import Earn from './pages/Earn';
+import Frens from './pages/Frens';
 import Layout from './components/layout/Layout';
 
 const App = () => {
@@ -22,9 +22,9 @@ const App = () => {
             element={
               <Layout>
                 <Routes>
-                  <Route index element={<Mining />} />
-                  <Route path="task" element={<Task />} />
-                  <Route path="squad" element={<Squad />} />
+                  <Route index element={<Tap />} />
+                  <Route path="earn" element={<Earn />} />
+                  <Route path="frens" element={<Frens />} />
                 </Routes>
               </Layout>
             }

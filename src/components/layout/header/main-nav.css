@@ -5,29 +5,17 @@
   width: 100%;
 }
 
-.navbar {
-  z-index: 9;
-  height: 73px;
-  width: 100%;
-  max-width: 100%;
-  margin-top: 0;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 14px 0 !important;
-  top: 0;
-}
-
 .user-avatar {
   display: flex;
   align-items: center;
 }
 
-.avatar {
-  width: 40px;
-  height: 40px;
+.main-avatar {
+  width: 45px;
+  height: 45px;
   border-radius: 10px;
-  background-color: #ffffff;
-  color: #282c34;
+  background-color: #282c34;
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -36,37 +24,91 @@
   margin-right: 10px;
 }
 
-.exchange {
-  min-width: 40px;
-  min-height: 40px;
-  border-radius: 22px;
-  background-color: #ffffff;
+.nav-card {
+  position: relative;
+  padding: 10px;
+  background: #260427;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.per-hour {
+  padding-left: 15px;
+}
+
+.vertical-line::after {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, #5a5959, transparent);
+  top: 0;
+}
+
+.user-avatar .avatar {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #007bff;
+  color: #fff;
+  text-align: center;
+  line-height: 40px;
   font-size: 18px;
+  margin-right: 10px;
+}
+
+.level .label {
   font-weight: bold;
-  padding: 15px 20px 15px 20px;
 }
 
-.username {
-  color: #ffffff;
-  font-size: 16px;
-  font-weight: 700;
+.per-hour .label,
+.total-earned .label {
+  font-size: 12px;
 }
 
-.exchange .details {
-  background: none;
-  border: none;
-  color: #282c34;
+.per-hour .main-value,
+.total-earned .main-value {
+  font-weight: bold;
 }
 
-.exchange .details .ex-name {
-  font-weight: 600;
-  font-size: 17px;
+.progress-container {
+  position: relative;
+  height: 3px;
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  margin-top: 4px;
 }
 
-.exchange .details .ex-icon {
-  width: 30px;
-  height: 30px;
+.progress-bar {
+  height: 100%;
+  background-color: #4caf50;
+  border-radius: 5px;
+  transition: width 0.4s ease;
 }
-.navbar-nav {
-  grid-column-gap: 15px !important;
+
+.progress-label {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: #000;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 9px;
+  background: linear-gradient(90deg, #000000 0%, #3b083d 100%);
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.bar-progress {
+  height: 100%;
+  background-color: #6C652F;
+  border-radius: 5px;
+  transition: width 0.3s ease;
 }

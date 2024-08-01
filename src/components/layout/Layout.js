@@ -9,7 +9,6 @@ import {
   useInitData,
 } from '../../hooks/telegram';
 import MiningNav from './header/MainNav';
-//import { useToast } from 'react-toastify';
 
 const Layout = ({ children }) => {
   const initData = useInitData();
@@ -21,7 +20,6 @@ const Layout = ({ children }) => {
   useEffect(() => {
     if (!telegramUser) return;
     // if (currentUser) return;
-
     const fn = async () => {
       let user = await getUserByTelegramID(telegramUser.id);
       if (!user || !user.id) {

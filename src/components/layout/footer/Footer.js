@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Container, Row } from 'reactstrap';
 import { Link, useLocation } from 'react-router-dom';
-import {  FaTasks, FaUsers, FaHammer } from 'react-icons/fa';
+import { FaTasks, FaUsers, FaHammer } from 'react-icons/fa';
 import './Footer.css';
 
 function Footer() {
@@ -24,29 +24,51 @@ function Footer() {
                         }`}
                       >
                         <FaHammer size={28} />
-                        <span className="mt-1">Mining</span>
+                        <span className="mt-1">Tap</span>
                       </Link>
                     </li>
                     <li>
                       <Link
-                        to="/task"
+                        to="/earn"
                         className={`d-flex flex-column align-items-center ${
-                          location.pathname === '/task' ? 'active' : ''
+                          location.pathname === '/earn' ? 'active' : ''
                         }`}
                       >
                         <FaTasks size={28} />
-                        <span className="mt-1">Task</span>
+                        <span className="mt-1">Earn</span>
                       </Link>
                     </li>
                     <li>
                       <Link
-                        to="/squad"
+                        to="/mine"
                         className={`d-flex flex-column align-items-center ${
-                          location.pathname === '/squad' ? 'active' : ''
+                          location.pathname === '/mine' ? 'active' : ''
+                        }`}
+                      >
+                        <FaHammer size={28} />
+                        <span className="mt-1">Mine</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/leaderboard"
+                        className={`d-flex flex-column align-items-center ${
+                          location.pathname === '/leaderboard' ? 'active' : ''
+                        }`}
+                      >
+                        <FaHammer size={28} />
+                        <span className="mt-1">Leaderboard</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/frens"
+                        className={`d-flex flex-column align-items-center ${
+                          location.pathname === '/frens' ? 'active' : ''
                         }`}
                       >
                         <FaUsers size={28} />
-                        <span className="mt-1">Squad</span>
+                        <span className="mt-1">Frens</span>
                       </Link>
                     </li>
                   </ul>

@@ -1,0 +1,22 @@
+.frens-card {
+  color: #ffffff !important;
+  padding: 15px 10px;
+}
+
+.frens-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #3b083d;
+  font-size: 24px;
+  font-weight: 800;
+  margin-right: 8px;
+}
+
+.frens-title {
+  font-weight: 800;
+}
+
+.frens-level {
+  font-size: 14px;
+}

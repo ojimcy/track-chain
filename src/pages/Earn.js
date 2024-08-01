@@ -11,7 +11,7 @@ import {
   ModalBody,
 } from 'reactstrap';
 import taskImg1 from '../assets/images/taske.png';
-import './task.css';
+import './earn.css';
 import {
   FaTasks,
   FaTelegram,
@@ -24,6 +24,7 @@ import { useWebApp } from '../hooks/telegram';
 import axios from 'axios';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
+import { Separator } from '../components/common/Seperator';
 
 const tasks = [
   {
@@ -60,7 +61,7 @@ const taskIcons = {
   others: <FaTasks className="task-icon" />,
 };
 
-function Task() {
+function Earn() {
   const webApp = useWebApp();
   const [modal, setModal] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
@@ -131,24 +132,29 @@ function Task() {
           <TabPanel>
             <Row>
               {activeTasks.map((task) => (
-                <Col xs={12} key={task.id}>
-                  <Link
-                    to="#"
-                    className="task-card d-flex justify-content-between align-items-center mt-2"
-                    onClick={() => toggleModal(task)}
-                  >
-                    <div className="task-info d-flex align-items-center">
-                      <div className="task-icon">{taskIcons[task.type]}</div>
-                      <div className="info d-flex flex-column">
-                        <span className="task-title">{task.title}</span>
-                        <span className="task-reward">+{task.reward} FBT</span>
+                <>
+                  <Col xs={12} key={task.id}>
+                    <Link
+                      to="#"
+                      className="task-card d-flex justify-content-between align-items-center mt-2"
+                      onClick={() => toggleModal(task)}
+                    >
+                      <div className="task-info d-flex align-items-center">
+                        <div className="task-icon">{taskIcons[task.type]}</div>
+                        <div className="info d-flex flex-column">
+                          <span className="task-title">{task.title}</span>
+                          <span className="task-reward">
+                            +{task.reward} FBT
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="task-status">
-                      {task.completed ? 'Completed' : 'Start'}
-                    </div>
-                  </Link>
-                </Col>
+                      <div className="task-status">
+                        {task.completed ? 'Completed' : 'Start'}
+                      </div>
+                    </Link>
+                  </Col>
+                  <Separator />
+                </>
               ))}
             </Row>
           </TabPanel>
@@ -222,4 +228,4 @@ function Task() {
   );
 }
 
-export default Task;
+export default Earn;

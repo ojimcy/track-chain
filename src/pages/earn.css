@@ -70,13 +70,6 @@
 }
 
 .task-card {
-  background: linear-gradient(
-    270deg,
-    #001d87 57.5%,
-    #001d86 57.51%,
-    #03014c 100%
-  );
-  border-radius: 15px;
   color: #ffffff;
   padding: 20px 24px;
 }
