@@ -1,6 +1,4 @@
-
 .flyout {
-  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
@@ -8,14 +6,18 @@
   display: flex;
   min-width: 320px;
   height: 499px;
-  background: #FFFFFF;
-  border-radius: 20px 20px 0px 0px;
-  border-left: 1px solid #eee;
-  box-shadow: -3px 0px 5px rgba(0, 0, 0, 0.03);
+  background: #ffffff;
+  border-radius: 25px 25px 0px 0px;
   z-index: 1031;
   display: flex;
   flex-direction: column;
-  min-height: 86vh;
+  min-height: 45%;
+  overflow: hidden;
+  position: fixed !important;
+  color: #03014c;
+  transition: transform 0.3s ease-in-out;
+  transform: translateY(100%);
+  margin: 0 !important;
 }
 
 .flyout-header {

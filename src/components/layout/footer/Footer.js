@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Container, Row } from 'reactstrap';
 import { Link, useLocation } from 'react-router-dom';
-import { FaTasks, FaUsers, FaHammer } from 'react-icons/fa';
+import { FaTasks, FaUsers, FaHammer, FaTrophy, FaGem } from 'react-icons/fa';
 import './Footer.css';
 
 function Footer() {
@@ -45,7 +45,7 @@ function Footer() {
                           location.pathname === '/mine' ? 'active' : ''
                         }`}
                       >
-                        <FaHammer size={28} />
+                        <FaGem size={28} />
                         <span className="mt-1">Mine</span>
                       </Link>
                     </li>
@@ -56,7 +56,7 @@ function Footer() {
                           location.pathname === '/leaderboard' ? 'active' : ''
                         }`}
                       >
-                        <FaHammer size={28} />
+                        <FaTrophy size={28} />
                         <span className="mt-1">Leaderboard</span>
                       </Link>
                     </li>

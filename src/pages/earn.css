@@ -84,7 +84,7 @@
   left: 0;
   right: 0;
   background-color: white;
-  color: #03014c;
+  color: #040318;
   transition: transform 0.3s ease-in-out;
   transform: translateY(100%);
   margin: 0 !important;
@@ -131,7 +131,7 @@
   height: 42px;
   padding: 10px 38px 10px 38px;
   border-radius: 5px;
-  background: #03014c;
+  background: #413cd1;
   display: flex;
   align-items: center;
   justify-content: center;

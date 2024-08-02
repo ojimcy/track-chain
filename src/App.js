@@ -6,6 +6,7 @@ import Tap from './pages/Tap';
 import Earn from './pages/Earn';
 import Frens from './pages/Frens';
 import Layout from './components/layout/Layout';
+import Boost from './pages/Boosts';
 
 const App = () => {
   try {
@@ -25,6 +26,7 @@ const App = () => {
                   <Route index element={<Tap />} />
                   <Route path="earn" element={<Earn />} />
                   <Route path="frens" element={<Frens />} />
+                  <Route path="boost" element={<Boost />} />
                 </Routes>
               </Layout>
             }

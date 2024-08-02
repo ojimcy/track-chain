@@ -143,9 +143,7 @@ function Earn() {
                         <div className="task-icon">{taskIcons[task.type]}</div>
                         <div className="info d-flex flex-column">
                           <span className="task-title">{task.title}</span>
-                          <span className="task-reward">
-                            +{task.reward} FBT
-                          </span>
+                          <span className="task-reward">+{task.reward}</span>
                         </div>
                       </div>
                       <div className="task-status">
@@ -171,7 +169,7 @@ function Earn() {
                       <div className="task-icon">{taskIcons[task.type]}</div>
                       <div className="info d-flex flex-column">
                         <span className="task-title">{task.title}</span>
-                        <span className="task-reward">+{task.reward} FBT</span>
+                        <span className="task-reward">+{task.reward}</span>
                       </div>
                     </div>
                     <div className="task-status">

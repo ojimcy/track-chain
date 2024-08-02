@@ -1,0 +1,24 @@
+.user-balance {
+  font-size: 38px;
+  font-weight: 600;
+  line-height: 22px;
+  letter-spacing: -0.4px;
+  text-align: center;
+}
+
+.boost-card {
+  background: linear-gradient(90deg, #000000 0%, #3b083d 100%);
+  padding: 20px 14px;
+  border-radius: 15px;
+}
+
+.boost-icon {
+  margin-right: 15px;
+}
+
+.boost-btn {
+  width: 100%;
+  padding: 10px !important;
+  font-weight: 800 !important;
+  background: #413cd1 !important;
+}
