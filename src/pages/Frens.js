@@ -1,33 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Col, Container, Row } from 'reactstrap';
 import { Separator } from '../components/common/Seperator';
 import { formatBalance } from '../utils/formatBalance';
 
-import './frens.css'
+import './frens.css';
+import FlyoutModal from '../components/modals/FlyoutModal';
 
 function Frens() {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
   const friends = [
     {
       id: 1,
       username: 'JaneDoe',
       level: 'Gold',
       balance: 150000,
-      profilePic: null, 
+      profilePic: null,
     },
     {
       id: 2,
       username: 'JohnSmith',
       level: 'Silver',
       balance: 200000,
-      profilePic: null, 
+      profilePic: null,
     },
     {
       id: 3,
       username: 'EmilyRose',
       level: 'Bronze',
       balance: 300000,
-      profilePic: null, 
+      profilePic: null,
     },
   ];
 
@@ -48,7 +59,7 @@ function Frens() {
           </div>
         </Row>
 
-        <p className='mt-4'>Friends list ({friends.length})</p>
+        <p className="mt-4">Friends list ({friends.length})</p>
         <Row>
           {friends.map((friend) => (
             <React.Fragment key={friend.id}>
@@ -77,7 +88,22 @@ function Frens() {
             </React.Fragment>
           ))}
         </Row>
+
+        <div className="ref-action mt-5">
+          <Link to="#" className="prim-btn" onClick={openModal}>
+            Invite a Fren
+          </Link>
+        </div>
       </Container>
+      {modalOpen && (
+        <FlyoutModal
+          title="Invite a Fren"
+          isOpen={modalOpen}
+          handleClose={handleCloseModal}
+        >
+          test margin
+        </FlyoutModal>
+      )}
     </div>
   );
 }

@@ -77,3 +77,18 @@ section {
   line-height: 24px;
   text-align: center;
 }
+
+.prim-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3px 10px;
+  width: 100%;
+  margin-top: 8px;
+  background: #413cd1;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 800;
+}

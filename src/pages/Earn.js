@@ -1,5 +1,3 @@
-// File path: src/components/Task.js
-
 import React, { useState, useEffect } from 'react';
 import {
   Col,
@@ -13,6 +11,9 @@ import {
 import taskImg1 from '../assets/images/taske.png';
 import './earn.css';
 import {
+  FaCalendarCheck,
+  FaCheck,
+  FaGreaterThan,
   FaTasks,
   FaTelegram,
   FaTiktok,
@@ -25,6 +26,7 @@ import axios from 'axios';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import { Separator } from '../components/common/Seperator';
+import DailyRewardModal from '../components/modals/DailyRewardModal';
 
 const tasks = [
   {
@@ -67,12 +69,17 @@ function Earn() {
   const [selectedTask, setSelectedTask] = useState(null);
   const [goClicked, setGoClicked] = useState(false);
   const [countdown, setCountdown] = useState(0);
+  const [rewardModal, setRewardModal] = useState(false);
 
   const toggleModal = (task = null) => {
     setSelectedTask(task);
     setModal(!modal);
     setGoClicked(false);
     setCountdown(0);
+  };
+
+  const toggleRewardModal = () => {
+    setRewardModal(!rewardModal);
   };
 
   const handGoBtnClick = async (task) => {
@@ -131,9 +138,34 @@ function Earn() {
           </TabList>
           <TabPanel>
             <Row>
+              <h3>Daily tasks</h3>
+              <Col xs={12}>
+                <Link
+                  to="#"
+                  className="task-card d-flex justify-content-between align-items-center mt-2"
+                  onClick={() => toggleRewardModal()}
+                >
+                  <div className="task-info d-flex align-items-center">
+                    <div className="task-icon">
+                      <FaCalendarCheck />
+                    </div>
+                    <div className="info d-flex flex-column">
+                      <span className="task-title">Daily Checking</span>
+                      <span className="task-reward">+10,000,000</span>
+                    </div>
+                  </div>
+                  <div className="task-status">
+                    <FaGreaterThan />
+                  </div>
+                </Link>
+              </Col>
+              <Separator />
+            </Row>
+            <Row>
+              <h3 className="mt-5">Tasks List</h3>
               {activeTasks.map((task) => (
-                <>
-                  <Col xs={12} key={task.id}>
+                <React.Fragment key={task.id}>
+                  <Col xs={12}>
                     <Link
                       to="#"
                       className="task-card d-flex justify-content-between align-items-center mt-2"
@@ -147,36 +179,51 @@ function Earn() {
                         </div>
                       </div>
                       <div className="task-status">
-                        {task.completed ? 'Completed' : 'Start'}
+                        {task.completed ? (
+                          <div className="completed">
+                            <FaCheck />
+                          </div>
+                        ) : (
+                          'Start'
+                        )}
                       </div>
                     </Link>
                   </Col>
                   <Separator />
-                </>
+                </React.Fragment>
               ))}
             </Row>
           </TabPanel>
           <TabPanel>
             <Row>
               {completedTasks.map((task) => (
-                <Col xs={12} key={task.id}>
-                  <Link
-                    to="#"
-                    className="task-card d-flex justify-content-between align-items-center mt-2"
-                    onClick={() => toggleModal(task)}
-                  >
-                    <div className="task-info d-flex align-items-center">
-                      <div className="task-icon">{taskIcons[task.type]}</div>
-                      <div className="info d-flex flex-column">
-                        <span className="task-title">{task.title}</span>
-                        <span className="task-reward">+{task.reward}</span>
+                <React.Fragment key={task.id}>
+                  <Col xs={12}>
+                    <Link
+                      to="#"
+                      className="task-card d-flex justify-content-between align-items-center mt-2"
+                      onClick={() => toggleModal(task)}
+                    >
+                      <div className="task-info d-flex align-items-center">
+                        <div className="task-icon">{taskIcons[task.type]}</div>
+                        <div className="info d-flex flex-column">
+                          <span className="task-title">{task.title}</span>
+                          <span className="task-reward">+{task.reward}</span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="task-status">
-                      {task.completed ? 'Completed' : 'Start'}
-                    </div>
-                  </Link>
-                </Col>
+                      <div className="task-status">
+                        {task.completed ? (
+                          <div className="completed">
+                            <FaCheck />
+                          </div>
+                        ) : (
+                          'Start'
+                        )}
+                      </div>
+                    </Link>
+                  </Col>
+                  <Separator />
+                </React.Fragment>
               ))}
             </Row>
           </TabPanel>
@@ -191,9 +238,7 @@ function Earn() {
               </div>
               <Button
                 className="modal-btn"
-                onClick={() => {
-                  handGoBtnClick(selectedTask);
-                }}
+                onClick={() => handGoBtnClick(selectedTask)}
               >
                 Go
               </Button>
@@ -205,21 +250,24 @@ function Earn() {
               ) : (
                 <Button
                   className="modal-btn"
-                  onClick={() => {
-                    handleCheckClicked(selectedTask);
-                  }}
+                  onClick={() => handleCheckClicked(selectedTask)}
                   disabled={countdown > 0}
                 >
                   Check
                 </Button>
               )}
 
-              <span color="task-modal-error">
-                {countdown > 0 &&
-                  `Kindly complete the task and try again in ${countdown} seconds`}
-              </span>
+              {countdown > 0 && (
+                <span className="task-modal-error">
+                  Kindly complete the task and try again in {countdown} seconds
+                </span>
+              )}
             </ModalBody>
           </Modal>
+        )}
+
+        {rewardModal && (
+          <DailyRewardModal isOpen={rewardModal} toggle={toggleRewardModal} />
         )}
       </Container>
     </div>

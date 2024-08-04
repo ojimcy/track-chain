@@ -1,0 +1,66 @@
+.daily-reward-modal {
+  min-height: 45%;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  overflow: hidden;
+  position: fixed !important;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  color: #040318;
+  transition: transform 0.3s ease-in-out;
+  transform: translateY(100%);
+  margin: 0 !important;
+}
+
+.daily-reward-header {
+  text-align: center;
+}
+
+.daily-reward-header img {
+  width: 50px;
+  margin-bottom: 10px;
+}
+
+.daily-reward-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  justify-content: center;
+}
+
+.daily-reward-item {
+  background: linear-gradient(180deg, #000000 0%, #3b083d 100%);
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.daily-reward-item.active {
+  border: 2px solid #4caf50;
+  border-radius: 8px;
+  background: transparent !important;
+  color: #000000;
+}
+
+.claim-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3px 10px;
+  width: 100%;
+  margin-top: 8px;
+  background: #6A6428;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.reward-amount {
+  font-size: 16px;
+  font-weight: 700;
+}

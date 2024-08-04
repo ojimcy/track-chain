@@ -74,6 +74,16 @@
   padding: 20px 24px;
 }
 
+.task-status .completed {
+  width: 30px;
+  height: 30px;
+  background: #44be0b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
 .task-modal {
   min-height: 45%;
   border-top-left-radius: 25px;
@@ -153,7 +163,7 @@
   display: flex;
   justify-content: space-between;
   margin: 35px 0;
-} 
+}
 
 .task-page .react-tabs__tab {
   width: 55%;
@@ -164,4 +174,10 @@
 
 .task-page .react-tabs__tab {
   border: none;
+}
+
+
+.react-tabs__tab--selected {
+  background:  none !important;
+  color: #ffffff !important;
 }
