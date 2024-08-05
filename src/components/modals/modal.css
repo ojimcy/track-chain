@@ -60,10 +60,80 @@
 }
 
 .invite-actions .share-btn {
-  background: #9D6B38;
+  background: #9d6b38;
 }
 .invite-actions .copy-btn {
-  background: #E8A14A;
+  background: #e8a14a;
+}
+
+.main-modal {
+  min-height: 45%;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  overflow: hidden;
+  position: fixed !important;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transition: transform 0.3s ease-in-out;
+  transform: translateY(100%);
+  margin: 0 !important;
+}
+
+.main-modal .modal-content {
+  background-color: #1f1f1f;
+  color: #ffffff;
+}
+
+.main-modal.show {
+  transform: translateY(0);
+}
+
+.main-modal .modal-header {
+  border-bottom: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-modal .modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Card modal */
+
+.card-image-wrapper {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  padding: 10px;
+  background-color: white;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -50px;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.card-description {
+  margin-top: 70px;
+}
+
+.card-earnings {
+  margin-top: 10px;
+}
+
+.earnings-label {
+  font-size: 1.2em;
+  font-weight: bold;
 }
 
 @media screen and (min-width: 768px) {

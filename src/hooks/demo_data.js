@@ -12,7 +12,7 @@ const data = {
     level: 5,
     balance: 1750000,
     total_balance: 1500000,
-    earning_per_hour: 0,
+    earning_per_hour: 2350,
     energy_limit: 5000,
     energy_level: 4,
     multi_tap: 5,

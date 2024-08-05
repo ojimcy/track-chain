@@ -7,6 +7,8 @@ import Earn from './pages/Earn';
 import Frens from './pages/Frens';
 import Layout from './components/layout/Layout';
 import Boost from './pages/Boosts';
+import Mine from './pages/Mine';
+import MineLayout from './components/layout/MineLayout';
 
 const App = () => {
   try {
@@ -31,6 +33,18 @@ const App = () => {
               </Layout>
             }
           />
+
+          <Route
+            path="/mine"
+            element={
+              <MineLayout>
+                <Routes>
+                  <Route index element={<Mine />} />
+                </Routes>
+              </MineLayout>
+            }
+          />
+
         </Routes>
       </Router>
     );

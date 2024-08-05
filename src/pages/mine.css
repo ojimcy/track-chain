@@ -1,0 +1,170 @@
+.mine-page .mine-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  padding: 50px 0;
+}
+
+.mine-page .balance {
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 22px;
+  letter-spacing: -0.41px;
+  text-align: center;
+}
+
+.mine-page .balance p {
+  font-size: 14px;
+}
+.mine-page .balance .token-balance {
+  color: #f0b90b;
+}
+
+.mine-page .combo {
+  background-color: #1f1f1f;
+  padding: 7px;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.mine-page .combo p {
+  margin: 0;
+}
+
+.mine-page .tab {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0 !important;
+  padding: 7px 0;
+  background-color: #1f1f1f;
+  border-radius: 10px;
+  border: none !important;
+  flex-wrap: nowrap;
+}
+
+.mine-page .tab .nav-link {
+  color: white;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.mine-page .tab .nav-link.active {
+  background-color: #333;
+  border-radius: 10px;
+  color: #ffffff;
+  border: none;
+}
+
+.mine-page .mine-cards {
+  display: flex;
+  flex-direction: column;
+}
+
+.mine-page .mine-card-row {
+  display: flex;
+  justify-content: space-around;
+  margin: 10px 0;
+}
+
+.mine-page .mine-card {
+  background-color: #1f1f1f;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 15px;
+  width: 48%;
+  text-align: center;
+}
+
+.mine-page .mine-card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.earnings-per-hour {
+  color: #f0b90b;
+  font-weight: 700;
+}
+
+.mine-page .mine-card-header img {
+  width: 75%;
+  margin-bottom: 5px;
+}
+
+.mine-page .mine-card-body {
+  padding: 10px 0;
+}
+
+.card-level {
+  font-size: 14px;
+}
+
+.card-level .level {
+  width: 35%;
+}
+
+.card-level .level::after {
+  content: '';
+  position: absolute;
+  height: 4%;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, #5a5959, transparent);
+  margin-left: 8px;
+  margin-top: -5px;
+}
+
+.combos {
+  width: 100%;
+}
+
+.combos .combo-card {
+  background-color: #1f1f1f;
+  border: 1px solid #91550d;
+  width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.combos .combo-card img {
+  width: 75px;
+}
+
+.no-upgrade {
+  color: #d3c3c3;
+}
+
+.mine-card.can-upgrade {
+  border-color: #4caf50;
+  cursor: pointer;
+}
+
+.mine-card.cannot-upgrade {
+  border-color: #f44336;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.earn-per-hour-upgrade {
+  color: #4caf50;
+}
+
+.earn-per-hour-no-upgrade {
+  color: #f44336;
+}
+
+.card-level-upgrade {
+  color: #4caf50;
+}
+
+.card-level-no-upgrade {
+  color: #f44336;
+}
+
+.mine-card:hover.can-upgrade {
+  transform: scale(1.05);
+}
