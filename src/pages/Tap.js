@@ -7,8 +7,11 @@ import { FaBolt, FaRocket } from 'react-icons/fa';
 
 import './tap.css';
 import dollar from '../assets/images/dollar.png';
+import cal from '../assets/images/cal.png';
+import reward from '../assets/images/reward.png';
 import data from '../hooks/demo_data';
 import { formatBalance } from '../utils/formatBalance';
+import DailyRewardModal from '../components/modals/DailyRewardModal';
 
 function Tap() {
   const { user, levels } = data;
@@ -17,8 +20,13 @@ function Tap() {
   const [energy, setEnergy] = useState(user.energy_limit);
   const [taps, setTaps] = useState([]);
   const [tapId, setTapId] = useState(0);
+  const [rewardModal, setRewardModal] = useState(false);
 
   const currentLevel = levels.find((lvl) => lvl.level === user.level);
+
+  const toggleRewardModal = () => {
+    setRewardModal(!rewardModal);
+  };
 
   const handleTap = (event) => {
     if (energy > user.multi_tap) {
@@ -55,13 +63,28 @@ function Tap() {
           <span className="earnings">{formatBalance(balance)}</span>
         </div>
 
+        <div className="top-links d-flex justify-content-between">
+          <Link to="#" className="top-link" onClick={toggleRewardModal}>
+            <div className="link-content d-flex align-items-center">
+              <img src={reward} alt="" />
+              <span>Daily Rewards</span>
+              <span className="timer">23:07:58</span>
+            </div>
+          </Link>
+
+          <Link to="/daily-combo" className="top-link">
+            <div className="link-content d-flex align-items-center">
+              <img src={cal} alt="" />
+              <span>Daily Combo</span>
+              <span className="timer">14:52:59</span>
+            </div>
+          </Link>
+        </div>
+
         <div className="tap-area" onClick={handleTap}>
           <img src={currentLevel.icon} alt="Current Level Icon" />
           {taps.map((tap) => (
-            <div
-              key={tap.id}
-              className="multi-tap-animation"
-            >
+            <div key={tap.id} className="multi-tap-animation">
               +{user.multi_tap}
             </div>
           ))}
@@ -83,6 +106,10 @@ function Tap() {
           </div>
         </div>
       </Container>
+
+      {rewardModal && (
+        <DailyRewardModal isOpen={rewardModal} toggle={toggleRewardModal} />
+      )}
     </div>
   );
 }

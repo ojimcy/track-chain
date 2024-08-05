@@ -7,8 +7,8 @@ import calendar from '../../assets/images/calendar-check.png';
 import dollar from '../../assets/images/dollar.png';
 import { formatBalanceShort } from '../../utils/formatBalance';
 import { FaCheck } from 'react-icons/fa';
-import ConfettiBlast from '../common/ConfettiBlast';
 import { Link } from 'react-router-dom';
+import Confetti from 'react-confetti';
 
 const dailyRewards = [
   { day: 1, amount: '500' },
@@ -31,34 +31,35 @@ const dailyRewards = [
 
 function DailyRewardModal({ isOpen, toggle }) {
   const [checkedIn, setCheckedIn] = useState(false);
-  const [confettiConfig, setConfettiConfig] = useState({});
   const [showConfetti, setShowConfetti] = useState(false);
 
   const currentDay = 2;
 
-  const handleCheckIn = (day, event) => {
+  const handleCheckIn = (day) => {
     if (day === currentDay) {
       setCheckedIn(true);
-      const { left, top, width, height } = event.target.getBoundingClientRect();
-      setConfettiConfig({
-        x: left + width / 2,
-        y: top + height / 2,
-        numberOfPieces: 100,
-        recycle: false,
-      });
       setShowConfetti(true);
-
-      // Stop confetti after 2 seconds
-      setTimeout(() => {
-        setShowConfetti(false);
-      }, 3000);
-
-      // Implement the endpoint call here to update the check-in status
+      setTimeout(() => setShowConfetti(false), 3000);
     }
   };
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} className="daily-reward-modal">
+      {showConfetti && (
+        <Confetti
+          drawShape={(ctx) => {
+            ctx.beginPath();
+            for (let i = 0; i < 22; i++) {
+              const angle = 0.35 * i;
+              const x = (0.2 + 1.5 * angle) * Math.cos(angle);
+              const y = (0.2 + 1.5 * angle) * Math.sin(angle);
+              ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            ctx.closePath();
+          }}
+        />
+      )}
       <ModalHeader toggle={toggle}></ModalHeader>
       <ModalBody>
         <div className="daily-reward-header">
@@ -100,13 +101,6 @@ function DailyRewardModal({ isOpen, toggle }) {
             </div>
           ))}
         </div>
-        {showConfetti && (
-          <ConfettiBlast
-            x={confettiConfig.x}
-            y={confettiConfig.y}
-            trigger={checkedIn}
-          />
-        )}
       </ModalBody>
     </Modal>
   );

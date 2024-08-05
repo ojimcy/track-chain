@@ -47,6 +47,25 @@
   color: #2d294e;
 }
 
+.invite-actions a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff !important;
+  font-weight: 700;
+  width: 100%;
+  padding: 15px 25px 15px 25px;
+  border-radius: 25px;
+  margin-top: 15px;
+}
+
+.invite-actions .share-btn {
+  background: #9D6B38;
+}
+.invite-actions .copy-btn {
+  background: #E8A14A;
+}
+
 @media screen and (min-width: 768px) {
   .flyout {
     width: 94%;

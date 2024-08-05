@@ -31,7 +31,7 @@
 }
 
 .daily-reward-item {
-  background: linear-gradient(180deg, #000000 0%, #3b083d 100%);
+  background: #312D03;
   border-radius: 10px;
   padding: 10px;
   text-align: center;
@@ -52,7 +52,7 @@
   padding: 3px 10px;
   width: 100%;
   margin-top: 8px;
-  background: #6A6428;
+  background: #9D6B38;
   color: white;
   border: none;
   border-radius: 10px;

@@ -5,17 +5,75 @@ import { Separator } from '../components/common/Seperator';
 import { formatBalance } from '../utils/formatBalance';
 
 import './frens.css';
-import FlyoutModal from '../components/modals/FlyoutModal';
+import InviteModal from '../components/modals/InviteModal';
+import { toast } from 'react-toastify';
+import { useCurrentUser, useReferralLink, useWebApp } from '../hooks/telegram';
 
 function Frens() {
+  const referralLink = useReferralLink(useCurrentUser);
+  const webapp = useWebApp();
   const [modalOpen, setModalOpen] = useState(false);
 
-  const openModal = () => {
-    setModalOpen(true);
+  const toggleModal = () => {
+    setModalOpen(!modalOpen);
   };
 
-  const handleCloseModal = () => {
-    setModalOpen(false);
+  function fallbackCopyTextToClipboard(text) {
+    var textArea = document.createElement('textarea');
+    textArea.value = text;
+
+    // Avoid scrolling to bottom
+    textArea.style.top = '0';
+    textArea.style.left = '0';
+    textArea.style.position = 'fixed';
+
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+      var successful = document.execCommand('copy');
+      var msg = successful ? 'successful' : 'unsuccessful';
+      console.log('Fallback: Copying text command was ' + msg);
+    } catch (err) {
+      console.error('Fallback: Oops, unable to copy', err);
+    }
+
+    document.body.removeChild(textArea);
+  }
+
+  async function copyTextToClipboard(text) {
+    if (!navigator.clipboard) {
+      fallbackCopyTextToClipboard(text);
+      return;
+    }
+    await navigator.clipboard.writeText(text);
+  }
+
+  const copyReferralLink = async () => {
+    try {
+      await copyTextToClipboard(referralLink);
+      toast.success('Referral link copied!', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+      });
+    } catch (error) {
+      toast.error('Failed to copy link', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+      });
+    }
+  };
+
+  const share = () => {
+    const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(
+      referralLink
+    )}&text=${encodeURIComponent('Mine free RAIN token on Telegram')}`;
+    webapp.openTelegramLink(telegramUrl);
   };
 
   const friends = [
@@ -90,19 +148,18 @@ function Frens() {
         </Row>
 
         <div className="ref-action mt-5">
-          <Link to="#" className="prim-btn" onClick={openModal}>
+          <Link to="#" className="prim-btn" onClick={toggleModal}>
             Invite a Fren
           </Link>
         </div>
       </Container>
       {modalOpen && (
-        <FlyoutModal
-          title="Invite a Fren"
-          isOpen={modalOpen}
-          handleClose={handleCloseModal}
-        >
-          test margin
-        </FlyoutModal>
+        <InviteModal
+          modal={modalOpen}
+          toggleModal={toggleModal}
+          handleCopy={copyReferralLink}
+          handleShare={share}
+        />
       )}
     </div>
   );

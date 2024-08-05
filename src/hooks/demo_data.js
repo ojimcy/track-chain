@@ -10,7 +10,7 @@ const data = {
     language_code: 'en',
     allows_write_to_pm: true,
     level: 5,
-    balance: 150000,
+    balance: 1750000,
     total_balance: 1500000,
     earning_per_hour: 0,
     energy_limit: 5000,

@@ -45,3 +45,8 @@ export const useCurrentUser = () => {
   const { user } = useContext(WebappContext);
   return user;
 };
+
+export const useReferralLink = (currentUser) => {
+  if (!currentUser) return '';
+  return `https://t.me/t.me/track_chain_bot?start=${currentUser.telegramId}`;
+};

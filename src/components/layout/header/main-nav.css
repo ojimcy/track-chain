@@ -27,7 +27,11 @@
 .nav-card {
   position: relative;
   padding: 10px;
-  background: #260427;
+  background: linear-gradient(
+    90deg,
+    rgba(125, 124, 124, 0.5) 0%,
+    rgba(125, 124, 124, 0.2) 100%
+  );
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -108,7 +112,7 @@
 
 .bar-progress {
   height: 100%;
-  background-color: #6C652F;
+  background: linear-gradient(90deg, #e8a14a 0%, #55c5fd 51.5%, #ff04f5 100%);
   border-radius: 5px;
   transition: width 0.3s ease;
 }

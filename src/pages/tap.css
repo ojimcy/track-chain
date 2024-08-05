@@ -1,9 +1,9 @@
 .mining-page {
-  background: #000;
+  background: linear-gradient(180deg, #331c04 0%, #180f08 100%);
   height: calc(100vh - 219px);
   border-radius: 50px 50px 0px 0px;
-  border-top: 3px solid #f05ff5;
-  box-shadow: 0px -10px 15.6px 0px #f05ff566;
+  border-top: 3px solid #e8a14a;
+  box-shadow: 0px -10px 15.6px 0px #91550d;
   padding: 30px 10px;
 }
 
@@ -25,6 +25,42 @@
 
 .balance {
   margin-bottom: 20px;
+}
+
+.top-links {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.top-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #274109;
+  border-bottom: none !important;
+  border-radius: 15px 15px 0 0;
+  padding: 10px;
+  width: 48%;
+  text-decoration: none;
+  color: #ffffff;
+  height: 115px;
+}
+
+.top-link .link-content {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.top-link .link-content img {
+  width: 71px;
+  height: 58px;
+}
+
+.top-link .timer {
+  font-size: 12px;
+  margin-top: 5px;
 }
 
 .tap-area {
