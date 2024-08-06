@@ -47,6 +47,10 @@ const data = {
     { level: 4, tap: 1, cost: 8000 },
     { level: 5, tap: 1, cost: 16000 },
   ],
+
+  daily_combo: [
+    
+  ]
 };
 
 export default data;

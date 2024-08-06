@@ -48,7 +48,7 @@ const MineLayout = ({ children }) => {
 
   return (
     <div className="page-content">
-      <main className="main-layout-content">{children}</main>
+      <main className="mine-layout-content">{children}</main>
       <Footer />
     </div>
   );

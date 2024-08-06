@@ -1,13 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
 
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   color: #fff;
   background: linear-gradient(180deg, #000000 0%, #a36b26 100%);
   font-family: 'Inter', 'Montserrat', sans-serif;
   font-size: 16px;
   line-height: 24px;
-  overflow: visible;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 h1,
@@ -29,8 +31,10 @@ header {
   height: 100px;
 }
 
-footer {
-  width: 100%;
+
+main {
+  min-height: calc(100vh - 100px);
+  overflow-y: auto;
 }
 
 a {
@@ -39,12 +43,10 @@ a {
 
 .main-layout-content {
   min-height: calc(100vh - 202px);
-  overflow-y: auto;
 }
 
 .layout-content {
   min-height: calc(100vh - 102px);
-  overflow-y: auto;
   padding: 40px 10px;
 }
 
@@ -84,7 +86,7 @@ section {
   align-items: center;
   width: 100%;
   margin-top: 8px;
-  background: #E8A14A;
+  background: #e8a14a;
   color: white;
   border: none;
   border-radius: 15px;

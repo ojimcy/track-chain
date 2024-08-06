@@ -139,12 +139,10 @@
 }
 
 .mine-card.can-upgrade {
-  border-color: #4caf50;
   cursor: pointer;
 }
 
 .mine-card.cannot-upgrade {
-  border-color: #f44336;
   cursor: not-allowed;
   opacity: 0.6;
 }

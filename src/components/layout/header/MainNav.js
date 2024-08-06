@@ -36,14 +36,14 @@ function MainNav() {
           <div className="per-hour d-flex flex-column card-item">
             <span className="label">Token per Hour</span>
             <span className="main-value">
-              <img src={dollar} alt="" width={40} height={40} /> {user.earning_per_hour}{' '}
+              <img src={dollar} alt="" width={30} height={30} /> {user.earning_per_hour}{' '}
             </span>
           </div>
           <div className='vertical-line' />
           <div className="total-earned d-flex flex-column card-item">
             <span className="label">Total Earnings</span>
             <span className="main-value">
-              <img src={dollar} alt="" width={40} height={40} /> {formatBalanceShort(user.total_balance)}{' '}
+              <img src={dollar} alt="" width={30} height={30} /> {formatBalanceShort(user.total_balance)}{' '}
             </span>
           </div>
         </div>

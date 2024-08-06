@@ -93,11 +93,16 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: white;
-  color: #040318;
+  background-color: #1f1f1f;
+  color: #ffffff;
   transition: transform 0.3s ease-in-out;
   transform: translateY(100%);
   margin: 0 !important;
+}
+
+.task-modal .modal-content {
+  background-color: #1f1f1f;
+  color: #ffffff;
 }
 
 .task-modal.show {
@@ -176,8 +181,7 @@
   border: none;
 }
 
-
 .react-tabs__tab--selected {
-  background:  none !important;
+  background: none !important;
   color: #ffffff !important;
 }

@@ -57,7 +57,7 @@ function Footer() {
                         }`}
                       >
                         <FaTrophy size={28} />
-                        <span className="mt-1">Leaderboard</span>
+                        <span className="mt-1">Leaders</span>
                       </Link>
                     </li>
                     <li>
