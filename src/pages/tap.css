@@ -1,11 +1,10 @@
 .mining-page {
   background: linear-gradient(180deg, #331c04 0%, #180f08 100%);
-  min-height: calc(100vh - 171px);
   border-radius: 50px 50px 0px 0px;
-  border-top: 3px solid #e8a14a;
+  border-top: 3px solid #6C662A;
   box-shadow: 0px -10px 15.6px 0px #91550d;
   padding: 10px 7px;
-  overflow-y: auto;
+  overflow-y: auto !important;
 }
 
 header {
@@ -74,6 +73,10 @@ header {
   flex-grow: 1;
 }
 
+.tap-area img {
+  max-height: 290.55px;
+}
+
 .boost-area {
   display: flex;
   justify-content: space-between;
@@ -85,22 +88,18 @@ header {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.boost-area .energy,
-.boost-area .booster {
-  flex: 1;
+  font-size: 14px;
 }
 
 .boost-area .lightning-icon {
   color: #e8a14a;
+  margin-right: 5px;
 }
 
 .tap-area {
   position: relative;
   cursor: pointer;
 }
-
 
 .multi-tap-animation {
   position: absolute;

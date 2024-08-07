@@ -85,6 +85,10 @@
   color: #ffffff;
 }
 
+.modal-header {
+  border: none !important;
+}
+
 .main-modal.show {
   transform: translateY(0);
 }

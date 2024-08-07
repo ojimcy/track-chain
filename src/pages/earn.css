@@ -105,6 +105,10 @@
   color: #ffffff;
 }
 
+.modal-header {
+  border: none;
+}
+
 .task-modal.show {
   transform: translateY(0);
 }

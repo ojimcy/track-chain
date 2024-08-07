@@ -50,7 +50,7 @@ const Layout = ({ children }) => {
   return (
     <div className="page-content">
       <MiningNav />
-      <main className="main-layout-content">{children}</main>
+      <main className="content">{children}</main>
       <Footer />
     </div>
   );

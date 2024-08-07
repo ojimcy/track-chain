@@ -1,5 +1,5 @@
 .daily-reward-modal {
-  min-height: 45%;
+  height: 85% !important;
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
   overflow: hidden;
@@ -12,6 +12,11 @@
   transition: transform 0.3s ease-in-out;
   transform: translateY(100%);
   margin: 0 !important;
+  overflow: auto !important;
+}
+
+.modal-header {
+  border: none !important;
 }
 
 .daily-reward-header {

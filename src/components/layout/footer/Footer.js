@@ -1,8 +1,10 @@
 import React from 'react';
 import { Col, Container, Row } from 'reactstrap';
 import { Link, useLocation } from 'react-router-dom';
-import { FaTasks, FaUsers, FaHammer, FaTrophy, FaGem } from 'react-icons/fa';
+import { FaTasks, FaUsers, FaTrophy, FaGem } from 'react-icons/fa';
 import './Footer.css';
+
+import level from '../../../assets/images/lvl1.png'
 
 function Footer() {
   const location = useLocation();
@@ -23,8 +25,8 @@ function Footer() {
                           location.pathname === '/' ? 'active' : ''
                         }`}
                       >
-                        <FaHammer size={28} />
-                        <span className="mt-1">Tap</span>
+                        <img src={level} alt='' width={30} />
+                        <span>Tap</span>
                       </Link>
                     </li>
                     <li>

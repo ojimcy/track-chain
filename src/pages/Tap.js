@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Container } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import { FaBolt, FaRocket } from 'react-icons/fa';
+import { FaBolt } from 'react-icons/fa';
 
 import './tap.css';
 import dollar from '../assets/images/dollar.png';
 import cal from '../assets/images/cal.png';
 import reward from '../assets/images/reward.png';
+import rocket from '../assets/images/rocket.png';
 import data from '../hooks/demo_data';
 import { formatBalance } from '../utils/formatBalance';
 import DailyRewardModal from '../components/modals/DailyRewardModal';
@@ -124,16 +125,16 @@ function Tap() {
           </div>
 
           <div className="boost-area">
-            <div className="energy d-flex flex-column align-items-center">
+            <div className="energy d-flex flex-row align-items-center">
               <FaBolt className="lightning-icon" size={25} />
-              <span className="mt-1">
+              <span >
                 {energy}/{user.energy_limit}
               </span>
             </div>
 
-            <div className="booster d-flex flex-column align-items-center">
-              <FaRocket size={25} />
-              <Link className="mt-1" to="/boost">
+            <div className="booster d-flex flex-row align-items-center">
+              <Link className="" to="/boost">
+                <img src={rocket} alt="" />
                 <span style={{ color: '#ffffff' }}>Boost</span>
               </Link>
             </div>

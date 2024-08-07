@@ -26,7 +26,6 @@ const dailyRewards = [
   { day: 13, amount: '2500000' },
   { day: 14, amount: '3500000' },
   { day: 15, amount: '5000000' },
-  { day: 16, amount: '10000000' },
 ];
 
 function DailyRewardModal({ isOpen, toggle }) {
