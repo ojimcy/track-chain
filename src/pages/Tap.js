@@ -8,6 +8,7 @@ import dollar from '../assets/images/dollar.png';
 import cal from '../assets/images/cal.png';
 import reward from '../assets/images/reward.png';
 import rocket from '../assets/images/rocket.png';
+import puzzle from '../assets/images/puzzle.png';
 import data from '../hooks/demo_data';
 import { formatBalance } from '../utils/formatBalance';
 import DailyRewardModal from '../components/modals/DailyRewardModal';
@@ -90,15 +91,23 @@ function Tap() {
             <Link to="#" className="top-link" onClick={toggleRewardModal}>
               <div className="link-content d-flex align-items-center">
                 <img src={reward} alt="Daily Rewards" />
-                <span>Daily Rewards</span>
+                <span className='link-title'>Daily Rewards</span>
                 <span className="timer">23:07:58</span>
               </div>
             </Link>
 
             <Link to="/daily-combo" className="top-link">
               <div className="link-content d-flex align-items-center">
+                <img src={puzzle} alt="Daily Combo" />
+                <span className='link-title'>Word Puzzle</span>
+                <span className="timer">14:52:59</span>
+              </div>
+            </Link>
+
+            <Link to="/daily-combo" className="top-link">
+              <div className="link-content d-flex align-items-center">
                 <img src={cal} alt="Daily Combo" />
-                <span>Daily Combo</span>
+                <span className='link-title'>Daily Combo</span>
                 <span className="timer">14:52:59</span>
               </div>
             </Link>
