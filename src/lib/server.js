@@ -1,18 +1,18 @@
 import axios from './axiosService';
 import {
-  BOOST,
-  BOOSTS,
+  BOOST_ENERGY,
+  BOOST_TAPS,
   COMPLET_TASK,
+  LEVELS,
   MY_DOWNLINES,
   SYNC_ACCOUNT,
   TASK,
   TASKS,
   USER_BY_ID,
+  USER_LEVEL,
 } from './endpoints';
 
 export const getUserByTelegramID = async (id) => {
-  console.log('outside the tc');
-  
   try {
 
     const result = await axios.get(USER_BY_ID(id));
@@ -40,13 +40,13 @@ export const createAccount = async (userData) => {
   return result.data;
 };
 
-export const getBoosts = async () => {
-  const result = await axios.get(BOOSTS());
+export const boostTaps = async (input) => {
+  const result = await axios.post(BOOST_TAPS(), input);
   return result.data;
 };
 
-export const boost = async (input) => {
-  const result = await axios.post(BOOST(), input);
+export const boostEnergy = async (input) => {
+  const result = await axios.post(BOOST_ENERGY(), input);
   return result.data;
 };
 
@@ -62,5 +62,15 @@ export const getTask = async () => {
 
 export const completeTask = async (userId, taskId, proof) => {
   const result = await axios.post(COMPLET_TASK(userId, taskId), { proof });
+  return result.data;
+};
+
+export const getUserLevel = async (userId) => {
+  const result = await axios.get(USER_LEVEL(userId));
+  return result.data.level;
+};
+
+export const getLevels = async () => {
+  const result = await axios.get(LEVELS());
   return result.data;
 };

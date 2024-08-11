@@ -50,10 +50,9 @@ header {
   border-bottom: none !important;
   border-radius: 15px 15px 0 0;
   padding: 7px;
-  width: 48%;
   text-decoration: none;
   color: #ffffff;
-  height: 98px;
+  height: 78px;
   max-width: 123px;
 }
 
@@ -64,15 +63,15 @@ header {
 }
 
 .top-link .link-content img {
-  width: 45px;
-  height: 39px;
+  width: 35px;
+  height: 29px;
 }
 
 .top-link .link-content .link-title {
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 11px;
+  font-weight: 700;
   line-height: 22px;
-  letter-spacing: -0.40799999237060547px;
+  letter-spacing: -0.41px;
   text-align: center;
 }
 

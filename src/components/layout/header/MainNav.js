@@ -1,20 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './main-nav.css';
 import { Container } from 'reactstrap';
 
 import dollar from '../../../assets/images/dollar.png';
-import data from '../../../hooks/demo_data';
 import { formatBalanceShort } from '../../../utils/formatBalance';
+import { useCurrentUser } from '../../../hooks/telegram';
+import { getLevels } from '../../../lib/server';
 
 function MainNav() {
-  const { user, levels } = data;
+  const [levels, setLevels] = useState([]);
+  const currentUser = useCurrentUser();
+
+  useEffect(() => {
+    const fetchLevels = async () => {
+      try {
+        const resp = await getLevels();
+        setLevels(resp);
+      } catch (error) {
+        console.error('Failed to fetch levels.');
+      }
+    };
+
+    fetchLevels();
+  }, []);
 
   // Find the current level's information
-  const currentLevel = levels.find(lvl => lvl.level === user.level);
-  const tokensRequiredForLevel = currentLevel ? currentLevel.tokensRequiredForLevel : 0;
+  const currentLevel = levels.find((lvl) => lvl.level === currentUser.level);
+  const tokensRequiredForLevel = currentLevel
+    ? currentLevel.tokensRequiredForLevel
+    : 0;
 
   // Calculate progress percentage
-  const progress = (user.balance / tokensRequiredForLevel) * 100;
+  const progress = (currentUser.balance / tokensRequiredForLevel) * 100;
 
   return (
     <header>
@@ -23,7 +40,7 @@ function MainNav() {
           <div className="user-avatar align-items-center justify-content-between card-item">
             <span className="main-avatar">O</span>
             <div className="level d-flex flex-column">
-              <span className="">LV {user.level}</span>
+              <span className="">LV {currentUser.level}</span>
               <div className="progress-bar-container">
                 <div
                   className="bar-progress"
@@ -32,18 +49,20 @@ function MainNav() {
               </div>
             </div>
           </div>
-          <div className='vertical-line' />
+          <div className="vertical-line" />
           <div className="per-hour d-flex flex-column card-item">
             <span className="label">Token per Hour</span>
             <span className="main-value">
-              <img src={dollar} alt="" width={30} height={30} /> {user.earning_per_hour}{' '}
+              <img src={dollar} alt="" width={30} height={30} />{' '}
+              {currentUser.earning_per_hour}{' '}
             </span>
           </div>
-          <div className='vertical-line' />
+          <div className="vertical-line" />
           <div className="total-earned d-flex flex-column card-item">
             <span className="label">Total Earnings</span>
             <span className="main-value">
-              <img src={dollar} alt="" width={30} height={30} /> {formatBalanceShort(user.total_balance)}{' '}
+              <img src={dollar} alt="" width={30} height={30} />{' '}
+              {formatBalanceShort(currentUser.total_balance)}{' '}
             </span>
           </div>
         </div>

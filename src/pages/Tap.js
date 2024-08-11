@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Container } from 'reactstrap';
+import { Col, Container, Row } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { FaBolt } from 'react-icons/fa';
 
@@ -12,31 +12,32 @@ import puzzle from '../assets/images/puzzle.png';
 import data from '../hooks/demo_data';
 import { formatBalance } from '../utils/formatBalance';
 import DailyRewardModal from '../components/modals/DailyRewardModal';
+import { useCurrentUser } from '../hooks/telegram';
 
 function Tap() {
-  const { user, levels } = data;
-
-  const [balance, setBalance] = useState(user.balance);
-  const [energy, setEnergy] = useState(user.energy_limit);
+  const { levels } = data;
+  const currentUser = useCurrentUser();
+  const [balance, setBalance] = useState(currentUser.balance);
+  const [energy, setEnergy] = useState(currentUser.energy_limit);
   const [taps, setTaps] = useState([]);
   const [tapId, setTapId] = useState(0);
   const [rewardModal, setRewardModal] = useState(false);
 
-  const currentLevel = levels.find((lvl) => lvl.level === user.level);
+  const currentLevel = levels.find((lvl) => lvl.level === currentUser.level);
 
   const toggleRewardModal = useCallback(() => {
     setRewardModal((prev) => !prev);
   }, []);
 
   const handleTap = (event) => {
-    if (energy > user.multi_tap) {
+    if (energy > currentUser.multi_tap) {
       const rect = event.target.getBoundingClientRect();
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
       const newTapId = tapId + 1;
 
-      setBalance((prevBalance) => prevBalance + user.multi_tap);
-      setEnergy((prevEnergy) => prevEnergy - user.multi_tap);
+      setBalance((prevBalance) => prevBalance + currentUser.multi_tap);
+      setEnergy((prevEnergy) => prevEnergy - currentUser.multi_tap);
       setTaps((prevTaps) => [...prevTaps, { id: newTapId, x, y, progress: 0 }]);
       setTapId(newTapId);
 
@@ -69,49 +70,55 @@ function Tap() {
   };
 
   useEffect(() => {
-    if (energy < user.energy_limit) {
+    if (energy < currentUser.energy_limit) {
       const energyRefill = setInterval(() => {
-        setEnergy((prevEnergy) => Math.min(prevEnergy + 1, user.energy_limit));
+        setEnergy((prevEnergy) =>
+          Math.min(prevEnergy + 1, currentUser.energy_limit)
+        );
       }, 1000);
 
       return () => clearInterval(energyRefill);
     }
-  }, [energy, user.energy_limit]);
+  }, [energy, currentUser.energy_limit]);
 
   return (
     <div className="mining-page mt-3">
       <Container>
         <div className="mining-content">
           <div className="balance d-flex align-items-center">
-            <img src={dollar} alt="Dollar Icon" width={30} />
+            <img src={dollar} alt="Dollar Icon" width={50} />
             <span className="earnings">{formatBalance(balance)}</span>
           </div>
 
-          <div className="top-links d-flex justify-content-between">
-            <Link to="#" className="top-link" onClick={toggleRewardModal}>
-              <div className="link-content d-flex align-items-center">
-                <img src={reward} alt="Daily Rewards" />
-                <span className='link-title'>Daily Rewards</span>
-                <span className="timer">23:07:58</span>
-              </div>
-            </Link>
-
-            <Link to="/daily-combo" className="top-link">
-              <div className="link-content d-flex align-items-center">
-                <img src={puzzle} alt="Daily Combo" />
-                <span className='link-title'>Word Puzzle</span>
-                <span className="timer">14:52:59</span>
-              </div>
-            </Link>
-
-            <Link to="/daily-combo" className="top-link">
-              <div className="link-content d-flex align-items-center">
-                <img src={cal} alt="Daily Combo" />
-                <span className='link-title'>Daily Combo</span>
-                <span className="timer">14:52:59</span>
-              </div>
-            </Link>
-          </div>
+          <Row className="top-links d-flex justify-content-between">
+            <Col>
+              <Link to="#" className="top-link" onClick={toggleRewardModal}>
+                <div className="link-content d-flex align-items-center">
+                  <img src={reward} alt="Daily Rewards" />
+                  <span className="link-title">Daily Rewards</span>
+                  <span className="timer">23:07:58</span>
+                </div>
+              </Link>
+            </Col>
+            <Col>
+              <Link to="/daily-combo" className="top-link">
+                <div className="link-content d-flex align-items-center">
+                  <img src={puzzle} alt="Daily Combo" />
+                  <span className="link-title">Word Puzzle</span>
+                  <span className="timer">14:52:59</span>
+                </div>
+              </Link>
+            </Col>
+            <Col>
+              <Link to="/daily-combo" className="top-link">
+                <div className="link-content d-flex align-items-center">
+                  <img src={cal} alt="Daily Combo" />
+                  <span className="link-title">Daily Combo</span>
+                  <span className="timer">14:52:59</span>
+                </div>
+              </Link>
+            </Col>
+          </Row>
 
           <div className="tap-area" onClick={handleTap}>
             <img src={currentLevel.icon} alt="Current Level Icon" />
@@ -128,7 +135,7 @@ function Tap() {
                   transition: 'opacity 1s, transform 1s',
                 }}
               >
-                +{user.multi_tap}
+                +{currentUser.multi_tap}
               </div>
             ))}
           </div>
@@ -136,8 +143,8 @@ function Tap() {
           <div className="boost-area">
             <div className="energy d-flex flex-row align-items-center">
               <FaBolt className="lightning-icon" size={25} />
-              <span >
-                {energy}/{user.energy_limit}
+              <span>
+                {energy}/{currentUser.energy_limit}
               </span>
             </div>
 

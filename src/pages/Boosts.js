@@ -11,6 +11,7 @@ import './boosts.css';
 import { FaGreaterThan } from 'react-icons/fa';
 import MultitapModal from '../components/modals/MultitapModal';
 import EnergyModal from '../components/modals/EnergyModal';
+import TelegramBackButton from '../components/navs/TelegramBackButton';
 
 function Boost() {
   const { user, multiTap, boosts } = data;
@@ -39,6 +40,7 @@ function Boost() {
 
   return (
     <div className="boost-page">
+      <TelegramBackButton />
       <Container>
         <div className="page-header d-flex flex-column align-items-center">
           <p>Points Balance</p>
