@@ -4,10 +4,12 @@ import React, { useState } from 'react';
 import './mine.css';
 import dollar from '../assets/images/dollar.png';
 import {
+  Col,
   Container,
   Nav,
   NavItem,
   NavLink,
+  Row,
   TabContent,
   TabPane,
 } from 'reactstrap';
@@ -16,28 +18,27 @@ import { formatBalance } from '../utils/formatBalance';
 import data from '../hooks/demo_data';
 import { Separator } from '../components/common/Seperator';
 
-import card1 from '../assets/images/card1.png'
-import card2 from '../assets/images/card2.png'
-import card3 from '../assets/images/card3.png'
-import comboHolder from '../assets/images/q-mark.png'
+import card1 from '../assets/images/lock-1.png';
+import card2 from '../assets/images/insurance.png';
+import card3 from '../assets/images/card3.png';
+import comboHolder from '../assets/images/q-mark.png';
 import CardContainer from '../components/mining/CardContainer';
-
 
 const mockData = [
   {
-    name: 'Backpack',
-    earningsPerHour: 1800,
-    cost: 5000,
+    name: 'Token security',
+    earningsPerHour: 600,
+    cost: 100000,
     image: card1,
-    requirements: 'Requires Intern lvl 5',
+    requirements: null,
     level: 0,
     category: 'Asset Tokenization',
     canUpgrade: true,
   },
   {
-    name: 'Oil Immersed Rig',
-    earningsPerHour: 551,
-    cost: 5000,
+    name: 'Token-issuance',
+    earningsPerHour: 5000,
+    cost: 1000000,
     image: card2,
     requirements: null,
     level: 0,
@@ -65,7 +66,6 @@ const mockData = [
     canUpgrade: true,
   },
 ];
-
 
 function Mine() {
   const { user } = data;
@@ -124,17 +124,23 @@ function Mine() {
               Time Remaining: <span className="countdown">24:00:00</span>
             </p>
           </div>
-          <div className="combos mt-4 d-flex justify-content-between align-items-center">
-            <div className="combo-card">
-              <img src={comboHolder} alt="" />
-            </div>
-            <div className="combo-card">
-              <img src={comboHolder} alt="" />
-            </div>
-            <div className="combo-card">
-              <img src={comboHolder} alt="" />
-            </div>
-          </div>
+          <Row className="combos mt-4 d-flex justify-content-between align-items-center">
+            <Col xs={4}>
+              <div className="combo-card">
+                <img src={comboHolder} alt="" />
+              </div>
+            </Col>
+            <Col xs={4}>
+              <div className="combo-card">
+                <img src={comboHolder} alt="" />
+              </div>
+            </Col>
+            <Col xs={4}>
+              <div className="combo-card">
+                <img src={comboHolder} alt="" />
+              </div>
+            </Col>
+          </Row>
         </div>
         <div className="card-container">
           <Nav tabs className="tab">

@@ -69,11 +69,10 @@
 }
 
 .mine-page .mine-card {
-  background-color: #1f1f1f;
-  border: 1px solid #333;
+  background: #312d03;
   border-radius: 10px;
-  padding: 15px;
-  width: 48%;
+  width: 100%;
+  padding: 10px;
   text-align: center;
 }
 
@@ -83,6 +82,13 @@
   align-items: center;
   justify-content: center;
 }
+
+.mine-page .mine-card-header h5 {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 15.73px;
+}
+
 .earnings-per-hour {
   color: #f0b90b;
   font-weight: 700;
@@ -91,14 +97,15 @@
 .mine-page .mine-card-header img {
   width: 75%;
   margin-bottom: 5px;
+  width: 55px;
+  height: 54.89px;
 }
 
 .mine-page .mine-card-body {
   padding: 10px 0;
-}
-
-.card-level {
-  font-size: 14px;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 12.1px;
 }
 
 .card-level .level {
@@ -111,8 +118,8 @@
   height: 4%;
   width: 2px;
   background: linear-gradient(to bottom, transparent, #5a5959, transparent);
-  margin-left: 8px;
-  margin-top: -5px;
+  margin-left: 15px;
+  margin-top: -11px;
 }
 
 .combos {
