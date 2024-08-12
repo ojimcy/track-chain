@@ -9,6 +9,7 @@ import Layout from './components/layout/Layout';
 import Boost from './pages/Boosts';
 import Mine from './pages/Mine';
 import MineLayout from './components/layout/MineLayout';
+import Leaderboard from './pages/Leaderboard';
 
 const App = () => {
   try {
@@ -29,6 +30,7 @@ const App = () => {
                   <Route path="earn" element={<Earn />} />
                   <Route path="frens" element={<Frens />} />
                   <Route path="boost" element={<Boost />} />
+                  <Route path="leaderboard" element={<Leaderboard />} />
                 </Routes>
               </Layout>
             }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   Col,
   Container,
@@ -7,6 +7,7 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
+  Spinner,
 } from 'reactstrap';
 import taskImg1 from '../assets/images/taske.png';
 import './earn.css';
@@ -21,39 +22,18 @@ import {
   FaYoutube,
 } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { useWebApp } from '../hooks/telegram';
-import axios from 'axios';
+import {
+  useCurrentUser,
+  useReferralLink,
+  useTelegramUser,
+} from '../hooks/telegram';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import { Separator } from '../components/common/Seperator';
 import DailyRewardModal from '../components/modals/DailyRewardModal';
-
-const tasks = [
-  {
-    id: 1,
-    title: 'Follow twitter',
-    type: 'twitter',
-    completed: false,
-    link: 'https://twitter.com',
-    reward: '100000',
-  },
-  {
-    id: 2,
-    title: 'Join channel',
-    type: 'telegram',
-    completed: true,
-    link: 'https://t.me/gemZcoin_bot/tap?startapp=6qlJB9-UHXn8xse4NOuQ5Jv',
-    reward: '100000',
-  },
-  {
-    id: 3,
-    title: 'Subscribe youtube',
-    type: 'youtube',
-    completed: false,
-    link: 'https://twitter.com/home',
-    reward: '200000',
-  },
-];
+import { completeTask, getTasks, getUserByTelegramID } from '../lib/server';
+import { toast } from 'react-toastify';
+import { WebappContext } from '../context/telegram';
 
 const taskIcons = {
   telegram: <FaTelegram className="task-icon" />,
@@ -64,17 +44,44 @@ const taskIcons = {
 };
 
 function Earn() {
-  const webApp = useWebApp();
+  const { webapp, setUser } = useContext(WebappContext);
+  const currentUser = useCurrentUser();
+  const telegramUser = useTelegramUser();
   const [modal, setModal] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
-  const [goClicked, setGoClicked] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [rewardModal, setRewardModal] = useState(false);
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [taskStatuses, setTaskStatuses] = useState({});
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const resp = await getTasks(currentUser.id);
+        setTasks(resp);
+        const initialStatuses = {};
+        resp.forEach((task) => {
+          initialStatuses[task.id] = task.completed ? 'completed' : 'start';
+        });
+      } catch (error) {
+        toast.error('Failed to fetch tasks.', {
+          position: 'top-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTasks();
+  }, [currentUser]);
 
   const toggleModal = (task = null) => {
     setSelectedTask(task);
     setModal(!modal);
-    setGoClicked(false);
     setCountdown(0);
   };
 
@@ -82,26 +89,40 @@ function Earn() {
     setRewardModal(!rewardModal);
   };
 
-  const handGoBtnClick = async (task) => {
-    console.log(task);
-    if (task.link.indexOf('t.me') >= 0) {
-      webApp.openTelegramLink(task?.link);
-    } else {
-      webApp.openLink(task.link);
-    }
-    setGoClicked(true);
-  };
-
-  const handleCheckClicked = async (task) => {
-    if (!goClicked) {
-      setCountdown(15);
-    } else {
-      try {
-        const response = await axios.post('/check', { taskId: task.id });
-        console.log(response.data);
-      } catch (error) {
-        console.error(error);
+  const handleTaskClick = async (task) => {
+    const { id, type, link } = task;
+    try {
+      if (taskStatuses[id] === 'start') {
+        // Handle the task based on type
+        if (type === 'referral') {
+          const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(
+            useReferralLink(currentUser)
+          )}`;
+          webapp.openTelegramLink(telegramUrl);
+        } else if (type === 'telegram') {
+          webapp.openTelegramLink(link);
+        } else {
+          webapp.openLink(link);
+        }
+        setTaskStatuses((prevStatuses) => ({
+          ...prevStatuses,
+          [id]: 'claim',
+        }));
+      } else if (taskStatuses[id] === 'claim') {
+        await completeTask(currentUser.id, id, 'no proof');
+        setTasks((prevTasks) =>
+          prevTasks.map((t) => (t.id === id ? { ...t, completed: true } : t))
+        );
+        setTaskStatuses((prevStatuses) => ({
+          ...prevStatuses,
+          [id]: 'completed',
+        }));
+        let user = await getUserByTelegramID(telegramUser.id);
+        setUser(user);
       }
+    } catch (error) {
+      console.error('Error completing task:', error);
+      toast.error('Failed to complete task. Please try again.');
     }
   };
 
@@ -131,103 +152,112 @@ function Earn() {
             </div>
           </div>
         </Row>
-        <Tabs>
-          <TabList>
-            <Tab>Active</Tab>
-            <Tab>Completed</Tab>
-          </TabList>
-          <TabPanel>
-            <Row>
-              <h3>Daily tasks</h3>
-              <Col xs={12}>
-                <Link
-                  to="#"
-                  className="task-card d-flex justify-content-between align-items-center mt-2"
-                  onClick={() => toggleRewardModal()}
-                >
-                  <div className="task-info d-flex align-items-center">
-                    <div className="task-icon">
-                      <FaCalendarCheck />
+
+        {loading ? (
+          <Spinner />
+        ) : (
+          <Tabs>
+            <TabList>
+              <Tab>Active</Tab>
+              <Tab>Completed</Tab>
+            </TabList>
+            <TabPanel>
+              <Row>
+                <h3>Daily tasks</h3>
+                <Col xs={12}>
+                  <Link
+                    to="#"
+                    className="task-card d-flex justify-content-between align-items-center mt-2"
+                    onClick={() => toggleRewardModal()}
+                  >
+                    <div className="task-info d-flex align-items-center">
+                      <div className="task-icon">
+                        <FaCalendarCheck />
+                      </div>
+                      <div className="info d-flex flex-column">
+                        <span className="task-title">Daily Checking</span>
+                        <span className="task-reward">+10,000,000</span>
+                      </div>
                     </div>
-                    <div className="info d-flex flex-column">
-                      <span className="task-title">Daily Checking</span>
-                      <span className="task-reward">+10,000,000</span>
+                    <div className="task-status">
+                      <FaGreaterThan />
                     </div>
-                  </div>
-                  <div className="task-status">
-                    <FaGreaterThan />
-                  </div>
-                </Link>
-              </Col>
-              <Separator />
-            </Row>
-            <Row>
-              <h3 className="mt-5">Tasks List</h3>
-              {activeTasks.map((task) => (
-                <React.Fragment key={task.id}>
-                  <Col xs={12}>
-                    <Link
-                      to="#"
-                      className="task-card d-flex justify-content-between align-items-center mt-2"
-                      onClick={() => toggleModal(task)}
-                    >
-                      <div className="task-info d-flex align-items-center">
-                        <div className="task-icon">{taskIcons[task.type]}</div>
-                        <div className="info d-flex flex-column">
-                          <span className="task-title">{task.title}</span>
-                          <span className="task-reward">+{task.reward}</span>
-                        </div>
-                      </div>
-                      <div className="task-status">
-                        {task.completed ? (
-                          <div className="completed">
-                            <FaCheck />
+                  </Link>
+                </Col>
+                <Separator />
+              </Row>
+              <Row>
+                <h3 className="mt-5">Tasks List</h3>
+                {activeTasks.map((task) => (
+                  <React.Fragment key={task.id}>
+                    <Col xs={12}>
+                      <Link
+                        to="#"
+                        className="task-card d-flex justify-content-between align-items-center mt-2"
+                        onClick={() => toggleModal(task)}
+                      >
+                        <div className="task-info d-flex align-items-center">
+                          <div className="task-icon">
+                            {taskIcons[task.type]}
                           </div>
-                        ) : (
-                          'Start'
-                        )}
-                      </div>
-                    </Link>
-                  </Col>
-                  <Separator />
-                </React.Fragment>
-              ))}
-            </Row>
-          </TabPanel>
-          <TabPanel>
-            <Row>
-              {completedTasks.map((task) => (
-                <React.Fragment key={task.id}>
-                  <Col xs={12}>
-                    <Link
-                      to="#"
-                      className="task-card d-flex justify-content-between align-items-center mt-2"
-                      onClick={() => toggleModal(task)}
-                    >
-                      <div className="task-info d-flex align-items-center">
-                        <div className="task-icon">{taskIcons[task.type]}</div>
-                        <div className="info d-flex flex-column">
-                          <span className="task-title">{task.title}</span>
-                          <span className="task-reward">+{task.reward}</span>
-                        </div>
-                      </div>
-                      <div className="task-status">
-                        {task.completed ? (
-                          <div className="completed">
-                            <FaCheck />
+                          <div className="info d-flex flex-column">
+                            <span className="task-title">{task.title}</span>
+                            <span className="task-reward">+{task.reward}</span>
                           </div>
-                        ) : (
-                          'Start'
-                        )}
-                      </div>
-                    </Link>
-                  </Col>
-                  <Separator />
-                </React.Fragment>
-              ))}
-            </Row>
-          </TabPanel>
-        </Tabs>
+                        </div>
+                        <div className="task-status">
+                          {task.completed ? (
+                            <div className="completed">
+                              <FaCheck />
+                            </div>
+                          ) : (
+                            'Start'
+                          )}
+                        </div>
+                      </Link>
+                    </Col>
+                    <Separator />
+                  </React.Fragment>
+                ))}
+              </Row>
+            </TabPanel>
+            <TabPanel>
+              <Row>
+                {completedTasks.map((task) => (
+                  <React.Fragment key={task.id}>
+                    <Col xs={12}>
+                      <Link
+                        to="#"
+                        className="task-card d-flex justify-content-between align-items-center mt-2"
+                        onClick={() => toggleModal(task)}
+                      >
+                        <div className="task-info d-flex align-items-center">
+                          <div className="task-icon">
+                            {taskIcons[task.type]}
+                          </div>
+                          <div className="info d-flex flex-column">
+                            <span className="task-title">{task.title}</span>
+                            <span className="task-reward">+{task.reward}</span>
+                          </div>
+                        </div>
+                        <div className="task-status">
+                          {task.completed ? (
+                            <div className="completed">
+                              <FaCheck />
+                            </div>
+                          ) : (
+                            'Start'
+                          )}
+                        </div>
+                      </Link>
+                    </Col>
+                    <Separator />
+                  </React.Fragment>
+                ))}
+              </Row>
+            </TabPanel>
+          </Tabs>
+        )}
 
         {selectedTask && (
           <Modal isOpen={modal} toggle={toggleModal} className="task-modal">
@@ -236,12 +266,6 @@ function Earn() {
               <div className="modal-title">
                 <p>{selectedTask.title}</p>
               </div>
-              <Button
-                className="modal-btn"
-                onClick={() => handGoBtnClick(selectedTask)}
-              >
-                Go
-              </Button>
               <img className="task-modal-logo" src={taskImg1} alt="Logo" />
               <p className="reward">+{selectedTask.reward}</p>
 
@@ -250,10 +274,22 @@ function Earn() {
               ) : (
                 <Button
                   className="modal-btn"
-                  onClick={() => handleCheckClicked(selectedTask)}
-                  disabled={countdown > 0}
+                  color={
+                    taskStatuses[selectedTask.id] === 'completed'
+                      ? 'success'
+                      : taskStatuses[selectedTask.id] === 'claim'
+                      ? 'success'
+                      : 'primary'
+                  }
+                  onClick={() => handleTaskClick(selectedTask)}
+                  disabled={
+                    countdown > 0 ||
+                    taskStatuses[selectedTask.id] === 'completed'
+                  }
                 >
-                  Check
+                  {taskStatuses[selectedTask.id] === 'claim'
+                    ? 'Claim'
+                    : 'Start'}
                 </Button>
               )}
 

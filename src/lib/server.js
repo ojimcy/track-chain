@@ -3,6 +3,7 @@ import {
   BOOST_ENERGY,
   BOOST_TAPS,
   COMPLET_TASK,
+  LEADERBOARD,
   LEVELS,
   MY_DOWNLINES,
   SYNC_ACCOUNT,
@@ -14,7 +15,6 @@ import {
 
 export const getUserByTelegramID = async (id) => {
   try {
-
     const result = await axios.get(USER_BY_ID(id));
 
     console.log('Telegram result', result);
@@ -72,5 +72,10 @@ export const getUserLevel = async (userId) => {
 
 export const getLevels = async () => {
   const result = await axios.get(LEVELS());
+  return result.data;
+};
+
+export const getLeaderboard = async () => {
+  const result = await axios.get(LEADERBOARD());
   return result.data;
 };

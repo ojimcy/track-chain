@@ -12,3 +12,4 @@ export const COMPLET_TASK = (userID, taskID) =>
 export const TASKS = (userID) => `${ROOT}/user/${userID}/tasks`;
 export const USER_LEVEL = (userID) => `${ROOT}/user/${userID}/level`;
 export const LEVELS = () => `${ROOT}/level`;
+export const LEADERBOARD = () => `${ROOT}/leaderboard`;
