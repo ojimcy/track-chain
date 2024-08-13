@@ -5,7 +5,7 @@ body {
   flex-direction: column;
   min-height: calc(100vh - 171px);
   color: #fff;
-  background: linear-gradient(180deg, #000000 0%, #a36b26 100%);
+  background: #000000;
   font-family: 'Inter', 'Montserrat', sans-serif;
   font-size: 16px;
   line-height: 24px;

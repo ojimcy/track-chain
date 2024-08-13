@@ -10,10 +10,11 @@ import reward from '../assets/images/reward.png';
 import rocket from '../assets/images/rocket.png';
 import puzzle from '../assets/images/puzzle.png';
 import data from '../hooks/demo_data';
-import { formatBalance } from '../utils/formatBalance';
 import DailyRewardModal from '../components/modals/DailyRewardModal';
 import { useCurrentUser } from '../hooks/telegram';
 import { WebappContext } from '../context/telegram';
+import { saveTaps } from '../lib/server';
+import { formatBalance } from '../utils/formatBalance';
 
 function Tap() {
   const { levels } = data;
@@ -23,8 +24,13 @@ function Tap() {
   const [energy, setEnergy] = useState(currentUser.energyLimit);
   const [tapId, setTapId] = useState(0);
   const [rewardModal, setRewardModal] = useState(false);
+  const [score, setScore] = useState(0);
 
   const currentLevel = levels.find((lvl) => lvl.level === currentUser.levelId);
+
+  // Throttle time for user inactivity (3 seconds)
+  const inactivityTimeout = 3000;
+  let inactivityTimer = null;
 
   const toggleRewardModal = useCallback(() => {
     setRewardModal((prev) => !prev);
@@ -38,11 +44,15 @@ function Tap() {
       const newTapId = tapId + 1;
 
       setBalance((prevBalance) => prevBalance + currentUser.multiTap);
+      setScore((prevScores) => prevScores + currentUser.multiTap);
       setEnergy((prevEnergy) => prevEnergy - currentUser.multiTap);
       setTaps((prevTaps) => [...prevTaps, { id: newTapId, x, y, progress: 0 }]);
       setTapId(newTapId);
 
       animateTap(x, y, newTapId);
+
+      // Reset inactivity timer on tap
+      resetInactivityTimer();
     }
   };
 
@@ -70,6 +80,29 @@ function Tap() {
     requestAnimationFrame(updateAnimation);
   };
 
+  const saveScores = useCallback(
+    async (score) => {
+      if (score > 0) {
+        try {
+          await saveTaps(parseInt(score)); 
+          setScore(0);
+        } catch (error) {
+          console.error('Error saving taps:', error.response.data);
+        }
+      }
+    },
+    [score]
+  );
+
+  const resetInactivityTimer = () => {
+    if (inactivityTimer) {
+      clearTimeout(inactivityTimer);
+    }
+    inactivityTimer = setTimeout(() => {
+      saveScores(score);
+    }, inactivityTimeout);
+  };
+
   useEffect(() => {
     if (energy < currentUser.energyLimit) {
       const energyRefill = setInterval(() => {
@@ -82,15 +115,27 @@ function Tap() {
     }
   }, [energy, currentUser.energyLimit]);
 
+  useEffect(() => {
+    const handlePageUnload = () => {
+      saveScores(score);
+    };
+
+    window.addEventListener('beforeunload', handlePageUnload);
+
+    return () => {
+      clearTimeout(inactivityTimer);
+      window.removeEventListener('beforeunload', handlePageUnload);
+      saveScores(score);
+    };
+  }, [saveScores]);
+
   return (
     <div className="mining-page mt-3">
       <Container>
         <div className="mining-content">
           <div className="balance d-flex align-items-center">
             <img src={dollar} alt="Dollar Icon" width={50} />
-            <span className="earnings">
-              {balance && formatBalance(balance)}
-            </span>
+            <span className="earnings">{balance && formatBalance(balance)}</span>
           </div>
 
           <Row className="top-links d-flex justify-content-between">

@@ -15,10 +15,10 @@ import {
   FaCalendarCheck,
   FaCheck,
   FaGreaterThan,
-  FaTasks,
   FaTelegram,
   FaTiktok,
   FaTwitter,
+  FaUsers,
   FaYoutube,
 } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
@@ -34,13 +34,14 @@ import DailyRewardModal from '../components/modals/DailyRewardModal';
 import { completeTask, getTasks, getUserByTelegramID } from '../lib/server';
 import { toast } from 'react-toastify';
 import { WebappContext } from '../context/telegram';
+import TelegramBackButton from '../components/navs/TelegramBackButton';
 
 const taskIcons = {
   telegram: <FaTelegram className="task-icon" />,
   twitter: <FaTwitter className="task-icon" />,
   youtube: <FaYoutube className="task-icon" />,
   tiktok: <FaTiktok className="task-icon" />,
-  others: <FaTasks className="task-icon" />,
+  referral: <FaUsers className="task-icon" />,
 };
 
 function Earn() {
@@ -142,6 +143,7 @@ function Earn() {
   return (
     <div className="task-page">
       <Container>
+        <TelegramBackButton />
         <Row>
           <div className="task-header">
             <div className="title">

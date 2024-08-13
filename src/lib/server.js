@@ -3,8 +3,10 @@ import {
   BOOST_ENERGY,
   BOOST_TAPS,
   COMPLET_TASK,
+  ENERGYLEVELS,
   LEADERBOARD,
   LEVELS,
+  MULTITAPLEVELS,
   MY_DOWNLINES,
   SAVETAPS,
   SYNC_ACCOUNT,
@@ -41,13 +43,13 @@ export const createAccount = async (userData) => {
   return result.data;
 };
 
-export const boostTaps = async (input) => {
-  const result = await axios.post(BOOST_TAPS(), input);
+export const boostTaps = async () => {
+  const result = await axios.post(BOOST_TAPS());
   return result.data;
 };
 
-export const boostEnergy = async (input) => {
-  const result = await axios.post(BOOST_ENERGY(), input);
+export const boostEnergy = async () => {
+  const result = await axios.post(BOOST_ENERGY(), );
   return result.data;
 };
 
@@ -76,12 +78,22 @@ export const getLevels = async () => {
   return result.data;
 };
 
+export const getMtultiTapLevels = async () => {
+  const result = await axios.get(MULTITAPLEVELS());
+  return result.data;
+};
+
+export const getEnergyLevels = async () => {
+  const result = await axios.get(ENERGYLEVELS());
+  return result.data;
+};
+
 export const getLeaderboard = async () => {
   const result = await axios.get(LEADERBOARD());
   return result.data;
 };
 
-export const saveTaps = async (scores) => {
-  const result = await axios.post(SAVETAPS(), { scores });
+export const saveTaps = async (score) => {
+  const result = await axios.post(SAVETAPS(), { score });
   return result.data;
 };
