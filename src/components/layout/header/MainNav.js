@@ -25,18 +25,23 @@ function MainNav() {
   }, []);
 
   // Find the current level's information
-  const currentLevel = levels.find((lvl) => lvl.level === currentUser.levelId);
-  const requiredTokens = currentLevel ? currentLevel.requiredTokens : 0;
+  const currentLevel = levels.find((lvl) => {
+    return lvl.level === Number(currentUser.levelId);
+  });
+
+  const requiredTokens = currentLevel && currentLevel.requiredTokens;
 
   // Calculate progress percentage
-  const progress = (currentUser.balance / requiredTokens) * 100;
+  const progress = (currentUser.totalBalance / requiredTokens) * 100;
 
   return (
     <header>
       <Container>
         <div className="nav-card d-flex align-items-center justify-content-between mt-2">
           <div className="user-avatar align-items-center justify-content-between card-item">
-            <span className="main-avatar">{currentUser.username.charAt(0)}</span>
+            <span className="main-avatar">
+              {currentUser.username.charAt(0)}
+            </span>
             <div className="level d-flex flex-column">
               <span className="">LV {currentUser.levelId}</span>
               <div className="progress-bar-container">
