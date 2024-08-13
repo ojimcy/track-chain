@@ -5,8 +5,8 @@ import { formatBalance } from '../utils/formatBalance';
 import { getLeaderboard } from '../lib/server'; 
 import './leaderboard.css';
 import goldMedalIcon from '../assets/images/gold.png'; 
-import silverMedalIcon from '../assets/silver.png';
-import bronzeMedalIcon from '../assets/bronze.png';
+import silverMedalIcon from '../assets/images/silver.jpg';
+import bronzeMedalIcon from '../assets/images/bronze.png';
 
 function Leaderboard() {
   const [users, setUsers] = useState([]);

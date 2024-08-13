@@ -6,6 +6,7 @@ import {
   LEADERBOARD,
   LEVELS,
   MY_DOWNLINES,
+  SAVETAPS,
   SYNC_ACCOUNT,
   TASK,
   TASKS,
@@ -77,5 +78,10 @@ export const getLevels = async () => {
 
 export const getLeaderboard = async () => {
   const result = await axios.get(LEADERBOARD());
+  return result.data;
+};
+
+export const saveTaps = async (scores) => {
+  const result = await axios.post(SAVETAPS(), { scores });
   return result.data;
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { Col, Container, Row } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { FaBolt } from 'react-icons/fa';
@@ -13,31 +13,32 @@ import data from '../hooks/demo_data';
 import { formatBalance } from '../utils/formatBalance';
 import DailyRewardModal from '../components/modals/DailyRewardModal';
 import { useCurrentUser } from '../hooks/telegram';
+import { WebappContext } from '../context/telegram';
 
 function Tap() {
   const { levels } = data;
   const currentUser = useCurrentUser();
+  const { taps, setTaps } = useContext(WebappContext);
   const [balance, setBalance] = useState(currentUser.balance);
-  const [energy, setEnergy] = useState(currentUser.energy_limit);
-  const [taps, setTaps] = useState([]);
+  const [energy, setEnergy] = useState(currentUser.energyLimit);
   const [tapId, setTapId] = useState(0);
   const [rewardModal, setRewardModal] = useState(false);
 
-  const currentLevel = levels.find((lvl) => lvl.level === currentUser.level);
+  const currentLevel = levels.find((lvl) => lvl.level === currentUser.levelId);
 
   const toggleRewardModal = useCallback(() => {
     setRewardModal((prev) => !prev);
   }, []);
 
   const handleTap = (event) => {
-    if (energy > currentUser.multi_tap) {
+    if (energy > currentUser.multiTap) {
       const rect = event.target.getBoundingClientRect();
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
       const newTapId = tapId + 1;
 
-      setBalance((prevBalance) => prevBalance + currentUser.multi_tap);
-      setEnergy((prevEnergy) => prevEnergy - currentUser.multi_tap);
+      setBalance((prevBalance) => prevBalance + currentUser.multiTap);
+      setEnergy((prevEnergy) => prevEnergy - currentUser.multiTap);
       setTaps((prevTaps) => [...prevTaps, { id: newTapId, x, y, progress: 0 }]);
       setTapId(newTapId);
 
@@ -70,16 +71,16 @@ function Tap() {
   };
 
   useEffect(() => {
-    if (energy < currentUser.energy_limit) {
+    if (energy < currentUser.energyLimit) {
       const energyRefill = setInterval(() => {
         setEnergy((prevEnergy) =>
-          Math.min(prevEnergy + 1, currentUser.energy_limit)
+          Math.min(prevEnergy + 3, currentUser.energyLimit)
         );
       }, 1000);
 
       return () => clearInterval(energyRefill);
     }
-  }, [energy, currentUser.energy_limit]);
+  }, [energy, currentUser.energyLimit]);
 
   return (
     <div className="mining-page mt-3">
@@ -87,7 +88,9 @@ function Tap() {
         <div className="mining-content">
           <div className="balance d-flex align-items-center">
             <img src={dollar} alt="Dollar Icon" width={50} />
-            <span className="earnings">{formatBalance(balance)}</span>
+            <span className="earnings">
+              {balance && formatBalance(balance)}
+            </span>
           </div>
 
           <Row className="top-links d-flex justify-content-between">
@@ -121,7 +124,7 @@ function Tap() {
           </Row>
 
           <div className="tap-area" onClick={handleTap}>
-            <img src={currentLevel.icon} alt="Current Level Icon" />
+            <img src={currentLevel?.icon} alt="Current Level Icon" />
             {taps.map((tap) => (
               <div
                 key={tap.id}
@@ -135,7 +138,7 @@ function Tap() {
                   transition: 'opacity 1s, transform 1s',
                 }}
               >
-                +{currentUser.multi_tap}
+                +{currentUser.multiTap}
               </div>
             ))}
           </div>
@@ -144,7 +147,7 @@ function Tap() {
             <div className="energy d-flex flex-row align-items-center">
               <FaBolt className="lightning-icon" size={25} />
               <span>
-                {energy}/{currentUser.energy_limit}
+                {energy}/{currentUser.energyLimit}
               </span>
             </div>
 
