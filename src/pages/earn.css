@@ -22,13 +22,12 @@
 .task-header .task-top-card {
   margin-top: 2rem;
   height: 246px;
-  padding: 10px;
   border-radius: 5px;
   background: #2f2f2f;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 23px;
+  padding: 15px;
 }
 
 .task-header .task-top-card h6 {
@@ -140,13 +139,20 @@
   text-align: center;
 }
 
+.description {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 22px;
+  text-align: center;
+}
+
 .task-modal-logo {
   margin: 20px 0;
   max-width: 100px;
 }
 
 .task-modal .modal-btn {
-  width: 103px;
+  width: 85%;
   height: 42px;
   padding: 10px 38px 10px 38px;
   border-radius: 5px;
@@ -155,6 +161,7 @@
   align-items: center;
   justify-content: center;
   font-weight: 600;
+  border: none !important;
 }
 
 .task-modal-error {

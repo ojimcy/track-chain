@@ -3,6 +3,7 @@ import {
   BOOST_ENERGY,
   BOOST_TAPS,
   COMPLET_TASK,
+  DAILYREWARD,
   ENERGYLEVELS,
   LEADERBOARD,
   LEVELS,
@@ -95,5 +96,10 @@ export const getLeaderboard = async () => {
 
 export const saveTaps = async (score) => {
   const result = await axios.post(SAVETAPS(), { score });
+  return result.data;
+};
+
+export const claimDailyReward = async () => {
+  const result = await axios.post(DAILYREWARD());
   return result.data;
 };

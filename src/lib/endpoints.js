@@ -16,3 +16,4 @@ export const MULTITAPLEVELS = () => `${ROOT}/multitap-levels`;
 export const ENERGYLEVELS = () => `${ROOT}/energy-levels`;
 export const LEADERBOARD = () => `${ROOT}/leaderboard`;
 export const SAVETAPS = () => `${ROOT}/save-taps`;
+export const DAILYREWARD = () => `${ROOT}/user/claim-daily-reward`;

@@ -1,5 +1,5 @@
 export function formatBalance(balance) {
-  return balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return balance?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
 export function formatBalanceShort(balance) {
@@ -8,6 +8,6 @@ export function formatBalanceShort(balance) {
   } else if (balance >= 1000) {
     return `${(balance / 1000).toFixed(1)}K`;
   } else {
-    return balance.toString();
+    return balance?.toString();
   }
 }

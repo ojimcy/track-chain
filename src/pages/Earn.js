@@ -7,7 +7,6 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
-  Spinner,
 } from 'reactstrap';
 import taskImg1 from '../assets/images/taske.png';
 import './earn.css';
@@ -35,6 +34,8 @@ import { completeTask, getTasks, getUserByTelegramID } from '../lib/server';
 import { toast } from 'react-toastify';
 import { WebappContext } from '../context/telegram';
 import TelegramBackButton from '../components/navs/TelegramBackButton';
+import LoadingSpinner from '../components/common/LoadingSpinner';
+import { formatBalance } from '../utils/formatBalance';
 
 const taskIcons = {
   telegram: <FaTelegram className="task-icon" />,
@@ -65,6 +66,7 @@ function Earn() {
         resp.forEach((task) => {
           initialStatuses[task.id] = task.completed ? 'completed' : 'start';
         });
+        setTaskStatuses(initialStatuses);
       } catch (error) {
         toast.error('Failed to fetch tasks.', {
           position: 'top-right',
@@ -92,38 +94,45 @@ function Earn() {
 
   const handleTaskClick = async (task) => {
     const { id, type, link } = task;
-    try {
-      if (taskStatuses[id] === 'start') {
-        // Handle the task based on type
-        if (type === 'referral') {
-          const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(
-            useReferralLink(currentUser)
-          )}`;
-          webapp.openTelegramLink(telegramUrl);
-        } else if (type === 'telegram') {
-          webapp.openTelegramLink(link);
-        } else {
-          webapp.openLink(link);
-        }
-        setTaskStatuses((prevStatuses) => ({
-          ...prevStatuses,
-          [id]: 'claim',
-        }));
-      } else if (taskStatuses[id] === 'claim') {
-        await completeTask(currentUser.id, id, 'no proof');
-        setTasks((prevTasks) =>
-          prevTasks.map((t) => (t.id === id ? { ...t, completed: true } : t))
-        );
-        setTaskStatuses((prevStatuses) => ({
-          ...prevStatuses,
-          [id]: 'completed',
-        }));
-        let user = await getUserByTelegramID(telegramUser.id);
-        setUser(user);
+
+    if (taskStatuses[id] === 'start') {
+      if (type === 'referral') {
+        const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(
+          useReferralLink(currentUser)
+        )}`;
+        webapp.openTelegramLink(telegramUrl);
+      } else if (type === 'telegram') {
+        webapp.openTelegramLink(link);
+      } else {
+        webapp.openLink(link);
       }
-    } catch (error) {
-      console.error('Error completing task:', error);
-      toast.error('Failed to complete task. Please try again.');
+      setTaskStatuses((prevStatuses) => ({
+        ...prevStatuses,
+        [id]: 'claim',
+      }));
+    } else if (taskStatuses[id] === 'claim') {
+      completeTask(currentUser.id, id, 'no proof')
+        .then(async () => {
+          setTasks((prevTasks) =>
+            prevTasks.map((t) => (t.id === id ? { ...t, completed: true } : t))
+          );
+          setTaskStatuses((prevStatuses) => ({
+            ...prevStatuses,
+            [id]: 'completed',
+          }));
+          let user = await getUserByTelegramID(telegramUser.id);
+          setUser(user);
+          toast.success('Task completed!', {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+          });
+          toggleModal();
+        })
+        .catch((error) => {
+          console.error('Error completing task:', error.response.data);
+        });
     }
   };
 
@@ -136,6 +145,12 @@ function Earn() {
     }
     return () => clearInterval(timer);
   }, [countdown]);
+
+  // Check if the lastCheckinDate is today
+  const lastCheckinDate = new Date(currentUser.lastCheckinDate);
+  const today = new Date();
+  const isCheckinToday =
+    lastCheckinDate.toDateString() === today.toDateString();
 
   const activeTasks = tasks.filter((task) => !task.completed);
   const completedTasks = tasks.filter((task) => task.completed);
@@ -156,7 +171,7 @@ function Earn() {
         </Row>
 
         {loading ? (
-          <Spinner />
+          <LoadingSpinner />
         ) : (
           <Tabs>
             <TabList>
@@ -182,7 +197,13 @@ function Earn() {
                       </div>
                     </div>
                     <div className="task-status">
-                      <FaGreaterThan />
+                      {isCheckinToday ? (
+                        <div className="completed">
+                          <FaCheck />
+                        </div>
+                      ) : (
+                        <FaGreaterThan />
+                      )}
                     </div>
                   </Link>
                 </Col>
@@ -195,7 +216,7 @@ function Earn() {
                     <Col xs={12}>
                       <Link
                         to="#"
-                        className="task-card d-flex justify-content-between align-items-center mt-2"
+                        className="task-card d-flex justify-content-between align-items-center my-1"
                         onClick={() => toggleModal(task)}
                       >
                         <div className="task-info d-flex align-items-center">
@@ -204,7 +225,9 @@ function Earn() {
                           </div>
                           <div className="info d-flex flex-column">
                             <span className="task-title">{task.title}</span>
-                            <span className="task-reward">+{task.reward}</span>
+                            <span className="task-reward">
+                              +{formatBalance(task.reward)}
+                            </span>
                           </div>
                         </div>
                         <div className="task-status">
@@ -239,7 +262,9 @@ function Earn() {
                           </div>
                           <div className="info d-flex flex-column">
                             <span className="task-title">{task.title}</span>
-                            <span className="task-reward">+{task.reward}</span>
+                            <span className="task-reward">
+                              +{formatBalance(task.reward)}
+                            </span>
                           </div>
                         </div>
                         <div className="task-status">
@@ -266,10 +291,11 @@ function Earn() {
             <ModalHeader toggle={toggleModal}></ModalHeader>
             <ModalBody>
               <div className="modal-title">
-                <p>{selectedTask.title}</p>
+                <p>{selectedTask.name}</p>
               </div>
               <img className="task-modal-logo" src={taskImg1} alt="Logo" />
-              <p className="reward">+{selectedTask.reward}</p>
+              <p className="description">{selectedTask.description}</p>
+              <p className="reward">+{formatBalance(selectedTask.reward)}</p>
 
               {selectedTask.completed ? (
                 <span className="task-modal-completed">Task Completed</span>

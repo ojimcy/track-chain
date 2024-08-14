@@ -25,11 +25,11 @@ function MainNav() {
   }, []);
 
   // Find the current level's information
-  const currentLevel = levels.find((lvl) => {
-    return lvl.level === Number(currentUser.levelId);
+  const nextLevel = levels.find((lvl) => {
+    return lvl.level === Number(currentUser.levelId + 1);
   });
 
-  const requiredTokens = currentLevel && currentLevel.requiredTokens;
+  const requiredTokens = nextLevel && nextLevel.requiredTokens;
 
   // Calculate progress percentage
   const progress = (currentUser.totalBalance / requiredTokens) * 100;

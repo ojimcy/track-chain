@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
-import { Modal, ModalHeader, ModalBody } from 'reactstrap';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
+import { Modal, ModalHeader, ModalBody, Spinner } from 'reactstrap';
 import './daily-reward.css';
 
 import calendar from '../../assets/images/calendar-check.png';
@@ -9,6 +9,10 @@ import { formatBalanceShort } from '../../utils/formatBalance';
 import { FaCheck } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Confetti from 'react-confetti';
+import { useCurrentUser, useTelegramUser } from '../../hooks/telegram';
+import { claimDailyReward, getUserByTelegramID } from '../../lib/server';
+import { WebappContext } from '../../context/telegram';
+import { toast } from 'react-toastify';
 
 const dailyRewards = [
   { day: 1, amount: '500' },
@@ -29,16 +33,60 @@ const dailyRewards = [
 ];
 
 function DailyRewardModal({ isOpen, toggle }) {
+  const { setUser } = useContext(WebappContext);
+  const currentUser = useCurrentUser();
+  const telegramUser = useTelegramUser();
   const [checkedIn, setCheckedIn] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const currentDay = 2;
+  // Calculate current day in the streak based on currentUser's streak
+  const currentDay = currentUser.streak;
 
-  const handleCheckIn = (day) => {
-    if (day === currentDay) {
+  const fetchUserData = useCallback(async () => {
+    try {
+      const user = await getUserByTelegramID(telegramUser.id);
+      setUser(user);
+    } catch (error) {
+      console.error('Failed to fetch user data:', error);
+    }
+  }, [telegramUser, setUser]);
+
+  useEffect(() => {
+    if (telegramUser) {
+      fetchUserData();
+    }
+  }, [telegramUser, fetchUserData]);
+
+  useEffect(() => {
+    const lastCheckinDate = new Date(currentUser.lastCheckinDate);
+    const today = new Date();
+    const isSameDay = lastCheckinDate.toDateString() === today.toDateString();
+
+    setCheckedIn(isSameDay);
+  }, [currentUser.lastCheckinDate]);
+
+  const handleCheckIn = async (day) => {
+    if (day !== currentDay || checkedIn) return;
+
+    setLoading(true);
+    try {
+      await claimDailyReward();
       setCheckedIn(true);
+      toast.success('Checked in successful, come back tomorrow!', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+      });
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 3000);
+      await fetchUserData();
+      toggle();
+    } catch (error) {
+      console.error('Check-in failed:', error.response?.data || error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -65,8 +113,8 @@ function DailyRewardModal({ isOpen, toggle }) {
           <img src={calendar} alt="Daily Reward Icon" />
           <h3>Daily reward</h3>
           <p>
-            Accrue coins for logging into the game daily without skipping. If
-            you miss a day, you start all over again
+            Keep your streak going! Log in daily to claim your rewards. Miss a
+            day, and you&apos;ll have to start over.
           </p>
         </div>
         <div className="daily-reward-list mt-5">
@@ -74,32 +122,38 @@ function DailyRewardModal({ isOpen, toggle }) {
             <div
               key={index}
               className={`daily-reward-item ${
-                currentDay === reward.day ? 'active' : ''
+                index + 1 === currentDay && checkedIn ? 'active' : ''
               }`}
             >
               <div className="day">Day {reward.day}</div>
-              <div className="amount d-flex flex-row align-items-center">
-                <img src={dollar} alt="" width={30} />
+              <div className="">
+                {index + 1 === currentDay && checkedIn ? (
+                  <FaCheck color="green" size={24} />
+                ) : (
+                  <img src={dollar} alt="" width={25} />
+                )}
+              </div>
+              <div className="amount">
                 <span className="reward-amount">
                   {formatBalanceShort(reward.amount)}
                 </span>
               </div>
-              <div className="">
-                {checkedIn && currentDay === reward.day ? (
-                  <FaCheck color="green" size={24} />
-                ) : (
-                  <Link
-                    to="#"
-                    className="claim-button"
-                    onClick={(event) => handleCheckIn(currentDay, event)}
-                  >
-                    Claim
-                  </Link>
-                )}
-              </div>
             </div>
           ))}
         </div>
+        <Link
+          to="#"
+          className={`claim-button ${loading ? 'disabled' : ''}`}
+          onClick={() => handleCheckIn(currentDay)}
+        >
+          {checkedIn ? (
+            <span className='come-back'>COME BACK TOMORROW</span>
+          ) : loading ? (
+            <Spinner />
+          ) : (
+            'Claim'
+          )}
+        </Link>
       </ModalBody>
     </Modal>
   );
