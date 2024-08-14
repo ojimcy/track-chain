@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Container, Row } from 'reactstrap';
 import { Separator } from '../components/common/Seperator';
-import { formatBalance } from '../utils/formatBalance';
+import { formatBalanceShort } from '../utils/formatBalance';
 import { getLeaderboard } from '../lib/server'; 
 import './leaderboard.css';
 import goldMedalIcon from '../assets/images/gold.png'; 
-import silverMedalIcon from '../assets/images/silver.jpg';
+import silverMedalIcon from '../assets/images/silver.png';
 import bronzeMedalIcon from '../assets/images/bronze.png';
+import TelegramBackButton from '../components/navs/TelegramBackButton';
 
 function Leaderboard() {
   const [users, setUsers] = useState([]);
@@ -38,6 +39,7 @@ function Leaderboard() {
 
   return (
     <div className="leaderboard-page">
+      <TelegramBackButton />
       <Container>
         <Row>
           <div className="page-header">
@@ -52,7 +54,7 @@ function Leaderboard() {
 
         {users.length > 0 && (
           <>
-            <p className="mt-4">Leaderboard ({users.length} users)</p>
+            <p className="mt-4">Leaderboard ({users.length} Users)</p>
             <Row>
               {users.map((user, index) => (
                 <React.Fragment key={user.id}>
@@ -71,7 +73,7 @@ function Leaderboard() {
                             {user.username}
                           </span>
                           <span className="leaderboard-balance">
-                            {formatBalance(user.balance)}
+                            {formatBalanceShort(user.balance)}
                           </span>
                         </div>
                       </div>

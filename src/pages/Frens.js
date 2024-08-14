@@ -100,7 +100,7 @@ function Frens() {
   const share = () => {
     const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(
       referralLink
-    )}&text=${encodeURIComponent('Mine free RAIN token on Telegram')}`;
+    )}&text=${encodeURIComponent('Earn free $SHREK today')}`;
     webapp.openTelegramLink(telegramUrl);
   };
 
