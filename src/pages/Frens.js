@@ -9,16 +9,16 @@ import InviteModal from '../components/modals/InviteModal';
 import { toast } from 'react-toastify';
 import {
   useCurrentUser,
-  useReferralLink,
   useTelegramUser,
   useWebApp,
 } from '../hooks/telegram';
 import { WebappContext } from '../context/telegram';
 import { getMyDownlines, getUserByTelegramID } from '../lib/server';
 import { TelegramShareButton } from 'react-share';
+import TelegramBackButton from '../components/navs/TelegramBackButton';
+import LoadingSpinner from '../components/common/LoadingSpinner';
 
 function Frens() {
-  const referralLink = useReferralLink(useCurrentUser);
   const webapp = useWebApp();
   const [modalOpen, setModalOpen] = useState(false);
   const { setUser } = useContext(WebappContext);
@@ -26,6 +26,9 @@ function Frens() {
   const telegramUser = useTelegramUser();
   const [downlines, setDownlines] = useState([]);
   const [showAll, setShowAll] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const referralLink = `https://t.me/track_chains_bot?start=${currentUser.telegramId}`
 
   useEffect(() => {
     if (!telegramUser) return;
@@ -105,16 +108,21 @@ function Frens() {
   };
 
   const loadAllDownlines = async () => {
+    setLoading(true);
     try {
       const allDownlines = await getMyDownlines();
       setDownlines(allDownlines);
       setShowAll(true);
     } catch (error) {
       console.error('Failed to fetch all downlines:', error);
+    } finally {
+      setLoading(false);
     }
   };
+
   return (
     <div className="frens-page">
+      <TelegramBackButton />
       <Container>
         <TelegramShareButton />
         <Row>
@@ -131,48 +139,57 @@ function Frens() {
           </div>
         </Row>
 
-        {currentUser && (
-          <>
-            <p className="mt-4">Friends list ({downlines.length})</p>
-            <Row>
-              {downlines.map((downline) => (
-                <React.Fragment key={downline.id}>
-                  <Col xs={12}>
-                    <Link
-                      to="#"
-                      className="frens-card d-flex justify-content-between align-items-center mt-2"
-                    >
-                      <div className="frens-info d-flex align-items-center">
-                        <div className="frens-icon d-flex align-items-center justify-content-center">
-                          {downline.profilePic ? (
-                            <img
-                              src={downline.profilePic}
-                              alt={downline.username}
-                            />
-                          ) : (
-                            <span>{downline.username.charAt(0)}</span>
-                          )}
-                        </div>
-                        <div className="info d-flex flex-column">
-                          <span className="frens-title">
-                            {downline.username}
-                          </span>
-                          <span className="frens-level">{downline.level}</span>
-                        </div>
-                      </div>
-                      <div className="balance">
-                        {formatBalance(downline.balance)}
-                      </div>
-                    </Link>
-                  </Col>
-                  <Separator />
-                </React.Fragment>
-              ))}
-            </Row>
-          </>
+        {loading ? (
+          <LoadingSpinner />
+        ) : (
+          currentUser && (
+            <>
+              <p className="mt-4">
+                Friends list ({downlines && downlines.length})
+              </p>
+              <Row>
+                {downlines &&
+                  downlines.map((downline) => (
+                    <React.Fragment key={downline.id}>
+                      <Col xs={12}>
+                        <Link
+                          to="#"
+                          className="frens-card d-flex justify-content-between align-items-center mt-2"
+                        >
+                          <div className="frens-info d-flex align-items-center">
+                            <div className="frens-icon d-flex align-items-center justify-content-center">
+                              {downline.profilePic ? (
+                                <img
+                                  src={downline.profilePic}
+                                  alt={downline.username}
+                                />
+                              ) : (
+                                <span>{downline.username.charAt(0)}</span>
+                              )}
+                            </div>
+                            <div className="info d-flex flex-column">
+                              <span className="frens-title">
+                                {downline.username}
+                              </span>
+                              <span className="frens-level">
+                                {downline.levelID}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="balance">
+                            {formatBalance(downline.balance)}
+                          </div>
+                        </Link>
+                      </Col>
+                      <Separator />
+                    </React.Fragment>
+                  ))}
+              </Row>
+            </>
+          )
         )}
 
-        {!showAll && downlines.length === 20 && (
+        {!showAll && downlines?.length === 20 && (
           <div className="d-flex justify-content-center mt-4">
             <Button onClick={loadAllDownlines} color="secondary">
               Show All

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { FaCog } from 'react-icons/fa';
 import './main-nav.css';
-import { Container } from 'reactstrap';
+import { Col, Container, Row } from 'reactstrap';
 
 import dollar from '../../../assets/images/dollar.png';
+import shrek from '../../../assets/images/lvl1.png';
 import { formatBalanceShort } from '../../../utils/formatBalance';
 import { useCurrentUser } from '../../../hooks/telegram';
 import { getLevels } from '../../../lib/server';
@@ -52,22 +54,29 @@ function MainNav() {
               </div>
             </div>
           </div>
-          <div className="vertical-line" />
-          <div className="per-hour d-flex flex-column card-item">
-            <span className="label">Token per Hour</span>
-            <span className="main-value">
-              <img src={dollar} alt="" width={30} height={30} />{' '}
-              {currentUser && formatBalanceShort(currentUser.hmr)}{' '}
-            </span>
-          </div>
-          <div className="vertical-line" />
-          <div className="total-earned d-flex flex-column card-item">
-            <span className="label">Total Earnings</span>
-            <span className="main-value">
-              <img src={dollar} alt="" width={30} height={30} />{' '}
-              {currentUser && formatBalanceShort(currentUser.balance)}{' '}
-            </span>
-          </div>
+          <Row className="hmr-links d-flex justify-content-between align-items-center">
+            <Col xs={3} className="links-image">
+              <img src={shrek} alt="" width={35} />
+            </Col>
+            <Col xs={6}>
+              <div className="vertical-line" />
+              <div className="per-hour d-flex flex-column align-items-center justify-content-center card-item">
+                <span className="label">HMR</span>
+                <span className="main-value">
+                  <img src={dollar} alt="" width={15} height={15} />{' '}
+                  <div className='mx-1'>
+                    {`+ ${currentUser && formatBalanceShort(currentUser.hmr)}`}{' '}
+                  </div>
+                </span>
+              </div>
+            </Col>
+            <Col xs={3}>
+              <div className="vertical-line" />
+              <div className="settings-icon card-item">
+                <FaCog />
+              </div>
+            </Col>
+          </Row>
         </div>
       </Container>
     </header>

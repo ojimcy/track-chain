@@ -122,12 +122,12 @@ function DailyRewardModal({ isOpen, toggle }) {
             <div
               key={index}
               className={`daily-reward-item ${
-                index + 1 === currentDay && checkedIn ? 'active' : ''
+                index + 1 <= currentDay && checkedIn ? 'active' : ''
               }`}
             >
               <div className="day">Day {reward.day}</div>
               <div className="">
-                {index + 1 === currentDay && checkedIn ? (
+                {index + 1 <= currentDay && checkedIn ? (
                   <FaCheck color="green" size={24} />
                 ) : (
                   <img src={dollar} alt="" width={25} />
@@ -141,13 +141,14 @@ function DailyRewardModal({ isOpen, toggle }) {
             </div>
           ))}
         </div>
+
         <Link
           to="#"
           className={`claim-button ${loading ? 'disabled' : ''}`}
           onClick={() => handleCheckIn(currentDay)}
         >
           {checkedIn ? (
-            <span className='come-back'>COME BACK TOMORROW</span>
+            <span className="come-back">COME BACK TOMORROW</span>
           ) : loading ? (
             <Spinner />
           ) : (

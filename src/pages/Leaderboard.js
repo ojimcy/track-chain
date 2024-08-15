@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Col, Container, Row } from 'reactstrap';
 import { Separator } from '../components/common/Seperator';
 import { formatBalanceShort } from '../utils/formatBalance';
-import { getLeaderboard } from '../lib/server'; 
+import { getLeaderboard } from '../lib/server';
 import './leaderboard.css';
-import goldMedalIcon from '../assets/images/gold.png'; 
+import goldMedalIcon from '../assets/images/gold.png';
 import silverMedalIcon from '../assets/images/silver.png';
 import bronzeMedalIcon from '../assets/images/bronze.png';
 import TelegramBackButton from '../components/navs/TelegramBackButton';
@@ -15,7 +15,7 @@ function Leaderboard() {
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        const leaderboardData = await getLeaderboard(); 
+        const leaderboardData = await getLeaderboard();
         setUsers(leaderboardData);
       } catch (error) {
         console.error('Failed to fetch leaderboard:', error);
@@ -77,7 +77,9 @@ function Leaderboard() {
                           </span>
                         </div>
                       </div>
-                      <div className="position">{getMedalIcon(index + 1)}</div>
+                      <div className="position">{`# ${getMedalIcon(
+                        index + 1
+                      )}`}</div>
                     </div>
                   </Col>
                   <Separator />

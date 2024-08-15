@@ -224,7 +224,7 @@ function Earn() {
                             {taskIcons[task.type]}
                           </div>
                           <div className="info d-flex flex-column">
-                            <span className="task-title">{task.title}</span>
+                            <span className="task-title">{task.description}</span>
                             <span className="task-reward">
                               +{formatBalance(task.reward)}
                             </span>
@@ -261,7 +261,7 @@ function Earn() {
                             {taskIcons[task.type]}
                           </div>
                           <div className="info d-flex flex-column">
-                            <span className="task-title">{task.title}</span>
+                            <span className="task-title">{task.description}</span>
                             <span className="task-reward">
                               +{formatBalance(task.reward)}
                             </span>

@@ -36,24 +36,36 @@ function Tap() {
   }, []);
 
   const handleTap = (event) => {
-    if (energy > currentUser.multiTap) {
-      const rect = event.target.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-      const newTapId = Date.now(); // Unique ID based on the current time
+    const touches = event.touches;
+    
+    if (energy >= touches?.length * currentUser.multiTap) {
+      const newTaps = [];
+      let energyUsed = 0;
 
-      // Update the state for balance, score, and energy
-      setBalance((prevBalance) => prevBalance + currentUser.multiTap);
-      setScore((prevScores) => prevScores + currentUser.multiTap);
-      setEnergy((prevEnergy) => prevEnergy - currentUser.multiTap);
+      for (let i = 0; i < touches?.length; i++) {
+        const touch = touches[i];
+        const rect = event.target.getBoundingClientRect();
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+        const newTapId = Date.now() + i; // Unique ID for each touch
 
-      // Add the new tap with its coordinates and initial progress
-      setTaps((prevTaps) => [...prevTaps, { id: newTapId, x, y, progress: 0 }]);
+        // Add tap to the array
+        newTaps.push({ id: newTapId, x, y, progress: 0 });
 
-      // Start the tap animation
-      animateTap(x, y, newTapId);
+        // Update balance and score for each tap
+        energyUsed += currentUser.multiTap;
+      }
 
-      // Reset the inactivity timer
+      // Apply updates in bulk for performance
+      setBalance((prevBalance) => prevBalance + energyUsed);
+      setScore((prevScore) => prevScore + energyUsed);
+      setEnergy((prevEnergy) => prevEnergy - energyUsed);
+      setTaps((prevTaps) => [...prevTaps, ...newTaps]);
+
+      // Start animations for each touch point
+      newTaps.forEach((tap) => animateTap(tap.x, tap.y, tap.id));
+
+      // Reset inactivity timer
       resetInactivityTimer();
     }
   };
@@ -172,7 +184,11 @@ function Tap() {
             </Col>
           </Row>
 
-          <div className="tap-area" onClick={handleTap}>
+          <div
+            className="tap-area"
+            onTouchStart={handleTap}
+            onClick={handleTap} 
+          >
             <img src={currentLevel?.icon} alt="Current Level Icon" />
             {taps.map((tap) => (
               <div
