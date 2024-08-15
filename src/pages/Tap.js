@@ -22,7 +22,6 @@ function Tap() {
   const { taps, setTaps } = useContext(WebappContext);
   const [balance, setBalance] = useState(currentUser.balance);
   const [energy, setEnergy] = useState(currentUser.energyLimit);
-  const [tapId, setTapId] = useState(0);
   const [rewardModal, setRewardModal] = useState(false);
   const [score, setScore] = useState(0);
 
@@ -41,17 +40,20 @@ function Tap() {
       const rect = event.target.getBoundingClientRect();
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
-      const newTapId = tapId + 1;
+      const newTapId = Date.now(); // Unique ID based on the current time
 
+      // Update the state for balance, score, and energy
       setBalance((prevBalance) => prevBalance + currentUser.multiTap);
       setScore((prevScores) => prevScores + currentUser.multiTap);
       setEnergy((prevEnergy) => prevEnergy - currentUser.multiTap);
-      setTaps((prevTaps) => [...prevTaps, { id: newTapId, x, y, progress: 0 }]);
-      setTapId(newTapId);
 
+      // Add the new tap with its coordinates and initial progress
+      setTaps((prevTaps) => [...prevTaps, { id: newTapId, x, y, progress: 0 }]);
+
+      // Start the tap animation
       animateTap(x, y, newTapId);
 
-      // Reset inactivity timer on tap
+      // Reset the inactivity timer
       resetInactivityTimer();
     }
   };
@@ -84,7 +86,7 @@ function Tap() {
     async (score) => {
       if (score > 0) {
         try {
-          await saveTaps(parseInt(score)); 
+          await saveTaps(parseInt(score));
           setScore(0);
         } catch (error) {
           console.error('Error saving taps:', error.response.data);
@@ -135,7 +137,9 @@ function Tap() {
         <div className="mining-content">
           <div className="balance d-flex align-items-center">
             <img src={dollar} alt="Dollar Icon" width={50} />
-            <span className="earnings">{balance && formatBalance(balance)}</span>
+            <span className="earnings">
+              {balance && formatBalance(balance)}
+            </span>
           </div>
 
           <Row className="top-links d-flex justify-content-between">
