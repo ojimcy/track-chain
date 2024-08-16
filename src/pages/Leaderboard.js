@@ -77,9 +77,7 @@ function Leaderboard() {
                           </span>
                         </div>
                       </div>
-                      <div className="position">{`# ${getMedalIcon(
-                        index + 1
-                      )}`}</div>
+                      <div className="position">{getMedalIcon(index + 1)}</div>
                     </div>
                   </Col>
                   <Separator />

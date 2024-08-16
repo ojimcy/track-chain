@@ -15,8 +15,8 @@ import {
 } from 'reactstrap';
 import classnames from 'classnames';
 import { formatBalance } from '../utils/formatBalance';
-import data from '../hooks/demo_data';
 import { Separator } from '../components/common/Seperator';
+import { useCurrentUser } from '../hooks/telegram';
 
 import card1 from '../assets/images/lock-1.png';
 import card2 from '../assets/images/insurance.png';
@@ -68,7 +68,7 @@ const mockData = [
 ];
 
 function Mine() {
-  const { user } = data;
+  const currentUser = useCurrentUser();
   const [cards, setCards] = useState(mockData);
   const [activeTab, setActiveTab] = useState('1');
 
@@ -82,8 +82,8 @@ function Mine() {
           return {
             ...card,
             level: card.level + 1,
-            earningsPerHour: card.earningsPerHour * 1.2, // Increase earnings by 20%
-            cost: card.cost * 1.5, // Increase cost by 50%
+            earningsPerHour: card.earningsPerHour * 1.5, // Increase earnings by 20%
+            cost: card.cost * 2, // Increase cost by 50%
           };
         }
         return card;
@@ -106,12 +106,12 @@ function Mine() {
         <div className="mine-header">
           <div className="balance">
             <span>
-              <img src={dollar} alt="" /> {formatBalance(user.total_balance)}
+              <img src={dollar} alt="" /> {formatBalance(currentUser.balance)}
             </span>
             <p>
-              Earning per hour{' '}
+              Hourly Mining Rate{' '}
               <span className="token-balance">
-                +{formatBalance(user.earning_per_hour)}
+                +{formatBalance(currentUser.hmr)}
               </span>{' '}
             </p>
           </div>
