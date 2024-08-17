@@ -5,6 +5,8 @@ import {
   COMPLET_TASK,
   DAILYREWARD,
   ENERGYLEVELS,
+  GET_CARDS,
+  GET_USER_CARDS,
   LEADERBOARD,
   LEVELS,
   MULTITAPLEVELS,
@@ -13,6 +15,7 @@ import {
   SYNC_ACCOUNT,
   TASK,
   TASKS,
+  UPGRAD_CARD,
   USER_BY_ID,
   USER_LEVEL,
 } from './endpoints';
@@ -50,7 +53,7 @@ export const boostTaps = async () => {
 };
 
 export const boostEnergy = async () => {
-  const result = await axios.post(BOOST_ENERGY(), );
+  const result = await axios.post(BOOST_ENERGY());
   return result.data;
 };
 
@@ -101,5 +104,20 @@ export const saveTaps = async (score) => {
 
 export const claimDailyReward = async () => {
   const result = await axios.post(DAILYREWARD());
+  return result.data;
+};
+
+export const getCards = async () => {
+  const result = await axios.get(GET_CARDS());
+  return result.data;
+};
+
+export const getUserCards = async () => {
+  const result = await axios.get(GET_USER_CARDS());
+  return result.data;
+};
+
+export const upgradeCard = async (cardId) => {
+  const result = await axios.post(UPGRAD_CARD(cardId));
   return result.data;
 };

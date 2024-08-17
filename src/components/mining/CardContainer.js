@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import {  formatBalanceShort } from '../../utils/formatBalance';
+import { formatBalanceShort } from '../../utils/formatBalance';
 import { Separator } from '../common/Seperator';
 
 import CardDetailsModal from '../modals/CardDetailsModal';
@@ -26,8 +26,8 @@ const CardContainer = ({ cards, category }) => {
 
   return (
     <Row className="mine-card-row">
-      {filteredCards.map((card, index) => (
-        <Col xs={6} key={index}>
+      {filteredCards.map((card) => (
+        <Col xs={6} className='mb-4' key={card.id}>
           <div
             className={`mine-card ${
               card.canUpgrade ? 'can-upgrade' : 'cannot-upgrade'
@@ -53,7 +53,7 @@ const CardContainer = ({ cards, category }) => {
               >
                 Earn/Hr:{' '}
                 <span className="earnings-per-hour">
-                  +{formatBalanceShort(card.earningsPerHour)}
+                  +{formatBalanceShort(card.initialHMR)}
                 </span>
               </span>
               <div style={{ marginTop: '5px', marginLeft: '11px' }}>
@@ -70,7 +70,7 @@ const CardContainer = ({ cards, category }) => {
                 {card.canUpgrade ? (
                   <div>
                     <img src={dollar} alt=" " width={25} />
-                    {formatBalanceShort(card.cost)}
+                    {formatBalanceShort(card.initialUpgradeCost)}
                   </div>
                 ) : (
                   <div>{card.requirements}</div>
@@ -93,7 +93,6 @@ const CardContainer = ({ cards, category }) => {
 CardContainer.propTypes = {
   cards: PropTypes.array.isRequired,
   category: PropTypes.string.isRequired,
-  onUpgrade: PropTypes.func.isRequired,
 };
 
 export default CardContainer;

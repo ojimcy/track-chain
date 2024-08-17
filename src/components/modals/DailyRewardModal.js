@@ -89,6 +89,7 @@ function DailyRewardModal({ isOpen, toggle }) {
       setLoading(false);
     }
   };
+  console.log('checkedin', checkedIn);
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} className="daily-reward-modal">

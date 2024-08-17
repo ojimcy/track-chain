@@ -1,6 +1,6 @@
 // src/pages/Mine.js
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './mine.css';
 import dollar from '../assets/images/dollar.png';
 import {
@@ -18,83 +18,33 @@ import { formatBalance } from '../utils/formatBalance';
 import { Separator } from '../components/common/Seperator';
 import { useCurrentUser } from '../hooks/telegram';
 
-import card1 from '../assets/images/lock-1.png';
-import card2 from '../assets/images/insurance.png';
-import card3 from '../assets/images/card3.png';
 import comboHolder from '../assets/images/q-mark.png';
 import CardContainer from '../components/mining/CardContainer';
-
-const mockData = [
-  {
-    name: 'Token security',
-    earningsPerHour: 600,
-    cost: 100000,
-    image: card1,
-    requirements: null,
-    level: 0,
-    category: 'Asset Tokenization',
-    canUpgrade: true,
-  },
-  {
-    name: 'Token-issuance',
-    earningsPerHour: 5000,
-    cost: 1000000,
-    image: card2,
-    requirements: null,
-    level: 0,
-    category: 'Asset Tokenization',
-    canUpgrade: true,
-  },
-  {
-    name: 'Crypto Exchange 1',
-    earningsPerHour: 1500,
-    cost: 150000,
-    image: card3,
-    requirements: 'Requires Investor lvl 10',
-    level: 0,
-    category: 'Marketplace',
-    canUpgrade: false,
-  },
-  {
-    name: 'Special Miner 1',
-    earningsPerHour: 500,
-    cost: 5000,
-    image: card3,
-    requirements: null,
-    level: 0,
-    category: 'Track',
-    canUpgrade: true,
-  },
-];
+import { getCards } from '../lib/server';
+import data from '../hooks/demo_data';
 
 function Mine() {
   const currentUser = useCurrentUser();
-  const [cards, setCards] = useState(mockData);
   const [activeTab, setActiveTab] = useState('1');
+  const [cards, setCards] = useState([]);
 
-  const handleUpgrade = (index) => {
-    setCards((prevCards) =>
-      prevCards.map((card, i) => {
-        if (
-          i === index &&
-          (card.requirements === null || checkRequirements(card.requirements))
-        ) {
-          return {
-            ...card,
-            level: card.level + 1,
-            earningsPerHour: card.earningsPerHour * 1.5, // Increase earnings by 20%
-            cost: card.cost * 2, // Increase cost by 50%
-          };
-        }
-        return card;
-      })
-    );
-  };
+  const mockCards = data.cards;
 
-  const checkRequirements = () => {
-    // Logic to check if requirements are met
-    return true;
-  };
+  useEffect(() => {
+    const fetchCards = async () => {
+      const res = await getCards();
+
+      // Map cards to include the image from mockCards
+      const cardsWithImages = res.map((card) => {
+        const mockCard = mockCards.find((mock) => mock.id === card.id);
+        return { ...card, image: mockCard ? mockCard.image : '' };
+      });
+
+      setCards(cardsWithImages);
+    };
+
+    fetchCards();
+  }, []);
 
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
@@ -188,35 +138,19 @@ function Mine() {
           <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
               <h2>Asset Tokenization</h2>
-              <CardContainer
-                cards={cards}
-                category="Asset Tokenization"
-                onUpgrade={handleUpgrade}
-              />
+              <CardContainer cards={cards} category="Tokenization" />
             </TabPane>
             <TabPane tabId="2">
               <h2>Marketplace</h2>
-              <CardContainer
-                cards={cards}
-                category="Marketplace"
-                onUpgrade={handleUpgrade}
-              />
+              <CardContainer cards={cards} category="Marketplace" />
             </TabPane>
             <TabPane tabId="3">
               <h2>Web3</h2>
-              <CardContainer
-                cards={cards}
-                category="Web3"
-                onUpgrade={handleUpgrade}
-              />
+              <CardContainer cards={cards} category="Web3" />
             </TabPane>
             <TabPane tabId="4">
               <h2>Track</h2>
-              <CardContainer
-                cards={cards}
-                category="Track"
-                onUpgrade={handleUpgrade}
-              />
+              <CardContainer cards={cards} category="Track" />
             </TabPane>
           </TabContent>
         </div>
