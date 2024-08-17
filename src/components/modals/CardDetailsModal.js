@@ -1,55 +1,31 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, ModalHeader, ModalBody, Button } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, Button, Spinner } from 'reactstrap';
 import './modal.css';
 import { Separator } from '../common/Seperator';
-
 import dollar from '../../assets/images/dollar.png';
 import { formatBalance } from '../../utils/formatBalance';
-import { getUserByTelegramID, upgradeCard } from '../../lib/server';
+import { upgradeCard } from '../../lib/server';
 import { toast } from 'react-toastify';
-import { useCurrentUser, useTelegramUser } from '../../hooks/telegram';
-import { WebappContext } from '../../context/telegram';
-import LoadingSpinner from '../common/LoadingSpinner';
 import Confetti from 'react-confetti';
 
-const CardDetailsModal = ({ isOpen, toggle, card }) => {
-  const currentUser = useCurrentUser();
-  const { setUser } = useContext(WebappContext);
-  const telegramUser = useTelegramUser();
-
+const CardDetailsModal = ({ isOpen, toggle, card, fetchUserData }) => {
   const [showConfetti, setShowConfetti] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const insufficientBalance =
-    currentUser.balance <
-    ((card && card.upgradeCost) || (card && card.initialUpgradeCost));
+    card && (card.upgradeCost || card.initialUpgradeCost) > card.balance;
   const hmr = (card && card.hmr) || (card && card.initialHMR);
   const upgradeCost =
     (card && card.upgradeCost) || (card && card.initialUpgradeCost);
 
-  const fetchUserData = useCallback(async () => {
-    try {
-      const user = await getUserByTelegramID(useTelegramUser.id);
-      setUser(user);
-    } catch (error) {
-      console.error('Failed to fetch user data:', error);
-    }
-  }, [telegramUser, setUser]);
-
-  useEffect(() => {
-    if (telegramUser) {
-      fetchUserData();
-    }
-  }, [telegramUser, fetchUserData]);
-
   const handleCardUpgrade = async () => {
     try {
       setLoading(true);
-      await upgradeCard(card && card.id);
+      await upgradeCard(card.id);
 
       toast.success(
-        `${card && card.name} upgraded to level ${card && card.level + 1}`,
+        `${card.name} upgraded to level ${card.level + 1}`,
         {
           position: 'top-right',
           autoClose: 3000,
@@ -59,6 +35,7 @@ const CardDetailsModal = ({ isOpen, toggle, card }) => {
       );
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 3000);
+      await fetchUserData(); 
       toggle();
     } catch (error) {
       console.error('Error while upgrading card', error);
@@ -94,13 +71,13 @@ const CardDetailsModal = ({ isOpen, toggle, card }) => {
       <ModalBody className="text-center">
         <div className="card-image-wrapper mb-3">
           <img
-            src={card && card.image}
-            alt={card && card.name}
+            src={card.image}
+            alt={card.name}
             className="card-image"
           />
         </div>
-        <h4>{card && card.name}</h4>
-        <p className="card-description">{card && card.description}</p>
+        <h4>{card.name}</h4>
+        <p className="card-description">{card.description}</p>
         <Separator />
         <div
           className={`card-earnings ${
@@ -119,7 +96,7 @@ const CardDetailsModal = ({ isOpen, toggle, card }) => {
           disabled={insufficientBalance || loading}
         >
           {loading ? (
-            <LoadingSpinner />
+            <Spinner size="sm" color="light" />
           ) : (
             <>
               <img src={dollar} alt="" width={35} />{' '}
@@ -140,6 +117,7 @@ CardDetailsModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
   card: PropTypes.object,
+  fetchUserData: PropTypes.func.isRequired,  // Add prop types for fetchUserData
 };
 
 export default CardDetailsModal;
