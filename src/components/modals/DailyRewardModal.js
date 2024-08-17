@@ -34,8 +34,8 @@ const dailyRewards = [
 
 function DailyRewardModal({ isOpen, toggle }) {
   const { setUser } = useContext(WebappContext);
-  const currentUser = useCurrentUser();
   const telegramUser = useTelegramUser();
+  const currentUser = useCurrentUser();
   const [checkedIn, setCheckedIn] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -89,7 +89,6 @@ function DailyRewardModal({ isOpen, toggle }) {
       setLoading(false);
     }
   };
-  console.log('checkedin', checkedIn);
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} className="daily-reward-modal">
