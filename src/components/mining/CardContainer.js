@@ -51,7 +51,10 @@ const CardContainer = ({ cards, category, fetchCards }) => {
               >
                 Earn/Hr:{' '}
                 <span className="earnings-per-hour">
-                  +{formatBalanceShort(card.hmr ? card.hmr : card.initialHMR)}
+                  +
+                  {formatBalanceShort(
+                    card.hmr ? card.hmr * 0.5 : card.initialHMR * 0.5
+                  )}
                 </span>
               </span>
               <div style={{ marginTop: '5px', marginLeft: '11px' }}>
@@ -70,8 +73,8 @@ const CardContainer = ({ cards, category, fetchCards }) => {
                     <img src={dollar} alt=" " width={20} />
                     {formatBalanceShort(
                       card.upgradeCost
-                        ? card.upgradeCost
-                        : card.initialUpgradeCost
+                        ? card.upgradeCost / 2
+                        : card.initialUpgradeCost / 2
                     )}
                   </div>
                 ) : (

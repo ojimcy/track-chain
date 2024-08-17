@@ -25,16 +25,13 @@ const CardDetailsModal = ({ isOpen, toggle, card, fetchUserData }) => {
       await upgradeCard(card.id);
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 3000);
-      toast.success(
-        `${card.name} upgraded to level ${card.level + 1}`,
-        {
-          position: 'top-right',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        }
-      );
-      await fetchUserData();  
+      toast.success(`${card.name} upgraded to level ${card.level + 1}`, {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+      });
+      await fetchUserData();
       toggle();
     } catch (error) {
       console.error('Error while upgrading card', error);
@@ -69,11 +66,7 @@ const CardDetailsModal = ({ isOpen, toggle, card, fetchUserData }) => {
       <ModalHeader toggle={toggle} className="card-modal-header"></ModalHeader>
       <ModalBody className="text-center">
         <div className="card-image-wrapper mb-3">
-          <img
-            src={card.image}
-            alt={card.name}
-            className="card-image"
-          />
+          <img src={card.image} alt={card.name} className="card-image" />
         </div>
         <h4>{card.name}</h4>
         <p className="card-description">{card.description}</p>
@@ -85,7 +78,7 @@ const CardDetailsModal = ({ isOpen, toggle, card, fetchUserData }) => {
         >
           <span className="earnings-label">
             {' '}
-            <img src={dollar} alt="" width={35} /> +{hmr}
+            <img src={dollar} alt="" width={35} /> +{hmr * 0.5}
           </span>
         </div>
         <Button
@@ -102,7 +95,7 @@ const CardDetailsModal = ({ isOpen, toggle, card, fetchUserData }) => {
               {insufficientBalance ? (
                 'Insufficient Balance'
               ) : (
-                <>{formatBalance(upgradeCost)} Points</>
+                <>{formatBalance(upgradeCost / 2)} Points</>
               )}
             </>
           )}
@@ -116,7 +109,7 @@ CardDetailsModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
   card: PropTypes.object,
-  fetchUserData: PropTypes.func.isRequired,  // Add prop types for fetchUserData
+  fetchUserData: PropTypes.func.isRequired, // Add prop types for fetchUserData
 };
 
 export default CardDetailsModal;
