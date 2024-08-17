@@ -4,8 +4,8 @@ import { Modal, ModalHeader, ModalBody, Button, Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
 import { getMinedTokens, claimTokens } from '../../lib/server';
 import { formatBalance } from '../../utils/formatBalance';
-import './modal.css';
 
+import './modal.css';
 import dollar from '../../assets/images/dollar.png';
 
 const ClaimTokensModal = ({ isOpen, toggle }) => {
