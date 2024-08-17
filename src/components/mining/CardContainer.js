@@ -77,7 +77,9 @@ const CardContainer = ({ cards, category }) => {
                     )}
                   </div>
                 ) : (
-                  <div className='upgrade-cost'>{card.upgradeDisabledReason}</div>
+                  <div className="upgrade-cost">
+                    {card.upgradeDisabledReason}
+                  </div>
                 )}
               </div>
             </div>
@@ -85,12 +87,13 @@ const CardContainer = ({ cards, category }) => {
         </Col>
       ))}
 
-      <CardDetailsModal
-        isOpen={isModalOpen}
-        toggle={toggleModal}
-        card={selectedCard}
-        
-      />
+      {selectedCard && (
+        <CardDetailsModal
+          isOpen={isModalOpen}
+          toggle={toggleModal}
+          card={selectedCard}
+        />
+      )}
     </Row>
   );
 };
