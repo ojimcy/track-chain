@@ -18,11 +18,13 @@ const CardDetailsModal = ({ isOpen, toggle, card }) => {
   const telegramUser = useTelegramUser();
 
   const [showConfetti, setShowConfetti] = useState(false);
+  console.log('card', card);
 
   if (!card) return null;
 
-  const insufficientBalance =
-    currentUser.balance < (card.upgradeCost || card.initialUpgradeCost);
+  const upgradeCost = card.upgradeCost || card.initialUpgradeCost;
+  const hmr = card.hmr || card.initialHMR;
+  const insufficientBalance = currentUser.balance < upgradeCost;
 
   const fetchUserData = useCallback(async () => {
     try {
@@ -96,8 +98,7 @@ const CardDetailsModal = ({ isOpen, toggle, card }) => {
         >
           <span className="earnings-label">
             {' '}
-            <img src={dollar} alt="" width={35} /> +
-            {card.hmr ? card.hmr : card.initialHMR}
+            <img src={dollar} alt="" width={35} /> +{hmr}
           </span>
         </div>
         <Button
@@ -107,16 +108,9 @@ const CardDetailsModal = ({ isOpen, toggle, card }) => {
           disabled={insufficientBalance}
         >
           <img src={dollar} alt="" width={35} />{' '}
-          {insufficientBalance ? (
-            'Insufficient Balance'
-          ) : (
-            <>
-              {formatBalance(
-                card.upgradeCost ? card.upgradeCost : card.initialUpgradeCost
-              )}{' '}
-              Points
-            </>
-          )}
+          {insufficientBalance
+            ? 'Insufficient Balance'
+            : `${formatBalance(upgradeCost)} Points`}
         </Button>
       </ModalBody>
     </Modal>
