@@ -181,3 +181,8 @@
 .mine-card:hover.can-upgrade {
   transform: scale(1.05);
 }
+
+
+.insufficient {
+  color: #b9a1a1;
+}

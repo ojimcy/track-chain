@@ -8,10 +8,15 @@ import dollar from '../../assets/images/dollar.png';
 import { formatBalance } from '../../utils/formatBalance';
 import { upgradeCard } from '../../lib/server';
 import { toast } from 'react-toastify';
+import { useCurrentUser } from '../../hooks/telegram';
 
 const CardDetailsModal = ({ isOpen, toggle, card }) => {
+  const currentUser = useCurrentUser();
+
   if (!card) return null;
-console.log('selected card', card);
+
+  const insufficientBalance =
+    currentUser.balance < (card.upgradeCost || card.initialUpgradeCost);
 
   const handleCardUpgrade = async () => {
     try {
@@ -44,7 +49,11 @@ console.log('selected card', card);
         <h4>{card.name}</h4>
         <p className="card-description">{card.description}</p>
         <Separator />
-        <div className="card-earnings">
+        <div
+          className={`card-earnings ${
+            insufficientBalance ? 'insufficient' : ''
+          }`}
+        >
           <span className="earnings-label">
             {' '}
             <img src={dollar} alt="" width={35} /> +
@@ -53,14 +62,20 @@ console.log('selected card', card);
         </div>
         <Button
           color="primary"
-          className="mt-3 w-100"
+          className={`mt-3 w-100 ${insufficientBalance ? 'insufficient' : ''}`}
           onClick={handleCardUpgrade}
         >
           <img src={dollar} alt="" width={35} />{' '}
-          {formatBalance(
-            card.upgradeCost ? card.upgradeCost : card.initialUpgradeCost
-          )}{' '}
-          Points
+          {insufficientBalance ? (
+            'Insufficient Balance'
+          ) : (
+            <>
+              {formatBalance(
+                card.upgradeCost ? card.upgradeCost : card.initialUpgradeCost
+              )}{' '}
+              Points
+            </>
+          )}
         </Button>
       </ModalBody>
     </Modal>
