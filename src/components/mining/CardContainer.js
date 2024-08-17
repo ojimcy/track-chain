@@ -73,8 +73,8 @@ const CardContainer = ({ cards, category, fetchCards }) => {
                     <img src={dollar} alt=" " width={20} />
                     {formatBalanceShort(
                       card.upgradeCost
-                        ? card.upgradeCost / 2
-                        : card.initialUpgradeCost / 2
+                        ? card.upgradeCost
+                        : card.initialUpgradeCost
                     )}
                   </div>
                 ) : (

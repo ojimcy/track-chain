@@ -20,3 +20,5 @@ export const DAILYREWARD = () => `${ROOT}/user/claim-daily-reward`;
 export const UPGRADE_CARD = (cardId) => `${ROOT}/card/${cardId}/upgrade`;
 export const GET_CARDS = () => `${ROOT}/cards`;
 export const GET_USER_CARDS = () => `${ROOT}/user-cards`;
+export const CLAIM_TOKENS = () => `${ROOT}/claim`;
+export const GET_MINED_TOKENS = () => `${ROOT}/get-mined-tokens`;

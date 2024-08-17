@@ -95,7 +95,7 @@ const CardDetailsModal = ({ isOpen, toggle, card, fetchUserData }) => {
               {insufficientBalance ? (
                 'Insufficient Balance'
               ) : (
-                <>{formatBalance(upgradeCost / 2)} Points</>
+                <>{formatBalance(upgradeCost)} Points</>
               )}
             </>
           )}

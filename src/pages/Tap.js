@@ -16,6 +16,7 @@ import { WebappContext } from '../context/telegram';
 import { saveTaps } from '../lib/server';
 import { formatBalance } from '../utils/formatBalance';
 import CountdownTimer from '../components/common/CountdownTimer';
+import ClaimTokensModal from '../components/modals/ClaimTokensModal';
 
 function Tap() {
   const { levels } = data;
@@ -24,6 +25,7 @@ function Tap() {
   const [balance, setBalance] = useState(currentUser.balance);
   const [energy, setEnergy] = useState(currentUser.energyLimit);
   const [rewardModal, setRewardModal] = useState(false);
+  const [claimModal, setClaimModal] = useState(false); 
   const [score, setScore] = useState(0);
 
   const currentLevel = levels.find((lvl) => lvl.level === currentUser.levelId);
@@ -35,6 +37,10 @@ function Tap() {
 
   const toggleRewardModal = useCallback(() => {
     setRewardModal((prev) => !prev);
+  }, []);
+
+  const toggleClaimModal = useCallback(() => {
+    setClaimModal((prev) => !prev);
   }, []);
 
   const handleTap = (event) => {
@@ -145,6 +151,11 @@ function Tap() {
     };
   }, [saveScores]);
 
+  // Open the claim modal when the page loads
+  useEffect(() => {
+    setClaimModal(true);
+  }, []);
+
   return (
     <div className="mining-page mt-3">
       <Container>
@@ -236,6 +247,13 @@ function Tap() {
 
       {rewardModal && (
         <DailyRewardModal isOpen={rewardModal} toggle={toggleRewardModal} />
+      )}
+
+      {claimModal && (
+        <ClaimTokensModal
+          isOpen={claimModal}
+          toggle={toggleClaimModal}
+        />
       )}
     </div>
   );

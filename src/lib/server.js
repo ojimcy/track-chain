@@ -2,10 +2,12 @@ import axios from './axiosService';
 import {
   BOOST_ENERGY,
   BOOST_TAPS,
+  CLAIM_TOKENS,
   COMPLET_TASK,
   DAILYREWARD,
   ENERGYLEVELS,
   GET_CARDS,
+  GET_MINED_TOKENS,
   GET_USER_CARDS,
   LEADERBOARD,
   LEVELS,
@@ -119,5 +121,15 @@ export const getUserCards = async () => {
 
 export const upgradeCard = async (cardId) => {
   const result = await axios.post(UPGRADE_CARD(cardId));
+  return result.data;
+};
+
+export const claimTokens = async () => {
+  const result = await axios.post(CLAIM_TOKENS());
+  return result.data;
+};
+
+export const getMinedTokens = async () => {
+  const result = await axios.get(GET_MINED_TOKENS());
   return result.data;
 };
