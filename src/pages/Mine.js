@@ -22,30 +22,38 @@ import comboHolder from '../assets/images/q-mark.png';
 import CardContainer from '../components/mining/CardContainer';
 import { getUserCards } from '../lib/server';
 import data from '../hooks/demo_data';
+import LoadingSpinner from '../components/common/LoadingSpinner';
 
 function Mine() {
   const currentUser = useCurrentUser();
   const [activeTab, setActiveTab] = useState('1');
   const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const mockCards = data.cards;
 
   useEffect(() => {
     const fetchCards = async () => {
-      const res = await getUserCards();
+      try {
+        setLoading(true);
+        const res = await getUserCards();
 
-      // Map cards to include the image from mockCards
-      const cardsWithImages = res.map((card) => {
-        const mockCard = mockCards.find((mock) => mock.id === card.id);
-        return { ...card, image: mockCard ? mockCard.image : '' };
-      });
+        // Map cards to include the image from mockCards
+        const cardsWithImages = res.map((card) => {
+          const mockCard = mockCards.find((mock) => mock.id === card.id);
+          return { ...card, image: mockCard ? mockCard.image : '' };
+        });
 
-      setCards(cardsWithImages);
+        setCards(cardsWithImages);
+      } catch (error) {
+        console.error('Error fetching cards', error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchCards();
   }, []);
-
 
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
@@ -139,19 +147,35 @@ function Mine() {
           <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
               <h2>Asset Tokenization</h2>
-              <CardContainer cards={cards} category="Tokenization" />
+              {loading ? (
+                <LoadingSpinner />
+              ) : (
+                <CardContainer cards={cards} category="Tokenization" />
+              )}
             </TabPane>
             <TabPane tabId="2">
               <h2>Marketplace</h2>
-              <CardContainer cards={cards} category="Marketplace" />
+              {loading ? (
+                <LoadingSpinner />
+              ) : (
+                <CardContainer cards={cards} category="Marketplace" />
+              )}
             </TabPane>
             <TabPane tabId="3">
               <h2>Web3</h2>
-              <CardContainer cards={cards} category="Web3" />
+              {loading ? (
+                <LoadingSpinner />
+              ) : (
+                <CardContainer cards={cards} category="Web3" />
+              )}
             </TabPane>
             <TabPane tabId="4">
               <h2>Track</h2>
-              <CardContainer cards={cards} category="Track" />
+              {loading ? (
+                <LoadingSpinner />
+              ) : (
+                <CardContainer cards={cards} category="Track" />
+              )}
             </TabPane>
           </TabContent>
         </div>

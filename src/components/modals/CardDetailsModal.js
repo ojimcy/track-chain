@@ -20,10 +20,8 @@ const CardDetailsModal = ({ isOpen, toggle, card }) => {
   const [showConfetti, setShowConfetti] = useState(false);
   console.log('card', card);
 
-  if (!card) return null;
-
-  const upgradeCost = card.upgradeCost || card.initialUpgradeCost;
-  const hmr = card.hmr || card.initialHMR;
+  const upgradeCost = card?.upgradeCost || card?.initialUpgradeCost;
+  const hmr = card?.hmr || card?.initialHMR;
   const insufficientBalance = currentUser.balance < upgradeCost;
 
   const fetchUserData = useCallback(async () => {
@@ -43,9 +41,9 @@ const CardDetailsModal = ({ isOpen, toggle, card }) => {
 
   const handleCardUpgrade = async () => {
     try {
-      const res = await upgradeCard(card.id);
+      const res = await upgradeCard(card?.id);
       console.log('upgraded card', res);
-      toast.success(`${card.name} upgraded to level ${card.level + 1}`, {
+      toast.success(`${card?.name} upgraded to level ${card?.level + 1}`, {
         position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
@@ -86,10 +84,10 @@ const CardDetailsModal = ({ isOpen, toggle, card }) => {
       <ModalHeader toggle={toggle} className="card-modal-header"></ModalHeader>
       <ModalBody className="text-center">
         <div className="card-image-wrapper mb-3">
-          <img src={card.image} alt={card.name} className="card-image" />
+          <img src={card?.image} alt={card?.name} className="card-image" />
         </div>
-        <h4>{card.name}</h4>
-        <p className="card-description">{card.description}</p>
+        <h4>{card?.name}</h4>
+        <p className="card-description">{card?.description}</p>
         <Separator />
         <div
           className={`card-earnings ${
