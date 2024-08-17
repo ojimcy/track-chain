@@ -23,7 +23,7 @@ const CardDetailsModal = ({ isOpen, toggle, card, upgradeCard }) => {
         <div className="card-earnings">
           <span className="earnings-label">
             {' '}
-            <img src={dollar} alt="" width={35} /> +{card.earningsPerHour}
+            <img src={dollar} alt="" width={35} /> +{card.hmr? card.hmr : card.initialHMR}
           </span>
         </div>
         <Button color="primary" className="mt-3 w-100" onClick={upgradeCard}>
