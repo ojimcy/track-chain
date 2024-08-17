@@ -20,7 +20,7 @@ import { useCurrentUser } from '../hooks/telegram';
 
 import comboHolder from '../assets/images/q-mark.png';
 import CardContainer from '../components/mining/CardContainer';
-import { getCards } from '../lib/server';
+import { getUserCards } from '../lib/server';
 import data from '../hooks/demo_data';
 
 function Mine() {
@@ -32,7 +32,7 @@ function Mine() {
 
   useEffect(() => {
     const fetchCards = async () => {
-      const res = await getCards();
+      const res = await getUserCards();
 
       // Map cards to include the image from mockCards
       const cardsWithImages = res.map((card) => {
