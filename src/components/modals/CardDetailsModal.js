@@ -13,8 +13,6 @@ import { useCurrentUser } from '../../hooks/telegram';
 const CardDetailsModal = ({ isOpen, toggle, card }) => {
   const currentUser = useCurrentUser();
 
-  if (!card) return null;
-
   const insufficientBalance =
     currentUser.balance < (card.upgradeCost || card.initialUpgradeCost);
   const hmr = card.hmr || card.initialHMR;
