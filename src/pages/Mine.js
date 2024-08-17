@@ -1,6 +1,4 @@
-// src/pages/Mine.js
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import './mine.css';
 import dollar from '../assets/images/dollar.png';
 import {
@@ -17,7 +15,6 @@ import classnames from 'classnames';
 import { formatBalance } from '../utils/formatBalance';
 import { Separator } from '../components/common/Seperator';
 import { useCurrentUser } from '../hooks/telegram';
-
 import comboHolder from '../assets/images/q-mark.png';
 import CardContainer from '../components/mining/CardContainer';
 import { getUserCards } from '../lib/server';
@@ -33,28 +30,28 @@ function Mine() {
 
   const mockCards = data.cards;
 
+  const fetchCards = useCallback(async () => {
+    try {
+      setLoading(true);
+      const res = await getUserCards();
+
+      // Map cards to include the image from mockCards
+      const cardsWithImages = res.map((card) => {
+        const mockCard = mockCards.find((mock) => mock.id === card.id);
+        return { ...card, image: mockCard ? mockCard.image : '' };
+      });
+
+      setCards(cardsWithImages);
+    } catch (error) {
+      console.error('Error fetching cards', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [mockCards]);
+
   useEffect(() => {
-    const fetchCards = async () => {
-      try {
-        setLoading(true);
-        const res = await getUserCards();
-
-        // Map cards to include the image from mockCards
-        const cardsWithImages = res.map((card) => {
-          const mockCard = mockCards.find((mock) => mock.id === card.id);
-          return { ...card, image: mockCard ? mockCard.image : '' };
-        });
-
-        setCards(cardsWithImages);
-      } catch (error) {
-        console.error('Error fetching cards', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchCards();
-  }, []);
+  }, [fetchCards]);
 
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
@@ -152,7 +149,7 @@ function Mine() {
               {loading ? (
                 <LoadingSpinner />
               ) : (
-                <CardContainer cards={cards} category="Tokenization" />
+                <CardContainer cards={cards} category="Tokenization" fetchCards={fetchCards} />
               )}
             </TabPane>
             <TabPane tabId="2">
@@ -160,7 +157,7 @@ function Mine() {
               {loading ? (
                 <LoadingSpinner />
               ) : (
-                <CardContainer cards={cards} category="Marketplace" />
+                <CardContainer cards={cards} category="Marketplace" fetchCards={fetchCards} />
               )}
             </TabPane>
             <TabPane tabId="3">
@@ -168,7 +165,7 @@ function Mine() {
               {loading ? (
                 <LoadingSpinner />
               ) : (
-                <CardContainer cards={cards} category="Web3" />
+                <CardContainer cards={cards} category="Web3" fetchCards={fetchCards} />
               )}
             </TabPane>
             <TabPane tabId="4">
@@ -176,7 +173,7 @@ function Mine() {
               {loading ? (
                 <LoadingSpinner />
               ) : (
-                <CardContainer cards={cards} category="Track" />
+                <CardContainer cards={cards} category="Track" fetchCards={fetchCards} />
               )}
             </TabPane>
           </TabContent>

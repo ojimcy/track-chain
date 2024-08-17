@@ -23,7 +23,8 @@ const CardDetailsModal = ({ isOpen, toggle, card, fetchUserData }) => {
     try {
       setLoading(true);
       await upgradeCard(card.id);
-
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 3000);
       toast.success(
         `${card.name} upgraded to level ${card.level + 1}`,
         {
@@ -33,9 +34,7 @@ const CardDetailsModal = ({ isOpen, toggle, card, fetchUserData }) => {
           closeOnClick: true,
         }
       );
-      setShowConfetti(true);
-      setTimeout(() => setShowConfetti(false), 3000);
-      await fetchUserData(); 
+      await fetchUserData();  
       toggle();
     } catch (error) {
       console.error('Error while upgrading card', error);

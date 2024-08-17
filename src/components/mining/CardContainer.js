@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { formatBalanceShort } from '../../utils/formatBalance';
 import { Separator } from '../common/Seperator';
@@ -6,15 +6,10 @@ import CardDetailsModal from '../modals/CardDetailsModal';
 import dollar from '../../assets/images/dollar.png';
 import lock from '../../assets/images/lock.png';
 import { Col, Row } from 'reactstrap';
-import { WebappContext } from '../../context/telegram';
-import { getUserByTelegramID } from '../../lib/server';
-import { useTelegramUser } from '../../hooks/telegram';
 
-const CardContainer = ({ cards, category }) => {
+const CardContainer = ({ cards, category, fetchCards }) => {
   const [selectedCard, setSelectedCard] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { setUser } = useContext(WebappContext);
-  const telegramUser = useTelegramUser();
 
   const toggleModal = () => setIsModalOpen(!isModalOpen);
 
@@ -24,15 +19,6 @@ const CardContainer = ({ cards, category }) => {
       toggleModal();
     }
   };
-
-  const fetchUserData = useCallback(async () => {
-    try {
-      const user = await getUserByTelegramID(telegramUser.id);
-      setUser(user);
-    } catch (error) {
-      console.error('Failed to fetch user data:', error);
-    }
-  }, [telegramUser, setUser]);
 
   const filteredCards = cards.filter((card) => card.category === category);
 
@@ -104,7 +90,7 @@ const CardContainer = ({ cards, category }) => {
           isOpen={isModalOpen}
           toggle={toggleModal}
           card={selectedCard}
-          fetchUserData={fetchUserData}  // Pass fetchUserData as prop
+          fetchUserData={fetchCards} // Pass fetchCards to update cards after upgrade
         />
       )}
     </Row>
@@ -114,6 +100,7 @@ const CardContainer = ({ cards, category }) => {
 CardContainer.propTypes = {
   cards: PropTypes.array.isRequired,
   category: PropTypes.string.isRequired,
+  fetchCards: PropTypes.func.isRequired, // Add PropTypes for fetchCards
 };
 
 export default CardContainer;
