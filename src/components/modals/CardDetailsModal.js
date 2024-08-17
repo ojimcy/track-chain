@@ -11,13 +11,13 @@ import { toast } from 'react-toastify';
 
 const CardDetailsModal = ({ isOpen, toggle, card }) => {
   if (!card) return null;
+console.log('selected card', card);
 
-  const handleCardUpgrade = async (card) => {
+  const handleCardUpgrade = async () => {
     try {
       const res = await upgradeCard(card.id);
       console.log('upgraded card', res);
-
-      toast.success(`${card.name} upgraded to level ${card.level}`, {
+      toast.success(`${card.name} upgraded to level ${card.level + 1}`, {
         position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
