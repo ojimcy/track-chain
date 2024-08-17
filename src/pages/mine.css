@@ -116,11 +116,18 @@
 .card-level .level::after {
   content: '';
   position: absolute;
-  height: 4%;
+  height: 5%;
   width: 2px;
   background: linear-gradient(to bottom, transparent, #5a5959, transparent);
-  margin-left: 15px;
-  margin-top: -11px;
+  margin-left: 5px;
+  margin-top: -7px;
+}
+
+.card-level .upgrade-cost {
+  font-size: 7px;
+  text-align: left;
+  line-height: 8px;
+  width: 75%;
 }
 
 .combos {
