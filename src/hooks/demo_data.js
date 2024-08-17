@@ -161,7 +161,7 @@ const data = {
       requirements: true,
       category: 'Marketplace',
       maxLevel: '50',
-      image: card1,
+      image: placeholder,
     },
     {
       id: 10,
@@ -171,7 +171,7 @@ const data = {
       requirements: null,
       category: 'Marketplace',
       maxLevel: 50,
-      image: card2,
+      image: placeholder,
     },
     {
       id: 11,
@@ -191,7 +191,7 @@ const data = {
       requirements: null,
       category: 'Marketplace',
       maxLevel: 50,
-      image: card4,
+      image: placeholder,
     },
     {
       id: 13,

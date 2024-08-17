@@ -6,9 +6,33 @@ import { Separator } from '../common/Seperator';
 
 import dollar from '../../assets/images/dollar.png';
 import { formatBalance } from '../../utils/formatBalance';
+import { upgradeCard } from '../../lib/server';
+import { toast } from 'react-toastify';
 
-const CardDetailsModal = ({ isOpen, toggle, card, upgradeCard }) => {
+const CardDetailsModal = ({ isOpen, toggle, card }) => {
   if (!card) return null;
+
+  const handleCardUpgrade = async (card) => {
+    try {
+      const res = await upgradeCard(card.id);
+      console.log('upgraded card', res);
+
+      toast.success(`${card.name} upgraded to level ${card.level}`, {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+      });
+    } catch (error) {
+      console.error('Error while upgrading card', error);
+      toast.error('Failed to upgrade card', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+      });
+    }
+  };
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} className="main-modal">
@@ -23,10 +47,15 @@ const CardDetailsModal = ({ isOpen, toggle, card, upgradeCard }) => {
         <div className="card-earnings">
           <span className="earnings-label">
             {' '}
-            <img src={dollar} alt="" width={35} /> +{card.hmr? card.hmr : card.initialHMR}
+            <img src={dollar} alt="" width={35} /> +
+            {card.hmr ? card.hmr : card.initialHMR}
           </span>
         </div>
-        <Button color="primary" className="mt-3 w-100" onClick={upgradeCard}>
+        <Button
+          color="primary"
+          className="mt-3 w-100"
+          onClick={handleCardUpgrade}
+        >
           <img src={dollar} alt="" width={35} />{' '}
           {formatBalance(
             card.upgradeCost ? card.upgradeCost : card.initialUpgradeCost
@@ -41,7 +70,6 @@ const CardDetailsModal = ({ isOpen, toggle, card, upgradeCard }) => {
 CardDetailsModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
-  upgradeCard: PropTypes.func.isRequired,
   card: PropTypes.object,
 };
 

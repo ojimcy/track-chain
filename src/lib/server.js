@@ -15,7 +15,7 @@ import {
   SYNC_ACCOUNT,
   TASK,
   TASKS,
-  UPGRAD_CARD,
+  UPGRADE_CARD,
   USER_BY_ID,
   USER_LEVEL,
 } from './endpoints';
@@ -118,6 +118,6 @@ export const getUserCards = async () => {
 };
 
 export const upgradeCard = async (cardId) => {
-  const result = await axios.post(UPGRAD_CARD(cardId));
+  const result = await axios.post(UPGRADE_CARD(cardId));
   return result.data;
 };

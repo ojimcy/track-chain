@@ -17,6 +17,6 @@ export const ENERGYLEVELS = () => `${ROOT}/energy-levels`;
 export const LEADERBOARD = () => `${ROOT}/leaderboard`;
 export const SAVETAPS = () => `${ROOT}/save-taps`;
 export const DAILYREWARD = () => `${ROOT}/user/claim-daily-reward`;
-export const UPGRAD_CARD = () => `${ROOT}/card/upgrade`;
+export const UPGRADE_CARD = (cardId) => `${ROOT}/card/${cardId}/upgrade`;
 export const GET_CARDS = () => `${ROOT}/cards`;
 export const GET_USER_CARDS = () => `${ROOT}/user-cards`;

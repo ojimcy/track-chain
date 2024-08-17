@@ -89,6 +89,7 @@ const CardContainer = ({ cards, category }) => {
         isOpen={isModalOpen}
         toggle={toggleModal}
         card={selectedCard}
+        
       />
     </Row>
   );
