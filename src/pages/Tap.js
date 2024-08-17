@@ -15,6 +15,7 @@ import { useCurrentUser } from '../hooks/telegram';
 import { WebappContext } from '../context/telegram';
 import { saveTaps } from '../lib/server';
 import { formatBalance } from '../utils/formatBalance';
+import CountdownTimer from '../components/common/CountdownTimer';
 
 function Tap() {
   const { levels } = data;
@@ -26,6 +27,7 @@ function Tap() {
   const [score, setScore] = useState(0);
 
   const currentLevel = levels.find((lvl) => lvl.level === currentUser.levelId);
+  const duration = 24 * 60 * 60 * 1000;
 
   // Throttle time for user inactivity (3 seconds)
   const inactivityTimeout = 3000;
@@ -37,7 +39,7 @@ function Tap() {
 
   const handleTap = (event) => {
     const touches = event.touches;
-    
+
     if (energy >= touches?.length * currentUser.multiTap) {
       const newTaps = [];
       let energyUsed = 0;
@@ -160,7 +162,9 @@ function Tap() {
                 <div className="link-content d-flex align-items-center">
                   <img src={reward} alt="Daily Rewards" />
                   <span className="link-title">Daily Rewards</span>
-                  <span className="timer">23:07:58</span>
+                  <span className="timer">
+                    <CountdownTimer duration={duration} />
+                  </span>
                 </div>
               </Link>
             </Col>
@@ -169,7 +173,9 @@ function Tap() {
                 <div className="link-content d-flex align-items-center">
                   <img src={puzzle} alt="Daily Combo" />
                   <span className="link-title">Word Puzzle</span>
-                  <span className="timer">14:52:59</span>
+                  <span className="timer">
+                    <CountdownTimer duration={duration} />
+                  </span>
                 </div>
               </Link>
             </Col>
@@ -178,7 +184,9 @@ function Tap() {
                 <div className="link-content d-flex align-items-center">
                   <img src={cal} alt="Daily Combo" />
                   <span className="link-title">Daily Combo</span>
-                  <span className="timer">14:52:59</span>
+                  <span className="timer">
+                    <CountdownTimer duration={duration} />
+                  </span>
                 </div>
               </Link>
             </Col>
@@ -187,7 +195,7 @@ function Tap() {
           <div
             className="tap-area"
             onTouchStart={handleTap}
-            onClick={handleTap} 
+            onClick={handleTap}
           >
             <img src={currentLevel?.icon} alt="Current Level Icon" />
             {taps.map((tap) => (

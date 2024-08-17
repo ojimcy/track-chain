@@ -21,6 +21,7 @@ import { getUserCards } from '../lib/server';
 import data from '../hooks/demo_data';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import TelegramBackButton from '../components/navs/TelegramBackButton';
+import CountdownTimer from '../components/common/CountdownTimer';
 
 function Mine() {
   const currentUser = useCurrentUser();
@@ -29,6 +30,7 @@ function Mine() {
   const [loading, setLoading] = useState(false);
 
   const mockCards = data.cards;
+  const duration = 24 * 60 * 60 * 1000;
 
   const fetchCards = useCallback(async () => {
     try {
@@ -79,7 +81,7 @@ function Mine() {
             </p>
             <Separator />
             <p className="mt-2">
-              Time Remaining: <span className="countdown">24:00:00</span>
+              Time Remaining: <CountdownTimer duration={duration} />
             </p>
           </div>
           <Row className="combos mt-4 d-flex justify-content-between align-items-center">
@@ -149,7 +151,11 @@ function Mine() {
               {loading ? (
                 <LoadingSpinner />
               ) : (
-                <CardContainer cards={cards} category="Tokenization" fetchCards={fetchCards} />
+                <CardContainer
+                  cards={cards}
+                  category="Tokenization"
+                  fetchCards={fetchCards}
+                />
               )}
             </TabPane>
             <TabPane tabId="2">
@@ -157,7 +163,11 @@ function Mine() {
               {loading ? (
                 <LoadingSpinner />
               ) : (
-                <CardContainer cards={cards} category="Marketplace" fetchCards={fetchCards} />
+                <CardContainer
+                  cards={cards}
+                  category="Marketplace"
+                  fetchCards={fetchCards}
+                />
               )}
             </TabPane>
             <TabPane tabId="3">
@@ -165,7 +175,11 @@ function Mine() {
               {loading ? (
                 <LoadingSpinner />
               ) : (
-                <CardContainer cards={cards} category="Web3" fetchCards={fetchCards} />
+                <CardContainer
+                  cards={cards}
+                  category="Web3"
+                  fetchCards={fetchCards}
+                />
               )}
             </TabPane>
             <TabPane tabId="4">
@@ -173,7 +187,11 @@ function Mine() {
               {loading ? (
                 <LoadingSpinner />
               ) : (
-                <CardContainer cards={cards} category="Track" fetchCards={fetchCards} />
+                <CardContainer
+                  cards={cards}
+                  category="Track"
+                  fetchCards={fetchCards}
+                />
               )}
             </TabPane>
           </TabContent>
