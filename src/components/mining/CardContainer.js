@@ -27,7 +27,7 @@ const CardContainer = ({ cards, category }) => {
   return (
     <Row className="mine-card-row">
       {filteredCards.map((card) => (
-        <Col xs={6} className='mb-4' key={card.id}>
+        <Col xs={6} className="mb-4" key={card.id}>
           <div
             className={`mine-card ${
               card.canUpgrade ? 'can-upgrade' : 'cannot-upgrade'
@@ -53,7 +53,7 @@ const CardContainer = ({ cards, category }) => {
               >
                 Earn/Hr:{' '}
                 <span className="earnings-per-hour">
-                  +{formatBalanceShort(card.initialHMR)}
+                  +{formatBalanceShort(card.hmr ? card.hmr : card.initialHMR)}
                 </span>
               </span>
               <div style={{ marginTop: '5px', marginLeft: '11px' }}>
@@ -68,12 +68,12 @@ const CardContainer = ({ cards, category }) => {
               >
                 <div className="level">Lvl {card.level}</div>
                 {card.canUpgrade ? (
-                  <div>
+                  <div className='d-flex align-items-center justify-content-between'>
                     <img src={dollar} alt=" " width={25} />
-                    {formatBalanceShort(card.initialUpgradeCost)}
+                    {formatBalanceShort(card.upgradeCost)}
                   </div>
                 ) : (
-                  <div>{card.requirements}</div>
+                  <div>{card.upgradeDisabledReason}</div>
                 )}
               </div>
             </div>
