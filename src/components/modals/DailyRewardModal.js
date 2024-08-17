@@ -73,14 +73,14 @@ function DailyRewardModal({ isOpen, toggle }) {
     try {
       await claimDailyReward();
       setCheckedIn(true);
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 3000);
       toast.success('Checked in successful, come back tomorrow!', {
         position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
       });
-      setShowConfetti(true);
-      setTimeout(() => setShowConfetti(false), 3000);
       await fetchUserData();
       toggle();
     } catch (error) {

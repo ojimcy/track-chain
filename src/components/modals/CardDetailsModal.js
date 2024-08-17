@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, ModalHeader, ModalBody, Button } from 'reactstrap';
 import './modal.css';
@@ -6,9 +6,9 @@ import { Separator } from '../common/Seperator';
 
 import dollar from '../../assets/images/dollar.png';
 import { formatBalance } from '../../utils/formatBalance';
-import { upgradeCard } from '../../lib/server';
+import { getUserByTelegramID, upgradeCard } from '../../lib/server';
 import { toast } from 'react-toastify';
-import { useCurrentUser } from '../../hooks/telegram';
+import { useCurrentUser, useTelegramUser } from '../../hooks/telegram';
 import { WebappContext } from '../../context/telegram';
 import LoadingSpinner from '../common/LoadingSpinner';
 import Confetti from 'react-confetti';
@@ -16,6 +16,7 @@ import Confetti from 'react-confetti';
 const CardDetailsModal = ({ isOpen, toggle, card }) => {
   const currentUser = useCurrentUser();
   const { setUser } = useContext(WebappContext);
+  const telegramUser = useTelegramUser();
 
   const [showConfetti, setShowConfetti] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -27,10 +28,25 @@ const CardDetailsModal = ({ isOpen, toggle, card }) => {
   const upgradeCost =
     (card && card.upgradeCost) || (card && card.initialUpgradeCost);
 
+  const fetchUserData = useCallback(async () => {
+    try {
+      const user = await getUserByTelegramID(useTelegramUser.id);
+      setUser(user);
+    } catch (error) {
+      console.error('Failed to fetch user data:', error);
+    }
+  }, [telegramUser, setUser]);
+
+  useEffect(() => {
+    if (telegramUser) {
+      fetchUserData();
+    }
+  }, [telegramUser, fetchUserData]);
+
   const handleCardUpgrade = async () => {
     try {
       setLoading(true);
-      const res = await upgradeCard(card && card.id);
+      await upgradeCard(card && card.id);
 
       toast.success(
         `${card && card.name} upgraded to level ${card && card.level + 1}`,
@@ -43,7 +59,6 @@ const CardDetailsModal = ({ isOpen, toggle, card }) => {
       );
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 3000);
-      setUser(res.user);
       toggle();
     } catch (error) {
       console.error('Error while upgrading card', error);
