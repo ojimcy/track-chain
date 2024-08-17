@@ -16,7 +16,7 @@ const CardContainer = ({ cards, category }) => {
   const toggleModal = () => setIsModalOpen(!isModalOpen);
 
   const handleCardClick = (card) => {
-    if (card.canUpgrade) {
+    if (!card.canUpgrade) {
       setSelectedCard(card);
       toggleModal();
     }
@@ -30,13 +30,13 @@ const CardContainer = ({ cards, category }) => {
         <Col xs={6} className='mb-4' key={card.id}>
           <div
             className={`mine-card ${
-              card.canUpgrade ? 'can-upgrade' : 'cannot-upgrade'
+              !card.canUpgrade ? 'can-upgrade' : 'cannot-upgrade'
             }`}
             onClick={() => handleCardClick(card)}
-            style={{ cursor: card.canUpgrade ? 'pointer' : 'not-allowed' }}
+            style={{ cursor: !card.canUpgrade ? 'pointer' : 'not-allowed' }}
           >
             <div className="mine-card-header">
-              {card.canUpgrade ? (
+              {!card.canUpgrade ? (
                 <img src={card.image} alt="" />
               ) : (
                 <img src={lock} alt="" />
@@ -46,7 +46,7 @@ const CardContainer = ({ cards, category }) => {
             <div className="mine-card-body">
               <span
                 className={`mb-4 ${
-                  card.canUpgrade
+                  !card.canUpgrade
                     ? 'earn-per-hour-upgrade'
                     : 'earn-per-hour-no-upgrade'
                 }`}
@@ -61,13 +61,13 @@ const CardContainer = ({ cards, category }) => {
               </div>
               <div
                 className={`card-level mt-3 d-flex justify-content-between align-items-center ${
-                  card.canUpgrade
+                  !card.canUpgrade
                     ? 'card-level-upgrade'
                     : 'card-level-no-upgrade'
                 }`}
               >
                 <div className="level">Lvl {card.level}</div>
-                {card.canUpgrade ? (
+                {!card.canUpgrade ? (
                   <div>
                     <img src={dollar} alt=" " width={25} />
                     {formatBalanceShort(card.initialUpgradeCost)}
