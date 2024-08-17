@@ -16,7 +16,7 @@ import { WebappContext } from '../context/telegram';
 import { saveTaps } from '../lib/server';
 import { formatBalance } from '../utils/formatBalance';
 import CountdownTimer from '../components/common/CountdownTimer';
-import ClaimTokensModal from '../components/modals/ClaimMinedTokens';
+import ClaimTokensModal from '../components/modals/ClaimMinedTokensModal';
 
 function Tap() {
   const { levels } = data;

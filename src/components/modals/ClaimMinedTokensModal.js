@@ -19,6 +19,7 @@ const ClaimTokensModal = ({ isOpen, toggle }) => {
       setLoading(true);
       const response = await getMinedTokens();
       setMinedTokens(response.minedTokens);
+      console.log('to claim', response);
     } catch (error) {
       console.error('Error fetching mined tokens:', error);
       toast.error('Failed to fetch mined tokens');
