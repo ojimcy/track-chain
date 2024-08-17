@@ -23,6 +23,7 @@ import CardContainer from '../components/mining/CardContainer';
 import { getUserCards } from '../lib/server';
 import data from '../hooks/demo_data';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import TelegramBackButton from '../components/navs/TelegramBackButton';
 
 function Mine() {
   const currentUser = useCurrentUser();
@@ -61,6 +62,7 @@ function Mine() {
 
   return (
     <Container>
+      <TelegramBackButton />
       <div className="mine-page">
         <div className="mine-header">
           <div className="balance">
