@@ -14,20 +14,25 @@ const CardDetailsModal = ({ isOpen, toggle, card }) => {
   const currentUser = useCurrentUser();
 
   const insufficientBalance =
-    currentUser.balance < (card.upgradeCost || card.initialUpgradeCost);
-  const hmr = card.hmr || card.initialHMR;
-  const upgradeCost = card.upgradeCost || card.initialUpgradeCost;
+    currentUser.balance <
+    ((card && card.upgradeCost) || (card && card.initialUpgradeCost));
+  const hmr = (card && card.hmr) || (card && card.initialHMR);
+  const upgradeCost =
+    (card && card.upgradeCost) || (card && card.initialUpgradeCost);
 
   const handleCardUpgrade = async () => {
     try {
-      const res = await upgradeCard(card.id);
+      const res = await upgradeCard(card && card.id);
       console.log('upgraded card', res);
-      toast.success(`${card.name} upgraded to level ${card.level + 1}`, {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-      });
+      toast.success(
+        `${card && card.name} upgraded to level ${card && card.level + 1}`,
+        {
+          position: 'top-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+        }
+      );
       toggle();
     } catch (error) {
       console.error('Error while upgrading card', error);
@@ -45,10 +50,14 @@ const CardDetailsModal = ({ isOpen, toggle, card }) => {
       <ModalHeader toggle={toggle} className="card-modal-header"></ModalHeader>
       <ModalBody className="text-center">
         <div className="card-image-wrapper mb-3">
-          <img src={card.image} alt={card.name} className="card-image" />
+          <img
+            src={card && card.image}
+            alt={card && card.name}
+            className="card-image"
+          />
         </div>
-        <h4>{card.name}</h4>
-        <p className="card-description">{card.description}</p>
+        <h4>{card && card.name}</h4>
+        <p className="card-description">{card && card.description}</p>
         <Separator />
         <div
           className={`card-earnings ${
