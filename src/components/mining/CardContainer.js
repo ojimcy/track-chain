@@ -68,7 +68,7 @@ const CardContainer = ({ cards, category }) => {
               >
                 <div className="level">Lvl {card.level}</div>
                 {card.canUpgrade ? (
-                  <div className="d-flex align-items-center justify-content-between upgrade-cost">
+                  <div className="d-flex align-items-center justify-content-between">
                     <img src={dollar} alt=" " width={20} />
                     {formatBalanceShort(
                       card.upgradeCost

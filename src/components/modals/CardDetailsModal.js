@@ -5,8 +5,9 @@ import './modal.css';
 import { Separator } from '../common/Seperator';
 
 import dollar from '../../assets/images/dollar.png';
+import { formatBalance } from '../../utils/formatBalance';
 
-const CardDetailsModal = ({ isOpen, toggle, card }) => {
+const CardDetailsModal = ({ isOpen, toggle, card, upgradeCard }) => {
   if (!card) return null;
 
   return (
@@ -25,8 +26,12 @@ const CardDetailsModal = ({ isOpen, toggle, card }) => {
             <img src={dollar} alt="" width={35} /> +{card.earningsPerHour}
           </span>
         </div>
-        <Button color="primary" className="mt-3" onClick={toggle}>
-          <img src={dollar} alt="" width={35} /> {card.cost} Points
+        <Button color="primary" className="mt-3 w-100" onClick={upgradeCard}>
+          <img src={dollar} alt="" width={35} />{' '}
+          {formatBalance(
+            card.upgradeCost ? card.upgradeCost : card.initialUpgradeCost
+          )}{' '}
+          Points
         </Button>
       </ModalBody>
     </Modal>
@@ -36,6 +41,7 @@ const CardDetailsModal = ({ isOpen, toggle, card }) => {
 CardDetailsModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
+  upgradeCard: PropTypes.func.isRequired,
   card: PropTypes.object,
 };
 
