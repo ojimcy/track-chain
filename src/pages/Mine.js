@@ -46,6 +46,9 @@ function Mine() {
     fetchCards();
   }, []);
 
+  console.log('new card', cards);
+  
+
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };

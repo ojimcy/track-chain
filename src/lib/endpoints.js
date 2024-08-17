@@ -19,4 +19,4 @@ export const SAVETAPS = () => `${ROOT}/save-taps`;
 export const DAILYREWARD = () => `${ROOT}/user/claim-daily-reward`;
 export const UPGRAD_CARD = () => `${ROOT}/card/upgrade`;
 export const GET_CARDS = () => `${ROOT}/cards`;
-export const GET_USER_CARDS = () => `${ROOT}/user/cards`;
+export const GET_USER_CARDS = () => `${ROOT}/user-cards`;
