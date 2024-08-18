@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
-import Confetti from 'react-confetti';
 import { Col, Container, Row } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { FaBolt } from 'react-icons/fa';
@@ -24,6 +23,7 @@ import { formatBalance } from '../utils/formatBalance';
 import CountdownTimer from '../components/common/CountdownTimer';
 import ClaimTokensModal from '../components/modals/ClaimMinedTokensModal';
 import { toast } from 'react-toastify';
+import CustomConfetti from '../components/common/CustomConfetti';
 
 function Tap() {
   const { levels } = data;
@@ -32,6 +32,7 @@ function Tap() {
   const telegramUser = useTelegramUser();
   const { taps, setTaps } = useContext(WebappContext);
   const [balance, setBalance] = useState(currentUser.balance);
+  const [animatedBalance, setAnimatedBalance] = useState(currentUser.balance); // New animated balance state
   const [energy, setEnergy] = useState(currentUser.energyLimit);
   const [rewardModal, setRewardModal] = useState(false);
   const [claimModal, setClaimModal] = useState(false);
@@ -44,7 +45,6 @@ function Tap() {
   const currentLevel = levels.find((lvl) => lvl.level === currentUser.levelId);
   const duration = 24 * 60 * 60 * 1000;
 
-  // Throttle time for user inactivity (3 seconds)
   const inactivityTimeout = 3000;
   let inactivityTimer = null;
 
@@ -57,7 +57,6 @@ function Tap() {
     }
   }, [telegramUser, setUser]);
 
-  // Fetch the total mined tokens when the modal opens
   const fetchMinedTokens = useCallback(async () => {
     try {
       setLoading(true);
@@ -95,38 +94,30 @@ function Tap() {
         const rect = event.target.getBoundingClientRect();
         const x = touch.clientX - rect.left;
         const y = touch.clientY - rect.top;
-        const newTapId = Date.now() + i; // Unique ID for each touch
+        const newTapId = Date.now() + i;
 
-        // Add tap to the array
         newTaps.push({ id: newTapId, x, y, progress: 0 });
-
-        // Update balance and score for each tap
         energyUsed += currentUser.multiTap;
       }
 
-      // Apply updates in bulk for performance
       setBalance((prevBalance) => prevBalance + energyUsed);
       setScore((prevScore) => prevScore + energyUsed);
       setEnergy((prevEnergy) => prevEnergy - energyUsed);
       setTaps((prevTaps) => [...prevTaps, ...newTaps]);
 
-      // Start animations for each touch point
       newTaps.forEach((tap) => animateTap(tap.x, tap.y, tap.id));
-
-      // Reset inactivity timer
       resetInactivityTimer();
     }
   };
 
   const animateTap = (x, y, tapId) => {
-    const animationDuration = 1000; // 1 second
+    const animationDuration = 1000;
     const startTime = performance.now();
 
     const updateAnimation = (currentTime) => {
       const elapsedTime = currentTime - startTime;
       const progress = Math.min(elapsedTime / animationDuration, 1);
 
-      // Update the animation state
       setTaps((prevTaps) =>
         prevTaps.map((tap) => (tap.id === tapId ? { ...tap, progress } : tap))
       );
@@ -134,7 +125,6 @@ function Tap() {
       if (progress < 1) {
         requestAnimationFrame(updateAnimation);
       } else {
-        // Remove the tap after the animation completes
         setTaps((prevTaps) => prevTaps.filter((tap) => tap.id !== tapId));
       }
     };
@@ -191,17 +181,37 @@ function Tap() {
     };
   }, [saveScores]);
 
-  // Open the claim modal when the page loads
   useEffect(() => {
     setClaimModal(true);
   }, []);
 
-  // Handle claiming the tokens
+  const animateBalanceIncrease = (start, end, duration) => {
+    const startTime = performance.now();
+
+    const animate = (currentTime) => {
+      const elapsedTime = currentTime - startTime;
+      const progress = Math.min(elapsedTime / duration, 1);
+      const newBalance = start + progress * (end - start);
+
+      setAnimatedBalance(newBalance);
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+
+    requestAnimationFrame(animate);
+  };
+
   const handleClaimTokens = async () => {
     try {
       setLoading(true);
       await claimTokens();
       fetchUserData();
+
+      const newBalance = balance + minedTokens; // Calculated final balance after claiming
+      animateBalanceIncrease(balance, newBalance, 2000); // Animate over 2 seconds
+
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 3000);
       toggleClaimModal();
@@ -216,26 +226,14 @@ function Tap() {
   return (
     <div className="mining-page mt-3">
       {showConfetti && (
-        <Confetti
-          drawShape={(ctx) => {
-            ctx.beginPath();
-            for (let i = 0; i < 22; i++) {
-              const angle = 0.35 * i;
-              const x = (0.2 + 1.5 * angle) * Math.cos(angle);
-              const y = (0.2 + 1.5 * angle) * Math.sin(angle);
-              ctx.lineTo(x, y);
-            }
-            ctx.stroke();
-            ctx.closePath();
-          }}
-        />
+        <CustomConfetti />
       )}
       <Container>
         <div className="mining-content">
           <div className="balance d-flex align-items-center">
             <img src={dollar} alt="Dollar Icon" width={50} />
             <span className="earnings">
-              {balance && formatBalance(balance)}
+              {animatedBalance && formatBalance(animatedBalance)}
             </span>
           </div>
 
