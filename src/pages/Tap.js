@@ -49,13 +49,8 @@ function Tap() {
     }
   }, [telegramUser, setUser]);
 
-  useEffect(() => {
-    if (telegramUser) {
-      fetchUserData();
-    }
-  }, [telegramUser, fetchUserData]);
-
   const handleClaimSuccess = () => {
+    fetchUserData();
     setShowConfetti(true);
     setTimeout(() => setShowConfetti(false), 3000);
   };
@@ -293,8 +288,7 @@ function Tap() {
         <ClaimTokensModal
           isOpen={claimModal}
           toggle={toggleClaimModal}
-          userData={fetchUserData}
-          onClaimSuccess={handleClaimSuccess} 
+          onClaimSuccess={handleClaimSuccess}
         />
       )}
     </div>

@@ -8,7 +8,7 @@ import { formatBalance } from '../../utils/formatBalance';
 import './modal.css';
 import dollar from '../../assets/images/dollar.png';
 
-const ClaimTokensModal = ({ isOpen, toggle, userData, onClaimSuccess }) => {
+const ClaimTokensModal = ({ isOpen, toggle, onClaimSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [minedTokens, setMinedTokens] = useState(0);
   const [loadingClaim, setLoadingClaim] = useState(false);
@@ -40,7 +40,6 @@ const ClaimTokensModal = ({ isOpen, toggle, userData, onClaimSuccess }) => {
       setLoadingClaim(true);
       await claimTokens();
       setMinedTokens(0);
-      userData();
       toggle();
       onClaimSuccess()
     } catch (error) {
@@ -90,7 +89,6 @@ const ClaimTokensModal = ({ isOpen, toggle, userData, onClaimSuccess }) => {
 ClaimTokensModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
-  userData: PropTypes.func.isRequired,
   onClaimSuccess: PropTypes.func.isRequired,
   telegramUser: PropTypes.object.isRequired,
 };
