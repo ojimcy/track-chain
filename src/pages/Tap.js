@@ -233,7 +233,7 @@ function Tap() {
 
   const handlePuzzleClick = () => {
     toast.success(
-      `Coming soon!!! ${(<CountdownTimer duration={puzzleDuration} />)}`,
+      `Coming soon!!!`,
       {
         position: 'top-right',
         autoClose: 3000,
