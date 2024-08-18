@@ -32,7 +32,7 @@ function Tap() {
   const telegramUser = useTelegramUser();
   const { taps, setTaps } = useContext(WebappContext);
   const [balance, setBalance] = useState(currentUser.balance);
-  const [animatedBalance, setAnimatedBalance] = useState(currentUser.balance); 
+  const [animatedBalance, setAnimatedBalance] = useState(currentUser.balance);
   const [energy, setEnergy] = useState(currentUser.energyLimit);
   const [rewardModal, setRewardModal] = useState(false);
   const [claimModal, setClaimModal] = useState(false);
@@ -44,6 +44,7 @@ function Tap() {
 
   const currentLevel = levels.find((lvl) => lvl.level === currentUser.levelId);
   const duration = 24 * 60 * 60 * 1000;
+  const puzzleDuration = 72 * 60 * 60 * 1000;
 
   const inactivityTimeout = 3000;
   let inactivityTimer = null;
@@ -193,7 +194,7 @@ function Tap() {
       const progress = Math.min(elapsedTime / duration, 1);
       const newBalance = start + progress * (end - start);
 
-      setAnimatedBalance(newBalance.toFixed(2));
+      setAnimatedBalance(newBalance.toFixed(0));
 
       if (progress < 1) {
         requestAnimationFrame(animate);
@@ -209,8 +210,8 @@ function Tap() {
       await claimTokens();
       fetchUserData();
 
-      const newBalance = balance + minedTokens; // Calculated final balance after claiming
-      animateBalanceIncrease(balance, newBalance, 2000); // Animate over 2 seconds
+      const newBalance = balance + minedTokens;
+      animateBalanceIncrease(balance, newBalance, 2000);
 
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 3000);
@@ -223,11 +224,21 @@ function Tap() {
     }
   };
 
+  const handlePuzzleClick = () => {
+    toast.success(
+      `Coming soon!!! ${(<CountdownTimer duration={puzzleDuration} />)}`,
+      {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+      }
+    );
+  };
+
   return (
     <div className="mining-page mt-3">
-      {showConfetti && (
-        <CustomConfetti />
-      )}
+      {showConfetti && <CustomConfetti />}
       <Container>
         <div className="mining-content">
           <div className="balance d-flex align-items-center">
@@ -250,23 +261,23 @@ function Tap() {
               </Link>
             </Col>
             <Col>
-              <Link to="/daily-combo" className="top-link">
+              <Link onClick={handlePuzzleClick} className="top-link">
                 <div className="link-content d-flex align-items-center">
                   <img src={puzzle} alt="Daily Combo" />
                   <span className="link-title">Word Puzzle</span>
                   <span className="timer">
-                    <CountdownTimer duration={duration} />
+                    <CountdownTimer duration={puzzleDuration} />
                   </span>
                 </div>
               </Link>
             </Col>
             <Col>
-              <Link to="/daily-combo" className="top-link">
+              <Link onClick={handlePuzzleClick} className="top-link">
                 <div className="link-content d-flex align-items-center">
                   <img src={cal} alt="Daily Combo" />
                   <span className="link-title">Daily Combo</span>
                   <span className="timer">
-                    <CountdownTimer duration={duration} />
+                    <CountdownTimer duration={puzzleDuration} />
                   </span>
                 </div>
               </Link>
