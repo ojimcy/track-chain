@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
+import Confetti from 'react-confetti';
 import { Col, Container, Row } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { FaBolt } from 'react-icons/fa';
@@ -22,13 +23,15 @@ function Tap() {
   const { levels } = data;
   const { setUser } = useContext(WebappContext);
   const currentUser = useCurrentUser();
-  const telegramUser = useTelegramUser()
+  const telegramUser = useTelegramUser();
   const { taps, setTaps } = useContext(WebappContext);
   const [balance, setBalance] = useState(currentUser.balance);
   const [energy, setEnergy] = useState(currentUser.energyLimit);
   const [rewardModal, setRewardModal] = useState(false);
-  const [claimModal, setClaimModal] = useState(false); 
+  const [claimModal, setClaimModal] = useState(false);
   const [score, setScore] = useState(0);
+
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const currentLevel = levels.find((lvl) => lvl.level === currentUser.levelId);
   const duration = 24 * 60 * 60 * 1000;
@@ -36,7 +39,6 @@ function Tap() {
   // Throttle time for user inactivity (3 seconds)
   const inactivityTimeout = 3000;
   let inactivityTimer = null;
-
 
   const fetchUserData = useCallback(async () => {
     try {
@@ -52,6 +54,11 @@ function Tap() {
       fetchUserData();
     }
   }, [telegramUser, fetchUserData]);
+
+  const handleClaimSuccess = () => {
+    setShowConfetti(true);
+    setTimeout(() => setShowConfetti(false), 3000);
+  };
 
   const toggleRewardModal = useCallback(() => {
     setRewardModal((prev) => !prev);
@@ -176,6 +183,21 @@ function Tap() {
 
   return (
     <div className="mining-page mt-3">
+      {showConfetti && (
+        <Confetti
+          drawShape={(ctx) => {
+            ctx.beginPath();
+            for (let i = 0; i < 22; i++) {
+              const angle = 0.35 * i;
+              const x = (0.2 + 1.5 * angle) * Math.cos(angle);
+              const y = (0.2 + 1.5 * angle) * Math.sin(angle);
+              ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            ctx.closePath();
+          }}
+        />
+      )}
       <Container>
         <div className="mining-content">
           <div className="balance d-flex align-items-center">
@@ -272,6 +294,7 @@ function Tap() {
           isOpen={claimModal}
           toggle={toggleClaimModal}
           userData={fetchUserData}
+          onClaimSuccess={handleClaimSuccess} 
         />
       )}
     </div>
