@@ -1,10 +1,12 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import Confetti from 'react-confetti';
 
 import dollar from '../../assets/images/dollar.png'
 
 function ReactConfetti() {
   const imageRef = useRef(null);
+  const [confettiWidth, setConfettiWidth] = useState(window.innerWidth);
+  const [confettiHeight, setConfettiHeight] = useState(0);
 
   useEffect(() => {
     const img = new Image();
@@ -12,17 +14,25 @@ function ReactConfetti() {
     img.onload = () => {
       imageRef.current = img;
     };
+
+    // Animate width and height
+    const interval = setInterval(() => {
+      setConfettiWidth((prevWidth) => Math.max(0, prevWidth - 10)); 
+      setConfettiHeight((prevHeight) => Math.min(window.innerHeight, prevHeight + 10)); 
+    }, 100);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
     <Confetti
-      width={window.innerWidth} // Start from full width
-      height={window.innerHeight} // Set height to window height
+      width={window.innerWidth} // Full screen width
+      height={confettiHeight} // Animate height upwards
       numberOfPieces={200} // Adjust the number of confetti pieces
-      recycle={false} // Confetti will fall once and disappear
-      gravity={0.3} // Adjust gravity to control falling speed
-      initialVelocityY={-20} 
-      wind={0} 
+      recycle={false} // Confetti will rise once and disappear
+      gravity={-0.3} // Negative gravity to make confetti rise
+      initialVelocityY={20} // Velocity to push confetti upwards
+      wind={0} // No horizontal movement initially
       drawShape={(ctx) => {
         if (imageRef.current) {
           const size = 20; 
@@ -34,12 +44,7 @@ function ReactConfetti() {
           ctx.fill();
         }
       }}
-      confettiSource={{
-        x: 0,
-        y: window.innerHeight,
-        w: window.innerWidth,
-        h: 0,
-      }}
+      confettiSource={{ x: 0, y: window.innerHeight, w: confettiWidth, h: 0 }}
     />
   );
 }
