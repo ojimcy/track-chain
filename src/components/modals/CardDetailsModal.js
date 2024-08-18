@@ -7,7 +7,7 @@ import dollar from '../../assets/images/dollar.png';
 import { formatBalance } from '../../utils/formatBalance';
 import { upgradeCard } from '../../lib/server';
 import { toast } from 'react-toastify';
-import Confetti from 'react-confetti';
+import CustomConfetti from '../common/CustomConfetti';
 
 const CardDetailsModal = ({ isOpen, toggle, card, fetchUserData }) => {
   const [showConfetti, setShowConfetti] = useState(false);
@@ -49,19 +49,7 @@ const CardDetailsModal = ({ isOpen, toggle, card, fetchUserData }) => {
   return (
     <Modal isOpen={isOpen} toggle={toggle} className="main-modal">
       {showConfetti && (
-        <Confetti
-          drawShape={(ctx) => {
-            ctx.beginPath();
-            for (let i = 0; i < 22; i++) {
-              const angle = 0.35 * i;
-              const x = (0.2 + 1.5 * angle) * Math.cos(angle);
-              const y = (0.2 + 1.5 * angle) * Math.sin(angle);
-              ctx.lineTo(x, y);
-            }
-            ctx.stroke();
-            ctx.closePath();
-          }}
-        />
+       <CustomConfetti />
       )}
       <ModalHeader toggle={toggle} className="card-modal-header"></ModalHeader>
       <ModalBody className="text-center">

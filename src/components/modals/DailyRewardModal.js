@@ -8,11 +8,11 @@ import dollar from '../../assets/images/dollar.png';
 import { formatBalanceShort } from '../../utils/formatBalance';
 import { FaCheck } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import Confetti from 'react-confetti';
 import { useCurrentUser, useTelegramUser } from '../../hooks/telegram';
 import { claimDailyReward, getUserByTelegramID } from '../../lib/server';
 import { WebappContext } from '../../context/telegram';
 import { toast } from 'react-toastify';
+import CustomConfetti from '../common/CustomConfetti';
 
 const dailyRewards = [
   { day: 1, amount: '500' },
@@ -93,19 +93,7 @@ function DailyRewardModal({ isOpen, toggle }) {
   return (
     <Modal isOpen={isOpen} toggle={toggle} className="daily-reward-modal">
       {showConfetti && (
-        <Confetti
-          drawShape={(ctx) => {
-            ctx.beginPath();
-            for (let i = 0; i < 22; i++) {
-              const angle = 0.35 * i;
-              const x = (0.2 + 1.5 * angle) * Math.cos(angle);
-              const y = (0.2 + 1.5 * angle) * Math.sin(angle);
-              ctx.lineTo(x, y);
-            }
-            ctx.stroke();
-            ctx.closePath();
-          }}
-        />
+        <CustomConfetti />
       )}
       <ModalHeader toggle={toggle}></ModalHeader>
       <ModalBody>
