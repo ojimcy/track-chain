@@ -1,47 +1,28 @@
-import React, { useState, useEffect, useCallback } from 'react';
+/* eslint-disable react/prop-types */
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, ModalHeader, ModalBody, Button, Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
-import { getMinedTokens, claimTokens } from '../../lib/server';
 import { formatBalance } from '../../utils/formatBalance';
 
 import './modal.css';
 import dollar from '../../assets/images/dollar.png';
 
-const ClaimTokensModal = ({ isOpen, toggle, onClaimSuccess }) => {
-  const [loading, setLoading] = useState(false);
-  const [minedTokens, setMinedTokens] = useState(0);
+const ClaimTokensModal = ({
+  isOpen,
+  toggle,
+  onClaimSuccess,
+  loading,
+  minedTokens,
+}) => {
   const [loadingClaim, setLoadingClaim] = useState(false);
-
-  // Fetch the total mined tokens when the modal opens
-  const fetchMinedTokens = useCallback(async () => {
-    try {
-      setLoading(true);
-      const response = await getMinedTokens();
-      setMinedTokens(response.minedTokens);
-      console.log('to claim', response);
-    } catch (error) {
-      console.error('Error fetching mined tokens:', error);
-      toast.error('Failed to fetch mined tokens');
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (isOpen) {
-      fetchMinedTokens();
-    }
-  }, [isOpen, fetchMinedTokens]);
 
   // Handle claiming the tokens
   const handleClaimTokens = async () => {
     try {
       setLoadingClaim(true);
-      await claimTokens();
-      setMinedTokens(0);
       toggle();
-      onClaimSuccess()
+      onClaimSuccess();
     } catch (error) {
       console.error('Error claiming tokens:', error);
       toast.error('Failed to claim tokens');
@@ -88,6 +69,7 @@ const ClaimTokensModal = ({ isOpen, toggle, onClaimSuccess }) => {
 
 ClaimTokensModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
   onClaimSuccess: PropTypes.func.isRequired,
   telegramUser: PropTypes.object.isRequired,

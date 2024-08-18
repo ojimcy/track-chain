@@ -14,10 +14,11 @@ import data from '../hooks/demo_data';
 import DailyRewardModal from '../components/modals/DailyRewardModal';
 import { useCurrentUser, useTelegramUser } from '../hooks/telegram';
 import { WebappContext } from '../context/telegram';
-import { getUserByTelegramID, saveTaps } from '../lib/server';
+import { getMinedTokens, getUserByTelegramID, saveTaps } from '../lib/server';
 import { formatBalance } from '../utils/formatBalance';
 import CountdownTimer from '../components/common/CountdownTimer';
 import ClaimTokensModal from '../components/modals/ClaimMinedTokensModal';
+import { toast } from 'react-toastify';
 
 function Tap() {
   const { levels } = data;
@@ -32,6 +33,8 @@ function Tap() {
   const [score, setScore] = useState(0);
 
   const [showConfetti, setShowConfetti] = useState(false);
+  const [minedTokens, setMinedTokens] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const currentLevel = levels.find((lvl) => lvl.level === currentUser.levelId);
   const duration = 24 * 60 * 60 * 1000;
@@ -48,6 +51,25 @@ function Tap() {
       console.error('Failed to fetch user data:', error);
     }
   }, [telegramUser, setUser]);
+
+  // Fetch the total mined tokens when the modal opens
+  const fetchMinedTokens = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await getMinedTokens();
+      setMinedTokens(response.minedTokens);
+      console.log('to claim', response);
+    } catch (error) {
+      console.error('Error fetching mined tokens:', error);
+      toast.error('Failed to fetch mined tokens');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchMinedTokens();
+  }, [fetchMinedTokens]);
 
   const handleClaimSuccess = () => {
     fetchUserData();
@@ -173,7 +195,7 @@ function Tap() {
 
   // Open the claim modal when the page loads
   useEffect(() => {
-    setClaimModal(true);
+    minedTokens && setClaimModal(true);
   }, []);
 
   return (
@@ -289,6 +311,8 @@ function Tap() {
           isOpen={claimModal}
           toggle={toggleClaimModal}
           onClaimSuccess={handleClaimSuccess}
+          minedTokens={minedTokens}
+          loading={loading}
         />
       )}
     </div>
