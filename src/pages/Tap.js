@@ -101,7 +101,14 @@ function Tap() {
         energyUsed += currentUser.multiTap;
       }
 
-      setBalance((prevBalance) => prevBalance + energyUsed);
+      // Calculate the new balance based on energy used
+      const newBalance = balance + energyUsed;
+
+      // Animate the balance increase
+      animateBalanceIncrease(balance, newBalance, 2000);
+
+      // Update the state with the new values
+      setBalance(newBalance);
       setScore((prevScore) => prevScore + energyUsed);
       setEnergy((prevEnergy) => prevEnergy - energyUsed);
       setTaps((prevTaps) => [...prevTaps, ...newTaps]);

@@ -36,7 +36,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "deploy": "aws s3 sync build/ s3://trackchain --profile mcgp",
+    "deploy": "aws s3 sync build/ s3://shrek.moonwifhat.fun --profile mcgp",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build"
