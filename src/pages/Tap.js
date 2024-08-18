@@ -11,16 +11,18 @@ import rocket from '../assets/images/rocket.png';
 import puzzle from '../assets/images/puzzle.png';
 import data from '../hooks/demo_data';
 import DailyRewardModal from '../components/modals/DailyRewardModal';
-import { useCurrentUser } from '../hooks/telegram';
+import { useCurrentUser, useTelegramUser } from '../hooks/telegram';
 import { WebappContext } from '../context/telegram';
-import { saveTaps } from '../lib/server';
+import { getUserByTelegramID, saveTaps } from '../lib/server';
 import { formatBalance } from '../utils/formatBalance';
 import CountdownTimer from '../components/common/CountdownTimer';
 import ClaimTokensModal from '../components/modals/ClaimMinedTokensModal';
 
 function Tap() {
   const { levels } = data;
+  const { setUser } = useContext(WebappContext);
   const currentUser = useCurrentUser();
+  const telegramUser = useTelegramUser()
   const { taps, setTaps } = useContext(WebappContext);
   const [balance, setBalance] = useState(currentUser.balance);
   const [energy, setEnergy] = useState(currentUser.energyLimit);
@@ -34,6 +36,22 @@ function Tap() {
   // Throttle time for user inactivity (3 seconds)
   const inactivityTimeout = 3000;
   let inactivityTimer = null;
+
+
+  const fetchUserData = useCallback(async () => {
+    try {
+      const user = await getUserByTelegramID(telegramUser.id);
+      setUser(user);
+    } catch (error) {
+      console.error('Failed to fetch user data:', error);
+    }
+  }, [telegramUser, setUser]);
+
+  useEffect(() => {
+    if (telegramUser) {
+      fetchUserData();
+    }
+  }, [telegramUser, fetchUserData]);
 
   const toggleRewardModal = useCallback(() => {
     setRewardModal((prev) => !prev);
@@ -253,6 +271,7 @@ function Tap() {
         <ClaimTokensModal
           isOpen={claimModal}
           toggle={toggleClaimModal}
+          userData={fetchUserData}
         />
       )}
     </div>
