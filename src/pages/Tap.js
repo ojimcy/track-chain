@@ -194,9 +194,7 @@ function Tap() {
 
   // Open the claim modal when the page loads
   useEffect(() => {
-    if (minedTokens) {
-      setClaimModal(true);
-    }
+    setClaimModal(true);
   }, []);
 
   return (
