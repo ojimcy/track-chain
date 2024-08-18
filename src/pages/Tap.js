@@ -32,7 +32,7 @@ function Tap() {
   const telegramUser = useTelegramUser();
   const { taps, setTaps } = useContext(WebappContext);
   const [balance, setBalance] = useState(currentUser.balance);
-  const [animatedBalance, setAnimatedBalance] = useState(currentUser.balance); // New animated balance state
+  const [animatedBalance, setAnimatedBalance] = useState(currentUser.balance); 
   const [energy, setEnergy] = useState(currentUser.energyLimit);
   const [rewardModal, setRewardModal] = useState(false);
   const [claimModal, setClaimModal] = useState(false);
@@ -193,7 +193,7 @@ function Tap() {
       const progress = Math.min(elapsedTime / duration, 1);
       const newBalance = start + progress * (end - start);
 
-      setAnimatedBalance(newBalance);
+      setAnimatedBalance(newBalance.toFixed(2));
 
       if (progress < 1) {
         requestAnimationFrame(animate);
