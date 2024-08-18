@@ -58,7 +58,6 @@ function Tap() {
       setLoading(true);
       const response = await getMinedTokens();
       setMinedTokens(response.minedTokens);
-      console.log('to claim', response);
     } catch (error) {
       console.error('Error fetching mined tokens:', error);
       toast.error('Failed to fetch mined tokens');
@@ -195,7 +194,9 @@ function Tap() {
 
   // Open the claim modal when the page loads
   useEffect(() => {
-    minedTokens && setClaimModal(true);
+    if (minedTokens) {
+      setClaimModal(true);
+    }
   }, []);
 
   return (
