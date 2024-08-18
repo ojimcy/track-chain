@@ -14,7 +14,12 @@ import data from '../hooks/demo_data';
 import DailyRewardModal from '../components/modals/DailyRewardModal';
 import { useCurrentUser, useTelegramUser } from '../hooks/telegram';
 import { WebappContext } from '../context/telegram';
-import { getMinedTokens, getUserByTelegramID, saveTaps } from '../lib/server';
+import {
+  claimTokens,
+  getMinedTokens,
+  getUserByTelegramID,
+  saveTaps,
+} from '../lib/server';
 import { formatBalance } from '../utils/formatBalance';
 import CountdownTimer from '../components/common/CountdownTimer';
 import ClaimTokensModal from '../components/modals/ClaimMinedTokensModal';
@@ -69,12 +74,6 @@ function Tap() {
   useEffect(() => {
     fetchMinedTokens();
   }, [fetchMinedTokens]);
-
-  const handleClaimSuccess = () => {
-    fetchUserData();
-    setShowConfetti(true);
-    setTimeout(() => setShowConfetti(false), 3000);
-  };
 
   const toggleRewardModal = useCallback(() => {
     setRewardModal((prev) => !prev);
@@ -197,6 +196,23 @@ function Tap() {
     setClaimModal(true);
   }, []);
 
+  // Handle claiming the tokens
+  const handleClaimTokens = async () => {
+    try {
+      setLoading(true);
+      await claimTokens();
+      fetchUserData();
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 3000);
+      toggleClaimModal();
+    } catch (error) {
+      console.error('Error claiming tokens:', error);
+      toast.error('Failed to claim tokens');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="mining-page mt-3">
       {showConfetti && (
@@ -309,7 +325,7 @@ function Tap() {
         <ClaimTokensModal
           isOpen={claimModal}
           toggle={toggleClaimModal}
-          onClaimSuccess={handleClaimSuccess}
+          handleClaim={handleClaimTokens}
           minedTokens={minedTokens}
           loading={loading}
         />
