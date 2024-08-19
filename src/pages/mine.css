@@ -182,7 +182,10 @@
   transform: scale(1.05);
 }
 
-
 .insufficient {
   color: #b9a1a1;
+}
+
+.card-modal-image {
+  width: 100%;
 }

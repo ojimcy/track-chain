@@ -54,7 +54,7 @@ const CardDetailsModal = ({ isOpen, toggle, card, fetchUserData }) => {
       <ModalHeader toggle={toggle} className="card-modal-header"></ModalHeader>
       <ModalBody className="text-center">
         <div className="card-image-wrapper mb-3">
-          <img src={card.image} alt={card.name} className="card-image" />
+          <img src={card.image} alt={card.name} className="card-modal-image" />
         </div>
         <h4>{card.name}</h4>
         <p className="card-description">{card.description}</p>

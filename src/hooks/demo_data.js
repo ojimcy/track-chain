@@ -9,12 +9,36 @@ import lvl8 from '../assets/images/lvl8.png';
 import lvl9 from '../assets/images/lvl9.png';
 import lvl10 from '../assets/images/lvl10.png';
 
-import placeholder from '../assets/images/placeholder.png';
+// import placeholder from '../assets/images/placeholder.png';
 
 import card1 from '../assets/images/card1.png';
 import card2 from '../assets/images/card2.png';
+import card3 from '../assets/images/card3.png';
 import card4 from '../assets/images/card4.png';
 import card5 from '../assets/images/card5.png';
+import card6 from '../assets/images/card6.png';
+import card7 from '../assets/images/card7.png';
+import card8 from '../assets/images/card8.png';
+import card9 from '../assets/images/card9.png';
+import card10 from '../assets/images/card10.png';
+import card11 from '../assets/images/card11.png';
+import card12 from '../assets/images/card12.png';
+import card13 from '../assets/images/card13.png';
+import card14 from '../assets/images/card14.png';
+import card15 from '../assets/images/card15.png';
+import card16 from '../assets/images/card16.png';
+import card17 from '../assets/images/card17.png';
+import card18 from '../assets/images/card18.png';
+import card19 from '../assets/images/card19.png';
+import card20 from '../assets/images/card20.png';
+import card21 from '../assets/images/card21.png';
+import card22 from '../assets/images/card22.png';
+import card23 from '../assets/images/card23.png';
+import card24 from '../assets/images/card24.png';
+import card25 from '../assets/images/card25.png';
+import card26 from '../assets/images/card26.png';
+import card27 from '../assets/images/card27.png';
+import card28 from '../assets/images/card28.png';
 
 const data = {
   user: {
@@ -101,7 +125,7 @@ const data = {
       requirements: true,
       category: 'Tokenization',
       maxLevel: 50,
-      image: placeholder,
+      image: card3,
     },
     {
       id: 4,
@@ -131,7 +155,7 @@ const data = {
       requirements: true,
       category: 'Tokenization',
       maxLevel: 50,
-      image: placeholder,
+      image: card6,
     },
     {
       id: 7,
@@ -141,7 +165,7 @@ const data = {
       requirements: true,
       category: 'Tokenization',
       maxLevel: 50,
-      image: placeholder,
+      image: card7,
     },
     {
       id: 8,
@@ -151,7 +175,7 @@ const data = {
       requirements: true,
       category: 'Tokenization',
       maxLevel: 50,
-      image: placeholder,
+      image: card8,
     },
     {
       id: 9,
@@ -161,7 +185,7 @@ const data = {
       requirements: true,
       category: 'Marketplace',
       maxLevel: '50',
-      image: placeholder,
+      image: card9,
     },
     {
       id: 10,
@@ -171,7 +195,7 @@ const data = {
       requirements: null,
       category: 'Marketplace',
       maxLevel: 50,
-      image: placeholder,
+      image: card10,
     },
     {
       id: 11,
@@ -181,7 +205,7 @@ const data = {
       requirements: null,
       category: 'Marketplace',
       maxLevel: 50,
-      image: placeholder,
+      image: card11,
     },
     {
       id: 12,
@@ -191,7 +215,7 @@ const data = {
       requirements: null,
       category: 'Marketplace',
       maxLevel: 50,
-      image: placeholder,
+      image: card12,
     },
     {
       id: 13,
@@ -201,7 +225,7 @@ const data = {
       requirements: null,
       category: 'Marketplace',
       maxLevel: 50,
-      image: placeholder,
+      image: card13,
     },
     {
       id: 14,
@@ -211,7 +235,7 @@ const data = {
       requirements: null,
       category: 'Marketplace',
       maxLevel: 50,
-      image: placeholder,
+      image: card14,
     },
     {
       id: 15,
@@ -221,7 +245,7 @@ const data = {
       requirements: null,
       category: 'Marketplace',
       maxLevel: 50,
-      image: placeholder,
+      image: card15,
     },
     {
       id: 16,
@@ -231,7 +255,7 @@ const data = {
       requirements: null,
       category: 'Marketplace',
       maxLevel: 50,
-      image: placeholder,
+      image: card16,
     },
     {
       id: 17,
@@ -241,7 +265,7 @@ const data = {
       requirements: null,
       category: 'Marketplace',
       maxLevel: 50,
-      image: placeholder,
+      image: card17,
     },
     {
       id: 18,
@@ -251,7 +275,7 @@ const data = {
       requirements: null,
       category: 'Marketplace',
       maxLevel: 50,
-      image: placeholder,
+      image: card18,
     },
     {
       id: 19,
@@ -261,7 +285,7 @@ const data = {
       requirements: null,
       category: 'Marketplace',
       maxLevel: 50,
-      image: placeholder,
+      image: card19,
     },
     {
       id: 20,
@@ -271,7 +295,7 @@ const data = {
       requirements: true,
       category: 'Web3',
       maxLevel: '50',
-      image: placeholder,
+      image: card20,
     },
     {
       id: 21,
@@ -281,7 +305,7 @@ const data = {
       requirements: null,
       category: 'Web3',
       maxLevel: '50',
-      image: placeholder,
+      image: card21,
     },
     {
       id: 22,
@@ -291,7 +315,7 @@ const data = {
       requirements: null,
       category: 'Web3',
       maxLevel: '50',
-      image: placeholder,
+      image: card22,
     },
     {
       id: 23,
@@ -301,7 +325,7 @@ const data = {
       requirements: true,
       category: 'Web3',
       maxLevel: '50',
-      image: placeholder,
+      image: card23,
     },
 
     {
@@ -312,7 +336,7 @@ const data = {
       requirements: true,
       category: 'Web3',
       maxLevel: '50',
-      image: placeholder,
+      image: card24,
     },
 
     {
@@ -323,7 +347,7 @@ const data = {
       requirements: true,
       category: 'Web3',
       maxLevel: '50',
-      image: placeholder,
+      image: card25,
     },
     {
       id: 26,
@@ -333,7 +357,7 @@ const data = {
       requirements: null,
       category: 'Track',
       maxLevel: '50',
-      image: placeholder,
+      image: card26,
     },
     {
       id: 27,
@@ -343,7 +367,7 @@ const data = {
       requirements: true,
       category: 'Track',
       maxLevel: '50',
-      image: placeholder,
+      image: card27,
     },
     {
       id: 28,
@@ -353,7 +377,7 @@ const data = {
       requirements: null,
       category: 'Track',
       maxLevel: '50',
-      image: placeholder,
+      image: card28,
     },
   ],
 
