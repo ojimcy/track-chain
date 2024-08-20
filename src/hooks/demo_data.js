@@ -32,7 +32,7 @@ import card18 from '../assets/images/card18.png';
 import card19 from '../assets/images/card19.png';
 import card20 from '../assets/images/card20.png';
 import card21 from '../assets/images/card21.png';
-import card22 from '../assets/images/card22.jpg';
+import card22 from '../assets/images/card22.jpeg';
 import card23 from '../assets/images/card23.jpg';
 import card24 from '../assets/images/card24.png';
 import card25 from '../assets/images/card25.png';
