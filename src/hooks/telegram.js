@@ -77,5 +77,5 @@ export const computeTokensToCliam = (currentUser) => {
 
 export const useReferralLink = (currentUser) => {
   if (!currentUser) return '';
-  return `https://t.me/TrackChain_Shrek_bot?start=${currentUser.telegramId}`;
+  return `https://t.me/TrackChain_Shrek_bot/app?startapp=${currentUser.telegramId}`;
 };
