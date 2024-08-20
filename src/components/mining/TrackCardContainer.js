@@ -1,16 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { formatBalanceShort } from '../../utils/formatBalance';
+import CardDetailsModal from '../modals/CardDetailsModal';
+import dollar from '../../assets/images/dollar.png';
+import lock from '../../assets/images/lock.png';
 import { Col, Row } from 'reactstrap';
-import dollar from '../../assets/images/dollar.png'; // Assuming you have this image
 
-const TrackCardContainer = ({ cards }) => {
-  const getCardBackground = (id) => {
-    switch (id) {
-      case 26:
+import './card-container.css';
+
+const CardContainer = ({ cards, category, fetchCards }) => {
+  const [selectedCard, setSelectedCard] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const toggleModal = () => setIsModalOpen(!isModalOpen);
+
+  const handleCardClick = (card) => {
+    if (card.canUpgrade) {
+      setSelectedCard(card);
+      toggleModal();
+    }
+  };
+
+  const filteredCards = cards.filter((card) => card.category === category);
+
+  const getCardBackground = (category) => {
+    switch (category) {
+      case 'friendship':
         return 'bg-orange';
-      case 27:
+      case 'fight':
         return 'bg-blue';
-      case 28:
+      case 'support':
         return 'bg-green';
       default:
         return 'bg-default';
@@ -19,58 +38,105 @@ const TrackCardContainer = ({ cards }) => {
 
   return (
     <Row className="track-card-row">
-      {cards.map((card) => (
-        <Col xs={6} className="mb-4" key={card.id}>
+      {filteredCards.map((card) => (
+        <Col xs={6} className="mb-4 track-card-col" key={card.id}>
           <div
-            className={`track-card ${getCardBackground(card.id)}`}
-            style={{ borderRadius: '20px', padding: '15px' }}
+            className={`track-card ${
+              card.canUpgrade ? 'can-upgrade' : 'cannot-upgrade'
+            } ${getCardBackground(card.category)}`}
+            onClick={() => handleCardClick(card)}
+            style={{ cursor: card.canUpgrade ? 'pointer' : 'not-allowed' }}
           >
-            <div className="track-card-header text-center">
-              <img
-                src={card.image}
-                alt=""
-                style={{ borderRadius: '15px', width: '100%' }}
-              />
+            <div className="track-card-header p-1">
+              <div className="track-card-image">
+                {card.canUpgrade ? (
+                  <img src={card.image} alt="" />
+                ) : (
+                  <img src={lock} alt="" />
+                )}
+              </div>
+
+              <h5>{card.name}</h5>
             </div>
-            <div className="track-card-body text-center">
-              <h5 className="card-title mt-3">{card.name}</h5>
-              <p className="card-text">
-                Profit per hour{' '}
-                <span className="earnings-per-hour">+{card.profitPerHour}</span>
-              </p>
+            <div className="track-card-body">
+              <span
+                className={`mb-4 ${
+                  card.canUpgrade
+                    ? 'earn-per-hour-upgrade'
+                    : 'earn-per-hour-no-upgrade'
+                }`}
+              >
+                Earn/Hr:{' '}
+                <span className="earnings-per-hour">
+                  +
+                  {formatBalanceShort(
+                    card.hmr ? card.hmr * 0.5 : card.initialHMR * 0.5
+                  )}
+                </span>
+              </span>
+
               <hr
-                style={{ width: '100%', margin: '10px 0', borderColor: '#ccc' }}
+                style={{
+                  width: '100%',
+                  margin: '10px 0',
+                  borderColor: '#699635',
+                }}
               />
-              <div className="card-level mt-3 d-flex align-items-center justify-content-between">
+              <div
+                className={`card-level mt-1 d-flex align-items-center justify-content-center ${
+                  card.canUpgrade
+                    ? 'card-level-upgrade'
+                    : 'card-level-no-upgrade'
+                }`}
+              >
                 <div className="level">Lvl {card.level}</div>
+
+                {/* Vertical Line Separator */}
                 <div
+                  className="v-line"
                   style={{
-                    borderLeft: '1px solid #000',
-                    height: '20px',
+                    borderLeft: '1px solid #699635',
+                    height: '15px',
                     margin: '0 10px',
                   }}
-                ></div>
-                <div className="d-flex align-items-center">
-                  {card.canUpgrade ? (
-                    <>
-                      <img src={dollar} alt=" " width={20} />
-                      <span className="ml-2">{card.upgradeCost}</span>
-                    </>
-                  ) : (
-                    <span>{card.upgradeDisabledReason}</span>
-                  )}
-                </div>
+                />
+
+                {card.canUpgrade ? (
+                  <div className="d-flex align-items-center justify-content-between">
+                    <img src={dollar} alt=" " width={20} />
+                    {formatBalanceShort(
+                      card.upgradeCost
+                        ? card.upgradeCost
+                        : card.initialUpgradeCost
+                    )}
+                  </div>
+                ) : (
+                  <div className="upgrade-cost">
+                    {card.upgradeDisabledReason}
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </Col>
       ))}
+
+      {selectedCard && (
+        <CardDetailsModal
+          isOpen={isModalOpen}
+          toggle={toggleModal}
+          card={selectedCard}
+          fetchUserData={fetchCards}
+        />
+      )}
     </Row>
   );
 };
 
-TrackCardContainer.propTypes = {
+CardContainer.propTypes = {
   cards: PropTypes.array.isRequired,
+  category: PropTypes.string.isRequired,
+  fetchCards: PropTypes.func.isRequired,
 };
 
-export default TrackCardContainer;
+export default CardContainer;

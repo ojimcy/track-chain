@@ -1,22 +1,82 @@
+.mine-page .track-cards {
+  display: flex;
+  flex-direction: column;
+}
+
+.mine-page .track-card-row {
+  display: flex;
+  margin: 10px 0;
+}
+
+.track-card-row .track-card-col {
+  padding: 0 5px !important;
+}
+
+.mine-page .track-card {
+  border-radius: 25px;
+  padding: 10px 0;
+  text-align: center;
+  height: 187px;
+  width: 187px;
+  height: 232px;
+}
+
+.mine-page .track-card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.mine-page .track-card-header h5 {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 15.73px;
+}
+
+.earnings-per-hour {
+  color: #f0b90b;
+  font-weight: 700;
+}
+
+.mine-page .track-card-header .track-card-image {
+  margin-bottom: 5px;
+  width: 107px;
+  height: 114px;
+}
+
+.mine-page .track-card-body {
+  padding: 10px 0;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 12.1px;
+}
+
+.v-line {
+  border-left: '1px solid #000';
+  height: '20px';
+  margin: '0 10px';
+}
+
+.card-level .upgrade-cost {
+  font-size: 7px;
+  text-align: left;
+  line-height: 8px;
+  max-width: 65% !important;
+}
+
 .bg-orange {
-  background-color: #FF7F00;
+  background: linear-gradient(180deg, #fd7813 0%, #5b1405 100%);
 }
 
 .bg-blue {
-  background-color: #002B5B;
+  background: linear-gradient(180deg, #1e435e 0%, #150f10 100%);
 }
 
 .bg-green {
-  background-color: #3CB371;
+  background: linear-gradient(180deg, #e4dc98 0%, #3b3b26 100%);
 }
 
 .bg-default {
   background-color: #312d03;
-}
-
-.mine-card {
-  color: white;
-  padding: 15px;
-  border-radius: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
