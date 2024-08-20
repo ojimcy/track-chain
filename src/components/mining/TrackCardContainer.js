@@ -23,14 +23,14 @@ const CardContainer = ({ cards, category, fetchCards }) => {
 
   const filteredCards = cards.filter((card) => card.category === category);
 
-  const getCardBackground = (category) => {
-    switch (category) {
+  const getCardBackground = (id) => {
+    switch (id) {
       case 'friendship':
-        return 'bg-orange';
+        return 26;
       case 'fight':
-        return 'bg-blue';
+        return 27;
       case 'support':
-        return 'bg-green';
+        return 28;
       default:
         return 'bg-default';
     }
@@ -43,7 +43,7 @@ const CardContainer = ({ cards, category, fetchCards }) => {
           <div
             className={`track-card ${
               card.canUpgrade ? 'can-upgrade' : 'cannot-upgrade'
-            } ${getCardBackground(card.category)}`}
+            } ${getCardBackground(card.id)}`}
             onClick={() => handleCardClick(card)}
             style={{ cursor: card.canUpgrade ? 'pointer' : 'not-allowed' }}
           >
