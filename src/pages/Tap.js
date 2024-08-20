@@ -189,7 +189,7 @@ function Tap() {
   }, [saveScores]);
 
   useEffect(() => {
-    minedTokens && minedTokens > 0 && setClaimModal(true);
+    currentUser.hmr > 0 && setClaimModal(true);
   }, []);
 
   const animateBalanceIncrease = (start, end, duration) => {
