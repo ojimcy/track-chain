@@ -28,7 +28,7 @@ function Frens() {
   const [showAll, setShowAll] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const referralLink = `https://t.me/TrackChain_Shrek_bot/app/?start=${currentUser.telegramId}`
+  const referralLink = `https://t.me/TrackChain_Shrek_bot/?start=${currentUser.telegramId}`
 
   useEffect(() => {
     if (!telegramUser) return;

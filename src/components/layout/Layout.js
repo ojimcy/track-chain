@@ -1,12 +1,16 @@
 import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import MainNav from './header/MainNav';
 import Footer from './footer/Footer';
 import { WebappContext } from '../../context/telegram';
 import { getUserByTelegramID } from '../../lib/server';
-import { useTelegramUser } from '../../hooks/telegram';
+import {
+  useTelegramUser,
+  // useCurrentUser,
+  // useInitData,
+} from '../../hooks/telegram';
 import { Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
-import MainNav from './header/MainNav';
 
 const Layout = ({ children }) => {
   //const initData = useInitData();
@@ -33,12 +37,15 @@ const Layout = ({ children }) => {
       let user = await getUserByTelegramID(telegramUser.id);
       console.log('logged in user', user);
       if (!user || !user.id) {
-        toast.error('Refresh and try again', {
-          position: 'top-right',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
+        toast.error(
+          'Please open @TrackChain_Shrek_bot on Telegram to get started',
+          {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+          }
+        );
 
         return;
       }
