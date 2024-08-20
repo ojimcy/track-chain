@@ -9,6 +9,7 @@ import InviteModal from '../components/modals/InviteModal';
 import { toast } from 'react-toastify';
 import {
   useCurrentUser,
+  useReferralLink,
   useTelegramUser,
   useWebApp,
 } from '../hooks/telegram';
@@ -24,11 +25,11 @@ function Frens() {
   const { setUser } = useContext(WebappContext);
   const currentUser = useCurrentUser();
   const telegramUser = useTelegramUser();
+  const referralLink = useReferralLink(currentUser);
   const [downlines, setDownlines] = useState([]);
   const [showAll, setShowAll] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const referralLink = `https://t.me/TrackChain_Shrek_bot/?start=${currentUser.telegramId}`
 
   useEffect(() => {
     if (!telegramUser) return;
@@ -103,7 +104,7 @@ function Frens() {
   const share = () => {
     const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(
       referralLink
-    )}&text=${encodeURIComponent('Earn free $SHREK today')}`;
+    )}&text=${encodeURIComponent('Earn free $SHREK token on Telegram')}`;
     webapp.openTelegramLink(telegramUrl);
   };
 
