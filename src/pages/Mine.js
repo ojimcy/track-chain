@@ -22,6 +22,7 @@ import data from '../hooks/demo_data';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import TelegramBackButton from '../components/navs/TelegramBackButton';
 import CountdownTimer from '../components/common/CountdownTimer';
+import TrackCardContainer from '../components/mining/TrackCardContainer';
 
 function Mine() {
   const currentUser = useCurrentUser();
@@ -187,7 +188,7 @@ function Mine() {
               {loading ? (
                 <LoadingSpinner />
               ) : (
-                <CardContainer
+                <TrackCardContainer
                   cards={cards}
                   category="Track"
                   fetchCards={fetchCards}

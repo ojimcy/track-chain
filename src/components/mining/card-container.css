@@ -1,0 +1,22 @@
+.bg-orange {
+  background-color: #FF7F00;
+}
+
+.bg-blue {
+  background-color: #002B5B;
+}
+
+.bg-green {
+  background-color: #3CB371;
+}
+
+.bg-default {
+  background-color: #312d03;
+}
+
+.mine-card {
+  color: white;
+  padding: 15px;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

@@ -64,17 +64,20 @@
 
 .mine-page .mine-card-row {
   display: flex;
-  justify-content: space-around;
   margin: 10px 0;
+}
+
+.mine-card-row .mine-card-col {
+  padding: 0 5px !important;
 }
 
 .mine-page .mine-card {
   background: #312d03;
-  border-radius: 10px;
+  border-radius: 25px;
   width: 100%;
-  padding: 10px;
+  padding: 10px 0;
   text-align: center;
-  height: 202px;
+  height: 187px;
 }
 
 .mine-page .mine-card-header {
@@ -95,8 +98,7 @@
   font-weight: 700;
 }
 
-.mine-page .mine-card-header img {
-  width: 75%;
+.mine-page .mine-card-header .mine-card-image {
   margin-bottom: 5px;
   width: 55px;
   height: 54.89px;
@@ -109,25 +111,27 @@
   line-height: 12.1px;
 }
 
-.card-level .level {
-  width: 35%;
-}
-
-.card-level .level::after {
+/* 
+.card-level .upgrade-cost::before {
   content: '';
   position: absolute;
   height: 5%;
   width: 2px;
   background: linear-gradient(to bottom, transparent, #5a5959, transparent);
-  margin-left: 5px;
+  margin-right: 7px;
   margin-top: -7px;
+} */
+
+.v-line {
+  border-left: '1px solid #000';
+  height: '20px';
+  margin: '0 10px';
 }
 
 .card-level .upgrade-cost {
   font-size: 7px;
   text-align: left;
   line-height: 8px;
-  width: 75%;
 }
 
 .combos {
@@ -176,10 +180,6 @@
 
 .card-level-no-upgrade {
   color: #f44336;
-}
-
-.mine-card:hover.can-upgrade {
-  transform: scale(1.05);
 }
 
 .insufficient {
