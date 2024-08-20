@@ -65,7 +65,6 @@ function Tap() {
       setMinedTokens(response.minedTokens);
     } catch (error) {
       console.error('Error fetching mined tokens:', error);
-      toast.error('Failed to fetch mined tokens');
     } finally {
       setLoading(false);
     }
@@ -190,7 +189,7 @@ function Tap() {
   }, [saveScores]);
 
   useEffect(() => {
-    setClaimModal(true);
+    minedTokens && minedTokens > 0 && setClaimModal(true);
   }, []);
 
   const animateBalanceIncrease = (start, end, duration) => {
@@ -232,15 +231,12 @@ function Tap() {
   };
 
   const handlePuzzleClick = () => {
-    toast.success(
-      `Coming soon!!!`,
-      {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-      }
-    );
+    toast.success(`Coming soon!!!`, {
+      position: 'top-right',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+    });
   };
 
   return (
