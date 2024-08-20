@@ -25,12 +25,12 @@ const CardContainer = ({ cards, category, fetchCards }) => {
 
   const getCardBackground = (id) => {
     switch (id) {
-      case 'friendship':
-        return 26;
-      case 'fight':
-        return 27;
-      case 'support':
-        return 28;
+      case 26:
+        return 'bg-orange';
+      case 27:
+        return 'bg-blue';
+      case 28:
+        return 'bg-green';
       default:
         return 'bg-default';
     }
