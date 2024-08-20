@@ -15,7 +15,7 @@ import card1 from '../assets/images/card1.png';
 import card2 from '../assets/images/card2.png';
 import card3 from '../assets/images/card3.png';
 import card4 from '../assets/images/card4.png';
-import card5 from '../assets/images/card5.png';
+import card5 from '../assets/images/card5.jpeg';
 import card6 from '../assets/images/card6.png';
 import card7 from '../assets/images/card7.png';
 import card8 from '../assets/images/card8.png';
