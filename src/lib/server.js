@@ -20,14 +20,23 @@ import {
   UPGRADE_CARD,
   USER_BY_ID,
   USER_LEVEL,
+  USERS,
 } from './endpoints';
 
 export const getUserByTelegramID = async (id) => {
   try {
     const result = await axios.get(USER_BY_ID(id));
 
-    console.log('Telegram result', result);
+    return result.data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
 
+export const getUsers = async () => {
+  try {
+    const result = await axios.get(USERS());
     return result.data;
   } catch (error) {
     console.error(error);

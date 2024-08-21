@@ -2,6 +2,7 @@
 export const ROOT = 'https://tsa.moonwifhat.fun';
 
 export const USER_BY_ID = (id) => `${ROOT}/user/${id}`;
+export const USERS = () => `${ROOT}/users`;
 export const MY_DOWNLINES = (limit) => `${ROOT}/my-downlines?limit=${limit}`;
 export const SYNC_ACCOUNT = () => `${ROOT}/sync-profile`;
 export const BOOST_TAPS = () => `${ROOT}/boost-tap`;

@@ -8,6 +8,7 @@ import shrek from '../../../assets/images/lvl1.png';
 import { formatBalanceShort } from '../../../utils/formatBalance';
 import { useCurrentUser } from '../../../hooks/telegram';
 import { getLevels } from '../../../lib/server';
+import { Link } from 'react-router-dom';
 
 function MainNav() {
   const [levels, setLevels] = useState([]);
@@ -40,20 +41,23 @@ function MainNav() {
     <header>
       <Container>
         <div className="nav-card d-flex align-items-center justify-content-between mt-2">
-          <div className="user-avatar align-items-center justify-content-between card-item">
-            <span className="main-avatar">
-              {currentUser.username.charAt(0)}
-            </span>
-            <div className="level d-flex flex-column">
-              <span className="">LV {currentUser.levelId}</span>
-              <div className="progress-bar-container">
-                <div
-                  className="bar-progress"
-                  style={{ width: `${progress}%` }}
-                />
+          <Link to="/league">
+            <div className="user-avatar align-items-center justify-content-between card-item">
+              <span className="main-avatar">
+                {currentUser.username.charAt(0)}
+              </span>
+              <div className="level d-flex flex-column">
+                <span className="">LV {currentUser.levelId}</span>
+                <div className="progress-bar-container">
+                  <div
+                    className="bar-progress"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          </Link>
+
           <Row className="hmr-links d-flex justify-content-between align-items-center">
             <Col xs={3} className="links-image">
               <img src={shrek} alt="" width={35} />
@@ -64,7 +68,7 @@ function MainNav() {
                 <span className="label">HMR</span>
                 <span className="main-value">
                   <img src={dollar} alt="" width={15} height={15} />{' '}
-                  <div className='mx-1'>
+                  <div className="mx-1">
                     {`+ ${currentUser && formatBalanceShort(currentUser.hmr)}`}{' '}
                   </div>
                 </span>
