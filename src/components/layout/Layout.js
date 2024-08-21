@@ -1,19 +1,14 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import MainNav from './header/MainNav';
 import Footer from './footer/Footer';
 import { WebappContext } from '../../context/telegram';
 import { getUserByTelegramID } from '../../lib/server';
-import {
-  useTelegramUser,
-  // useCurrentUser,
-  // useInitData,
-} from '../../hooks/telegram';
+import { useTelegramUser } from '../../hooks/telegram';
 import { Spinner } from 'reactstrap';
-import { toast } from 'react-toastify';
+import { FaRedo } from 'react-icons/fa';
 
 const Layout = ({ children }) => {
-  //const initData = useInitData();
   const {
     webapp,
     setUser,
@@ -22,13 +17,14 @@ const Layout = ({ children }) => {
     showLoadingPage,
   } = useContext(WebappContext);
   const telegramUser = useTelegramUser();
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(true);
 
   useEffect(() => {
     if (!telegramUser) {
-      // hideLoadingPage();
+      hideLoadingPage();
       return;
     }
-    // if (currentUser) return;
+
     showLoadingPage();
 
     const fn = async () => {
@@ -37,16 +33,8 @@ const Layout = ({ children }) => {
       let user = await getUserByTelegramID(telegramUser.id);
       console.log('logged in user', user);
       if (!user || !user.id) {
-        toast.error(
-          'Please open @TrackChain_Shrek_bot on Telegram to get started',
-          {
-            position: 'top-right',
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-          }
-        );
-
+        setIsUserLoggedIn(false);
+        hideLoadingPage();
         return;
       }
       setUser(user);
@@ -55,6 +43,10 @@ const Layout = ({ children }) => {
 
     fn();
   }, [telegramUser]);
+
+  const reloadTelegramApp = () => {
+    window.location.href = 'https://t.me/TrackChain_Shrek_bot/app';
+  };
 
   return (
     <div className="page-content">
@@ -73,11 +65,21 @@ const Layout = ({ children }) => {
               className="d-flex justify-content-center align-items-center"
               style={{ height: '100vh' }}
             >
-              <Spinner
-                style={{ width: '3rem', height: '3rem' }}
-                color="primary"
-              />
-              {/* You can change 'primary' to any other color theme like secondary, success, info, etc. */}
+              {isUserLoggedIn ? (
+                <Spinner
+                  style={{ width: '3rem', height: '3rem' }}
+                  color="primary"
+                />
+              ) : (
+                <div className="text-center">
+                  <p>Something went wrong. Reload the app</p>
+                  <FaRedo
+                    onClick={reloadTelegramApp}
+                    size={40}
+                    style={{ cursor: 'pointer', color: '#007bff' }}
+                  />
+                </div>
+              )}
             </div>
           </main>
         </div>

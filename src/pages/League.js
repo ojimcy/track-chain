@@ -5,6 +5,7 @@ import data from '../hooks/demo_data';
 import { useCurrentUser } from '../hooks/telegram';
 
 import { formatBalance } from '../utils/formatBalance';
+import { TelegramShareButton } from 'react-share';
 
 const LeagueSlider = () => {
   const currentUser = useCurrentUser();
@@ -22,6 +23,8 @@ const LeagueSlider = () => {
 
   return (
     <Container className="d-flex justify-content-center">
+      <TelegramShareButton />
+
       <Slider {...settings}>
         {levels.map((level) => (
           <div key={level.level}>
