@@ -113,7 +113,6 @@ function Tap() {
       setTaps((prevTaps) => [...prevTaps, ...newTaps]);
 
       newTaps.forEach((tap) => animateTap(tap.x, tap.y, tap.id));
-      resetInactivityTimer();
     }
   };
 
@@ -139,27 +138,16 @@ function Tap() {
     requestAnimationFrame(updateAnimation);
   };
 
-  const saveScores = useCallback(
-    async (score) => {
-      if (score > 0) {
-        try {
-          await saveTaps(parseInt(score));
-          setScore(0);
-        } catch (error) {
-          console.error('Error saving taps:', error.response.data);
-        }
+  const saveScores = async (score) => {
+    if (score > 0) {
+      try {
+        const currentScore = parseInt(score);
+        setScore(0);
+        await saveTaps(currentScore);
+      } catch (error) {
+        console.error('Error saving taps:', error.response.data);
       }
-    },
-    [score]
-  );
-
-  const resetInactivityTimer = () => {
-    if (inactivityTimer) {
-      clearTimeout(inactivityTimer);
     }
-    inactivityTimer = setTimeout(() => {
-      saveScores(score);
-    }, inactivityTimeout);
   };
 
   useEffect(() => {
@@ -174,12 +162,17 @@ function Tap() {
     }
   }, [energy, currentUser.energyLimit]);
 
+  // save taps
   useEffect(() => {
     const handlePageUnload = () => {
       saveScores(score);
     };
 
     window.addEventListener('beforeunload', handlePageUnload);
+
+    inactivityTimer = setTimeout(() => {
+      saveScores(score);
+    }, inactivityTimeout);
 
     return () => {
       clearTimeout(inactivityTimer);
