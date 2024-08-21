@@ -89,6 +89,10 @@
   padding-right: 10px;
 }
 
+.nav-card .nav-card-link {
+  color: #ffffff;
+}
+
 .progress-container {
   position: relative;
   height: 3px;

@@ -13,50 +13,55 @@ const LeagueSlider = () => {
 
   // Slider settings
   const settings = {
-    dots: true,
-    infinite: false,
+    dots: false,
+    infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
   };
 
   return (
-    <Slider {...settings}>
-      {levels.map((level) => (
-        <div key={level.level}>
-          <h2>{level.name}</h2>
-          <p>
-            Your number of points determines the level you are. The higher the
-            level, the more juicy the rewards.
-          </p>
-          <Container className="text-center">
-            <img
-              src={level.name}
-              alt={`${level.name} icon`}
-              style={{ width: '100px', height: '100px' }}
-            />
-            <p>From {formatBalance(level.requiredTokens)}</p>
+    <Container className="d-flex justify-content-center">
+      <Slider {...settings}>
+        {levels.map((level) => (
+          <div key={level.level}>
+            <div className="leageue-head">
+              <h2>{level.name}</h2>
+              <p>
+                Your number of points determines the level you are. The higher
+                the level, the more juicy the rewards.
+              </p>
+            </div>
 
-            {currentUser.levelId === level.level && (
-              <div>
-                <Progress
-                  value={Math.min(
-                    (currentUser.tokens / level.requiredTokens) * 100,
-                    100
-                  )}
-                  color="purple"
-                  style={{ height: '5px', marginTop: '20px' }}
-                />
-                <p>
-                  {formatBalance(currentUser.tokens)} /{' '}
-                  {formatBalance(level.requiredTokens)}
-                </p>
-              </div>
-            )}
-          </Container>
-        </div>
-      ))}
-    </Slider>
+            <div className="league-detail">
+              <img
+                src={level.icon}
+                alt={`${level.name} icon`}
+                style={{ width: '100px', height: '100px' }}
+              />
+              <p>From {formatBalance(level.tokensRequiredForLevel)}</p>
+
+              {currentUser.levelId === level.level && (
+                <div>
+                  <Progress
+                    value={Math.min(
+                      (currentUser.tokens / level.tokensRequiredForLevel) * 100,
+                      100
+                    )}
+                    color="purple"
+                    style={{ height: '5px', marginTop: '20px' }}
+                  />
+                  <p className="progress-amount">
+                    {formatBalance(currentUser.balance)} /{' '}
+                    {formatBalance(level.tokensRequiredForLevel)}
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </Slider>
+    </Container>
   );
 };
 

@@ -41,7 +41,7 @@ function MainNav() {
     <header>
       <Container>
         <div className="nav-card d-flex align-items-center justify-content-between mt-2">
-          <Link to="/league">
+          <Link className='nav-card-link' to="/league">
             <div className="user-avatar align-items-center justify-content-between card-item">
               <span className="main-avatar">
                 {currentUser.username.charAt(0)}
