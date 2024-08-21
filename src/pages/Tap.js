@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useContext,
+  useRef,
+} from 'react';
 import { Col, Container, Row } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { FaBolt } from 'react-icons/fa';
@@ -36,8 +42,8 @@ function Tap() {
   const [energy, setEnergy] = useState(currentUser.energyLimit);
   const [rewardModal, setRewardModal] = useState(false);
   const [claimModal, setClaimModal] = useState(false);
-  const [score, setScore] = useState(0);
 
+  const scoreRef = useRef(0);
   const [showConfetti, setShowConfetti] = useState(false);
   const [minedTokens, setMinedTokens] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -45,9 +51,6 @@ function Tap() {
   const currentLevel = levels.find((lvl) => lvl.level === currentUser.levelId);
   const duration = 24 * 60 * 60 * 1000;
   const puzzleDuration = 72 * 60 * 60 * 1000;
-
-  const inactivityTimeout = 3000;
-  let inactivityTimer = null;
 
   const fetchUserData = useCallback(async () => {
     try {
@@ -108,10 +111,10 @@ function Tap() {
 
       // Update the state with the new values
       setBalance(newBalance);
-      setScore((prevScore) => prevScore + energyUsed);
-      setEnergy((prevEnergy) => prevEnergy - energyUsed);
+      scoreRef.current = scoreRef.current + energyUsed;
+      setEnergy(energy - energyUsed);
       setTaps((prevTaps) => [...prevTaps, ...newTaps]);
-
+      saveScores(scoreRef.current);
       newTaps.forEach((tap) => animateTap(tap.x, tap.y, tap.id));
     }
   };
@@ -139,10 +142,14 @@ function Tap() {
   };
 
   const saveScores = async (score) => {
+    if (score < 20 * currentUser.multiTap || energy == 0) {
+      return;
+    }
+
     if (score > 0) {
       try {
         const currentScore = parseInt(score);
-        setScore(0);
+        scoreRef.current = 0;
         await saveTaps(currentScore);
       } catch (error) {
         console.error('Error saving taps:', error.response.data);
@@ -161,25 +168,6 @@ function Tap() {
       return () => clearInterval(energyRefill);
     }
   }, [energy, currentUser.energyLimit]);
-
-  // save taps
-  useEffect(() => {
-    const handlePageUnload = () => {
-      saveScores(score);
-    };
-
-    window.addEventListener('beforeunload', handlePageUnload);
-
-    inactivityTimer = setTimeout(() => {
-      saveScores(score);
-    }, inactivityTimeout);
-
-    return () => {
-      clearTimeout(inactivityTimer);
-      window.removeEventListener('beforeunload', handlePageUnload);
-      saveScores(score);
-    };
-  }, [saveScores]);
 
   useEffect(() => {
     currentUser.hmr > 0 && setClaimModal(true);
@@ -224,7 +212,7 @@ function Tap() {
   };
 
   const handlePuzzleClick = () => {
-    toast.success(`Coming soon!!!`, {
+    toast.info(`Coming soon!!!`, {
       position: 'top-right',
       autoClose: 3000,
       hideProgressBar: false,
