@@ -1,5 +1,5 @@
-export const ROOT = 'https://localhost:3001';
-// export const ROOT = 'https://tsa.moonwifhat.fun';
+// export const ROOT = 'https://localhost:3001';
+export const ROOT = 'https://tsa.moonwifhat.fun';
 
 export const USER_BY_ID = (id) => `${ROOT}/user/${id}`;
 export const USERS = () => `${ROOT}/users`;
