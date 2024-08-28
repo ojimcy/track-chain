@@ -4,9 +4,6 @@ import { Separator } from '../components/common/Seperator';
 import { formatBalanceShort } from '../utils/formatBalance';
 import { getLeaderboard } from '../lib/server';
 import './leaderboard.css';
-import goldMedalIcon from '../assets/images/gold.png';
-import silverMedalIcon from '../assets/images/silver.png';
-import bronzeMedalIcon from '../assets/images/bronze.png';
 import TelegramBackButton from '../components/navs/TelegramBackButton';
 
 function Leaderboard() {
@@ -27,11 +24,11 @@ function Leaderboard() {
   const getMedalIcon = (position) => {
     switch (position) {
       case 1:
-        return <img src={goldMedalIcon} alt="Gold Medal" />;
+        return '🥇';
       case 2:
-        return <img src={silverMedalIcon} alt="Silver Medal" />;
+        return '🥈';
       case 3:
-        return <img src={bronzeMedalIcon} alt="Bronze Medal" />;
+        return '🥉';
       default:
         return <span>{position}</span>;
     }
