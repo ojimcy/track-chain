@@ -8,13 +8,16 @@ import { formatBalance } from '../../utils/formatBalance';
 import { upgradeCard } from '../../lib/server';
 import { toast } from 'react-toastify';
 import CustomConfetti from '../common/CustomConfetti';
+import { useCurrentUser } from '../../hooks/telegram';
 
 const CardDetailsModal = ({ isOpen, toggle, card, fetchUserData }) => {
+  const currentUser = useCurrentUser();
+
   const [showConfetti, setShowConfetti] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const insufficientBalance =
-    card && (card.upgradeCost || card.initialUpgradeCost) > card.balance;
+    card && (card.upgradeCost || card.initialUpgradeCost) > currentUser.balance;
   const hmr = (card && card.hmr) || (card && card.initialHMR);
   const upgradeCost =
     (card && card.upgradeCost) || (card && card.initialUpgradeCost);
@@ -48,9 +51,7 @@ const CardDetailsModal = ({ isOpen, toggle, card, fetchUserData }) => {
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} className="main-modal">
-      {showConfetti && (
-       <CustomConfetti />
-      )}
+      {showConfetti && <CustomConfetti />}
       <ModalHeader toggle={toggle} className="card-modal-header"></ModalHeader>
       <ModalBody className="text-center">
         <div className="card-image-wrapper mb-3">
@@ -97,7 +98,7 @@ CardDetailsModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
   card: PropTypes.object,
-  fetchUserData: PropTypes.func.isRequired, // Add prop types for fetchUserData
+  fetchUserData: PropTypes.func.isRequired,
 };
 
 export default CardDetailsModal;

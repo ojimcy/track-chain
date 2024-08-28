@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Modal, ModalHeader, ModalBody, Spinner } from 'reactstrap';
 import './daily-reward.css';
 
@@ -43,20 +43,20 @@ function DailyRewardModal({ isOpen, toggle }) {
   // Calculate current day in the streak based on currentUser's streak
   const currentDay = currentUser.streak;
 
-  const fetchUserData = useCallback(async () => {
+  const fetchUserData = async () => {
     try {
       const user = await getUserByTelegramID(telegramUser.id);
       setUser(user);
     } catch (error) {
       console.error('Failed to fetch user data:', error);
     }
-  }, [telegramUser, setUser]);
+  };
 
   useEffect(() => {
     if (telegramUser) {
       fetchUserData();
     }
-  }, [telegramUser, fetchUserData]);
+  }, [telegramUser]);
 
   useEffect(() => {
     const lastCheckinDate = new Date(currentUser.lastCheckinDate);
@@ -92,9 +92,7 @@ function DailyRewardModal({ isOpen, toggle }) {
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} className="daily-reward-modal">
-      {showConfetti && (
-        <CustomConfetti />
-      )}
+      {showConfetti && <CustomConfetti />}
       <ModalHeader toggle={toggle}></ModalHeader>
       <ModalBody>
         <div className="daily-reward-header">

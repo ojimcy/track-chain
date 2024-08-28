@@ -132,6 +132,7 @@ function Earn() {
         })
         .catch((error) => {
           console.error('Error completing task:', error.response.data);
+          toast.error(error.response?.data.error);
         });
     }
   };
@@ -224,7 +225,9 @@ function Earn() {
                             {taskIcons[task.type]}
                           </div>
                           <div className="info d-flex flex-column">
-                            <span className="task-title">{task.description}</span>
+                            <span className="task-title">
+                              {task.description}
+                            </span>
                             <span className="task-reward">
                               +{formatBalance(task.reward)}
                             </span>
@@ -261,7 +264,9 @@ function Earn() {
                             {taskIcons[task.type]}
                           </div>
                           <div className="info d-flex flex-column">
-                            <span className="task-title">{task.description}</span>
+                            <span className="task-title">
+                              {task.description}
+                            </span>
                             <span className="task-reward">
                               +{formatBalance(task.reward)}
                             </span>
