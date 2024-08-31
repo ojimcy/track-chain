@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Container, Row } from 'reactstrap';
+import { Col, Container, Row, Button } from 'reactstrap';
 import { Separator } from '../components/common/Seperator';
 import { formatBalanceShort } from '../utils/formatBalance';
 import { getLeaderboard } from '../lib/server';
@@ -8,6 +8,7 @@ import TelegramBackButton from '../components/navs/TelegramBackButton';
 
 function Leaderboard() {
   const [users, setUsers] = useState([]);
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
@@ -34,6 +35,9 @@ function Leaderboard() {
     }
   };
 
+  // Limit the displayed users to the top 100 unless 'showAll' is true
+  const displayedUsers = showAll ? users : users.slice(0, 100);
+
   return (
     <div className="leaderboard-page">
       <TelegramBackButton />
@@ -49,11 +53,11 @@ function Leaderboard() {
           </div>
         </Row>
 
-        {users.length > 0 && (
+        {displayedUsers.length > 0 && (
           <>
-            <p className="mt-4">Leaderboard ({users.length} Users)</p>
+            <p className="mt-4">Leaderboard ({displayedUsers.length} Users)</p>
             <Row>
-              {users.map((user, index) => (
+              {displayedUsers.map((user, index) => (
                 <React.Fragment key={user.id}>
                   <Col xs={12}>
                     <div className="leaderboard-card d-flex justify-content-between align-items-center mt-2">
@@ -81,6 +85,11 @@ function Leaderboard() {
                 </React.Fragment>
               ))}
             </Row>
+            <div className="text-center mt-4">
+              <Button onClick={() => setShowAll(!showAll)}>
+                {showAll ? 'Show Top 100' : 'Show All'}
+              </Button>
+            </div>
           </>
         )}
       </Container>
