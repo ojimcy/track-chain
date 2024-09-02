@@ -55,7 +55,7 @@ function Leaderboard() {
 
         {displayedUsers.length > 0 && (
           <>
-            <p className="mt-4">Leaderboard ({displayedUsers.length} Users)</p>
+            <p className="mt-4">Leaderboard ({users.length} Users)</p>
             <Row>
               {displayedUsers.map((user, index) => (
                 <React.Fragment key={user.id}>

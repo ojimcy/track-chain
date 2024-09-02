@@ -34,6 +34,7 @@ header {
 main {
   min-height: calc(100vh - 171px);
   overflow-y: auto;
+  padding-bottom: 69px;
 }
 
 a {

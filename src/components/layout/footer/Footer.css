@@ -1,12 +1,11 @@
-.footer-area {
-  position: relative;
-  z-index: 1;
-  padding: 40px 50px;
+footer {
+  z-index: 100;
+  position: fixed;
+  bottom: 0;
+  justify-content: stretch;
+  padding-top: 15px;
+  width: 100%;
   background: #101112;
-}
-
-.footer-top {
-  padding: 55px 0 50px;
 }
 
 .footer-content {
@@ -52,13 +51,6 @@
 
 .footer-content .footer-links li a svg {
   font-size: 28px;
-}
-
-@media screen and (max-width: 768px) {
-  .footer-area {
-    padding: 18px;
-    padding-bottom: 0;
-  }
 }
 
 @media screen and (max-width: 993px) {

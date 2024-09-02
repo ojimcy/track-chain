@@ -41,7 +41,7 @@ function MainNav() {
     <header>
       <Container>
         <div className="nav-card d-flex align-items-center justify-content-between mt-2">
-          <Link className='nav-card-link' to="#">
+          <Link className="nav-card-link" to="#">
             <div className="user-avatar align-items-center justify-content-between card-item">
               <span className="main-avatar">
                 {currentUser.username.charAt(0)}
@@ -62,7 +62,7 @@ function MainNav() {
             <Col xs={3} className="links-image">
               <img src={shrek} alt="" width={35} />
             </Col>
-            <Col xs={6}>
+            <Col xs={6} style={{ paddingLeft: 0, paddingRight: 0 }}>
               <div className="vertical-line" />
               <div className="per-hour d-flex flex-column align-items-center justify-content-center card-item">
                 <span className="label">HMR</span>
