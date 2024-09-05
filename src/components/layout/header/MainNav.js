@@ -46,15 +46,17 @@ function MainNav() {
               <span className="main-avatar">
                 {currentUser.username.charAt(0)}
               </span>
-              <div className="level d-flex flex-column">
-                <span className="">LV {currentUser.levelId}</span>
-                <div className="progress-bar-container">
-                  <div
-                    className="bar-progress"
-                    style={{ width: `${progress}%` }}
-                  />
+              <Link to="/league" style={{ color: '#ffffff' }}>
+                <div className="level d-flex flex-column">
+                  <span className="">LV {currentUser.levelId}</span>
+                  <div className="progress-bar-container">
+                    <div
+                      className="bar-progress"
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
                 </div>
-              </div>
+              </Link>
             </div>
           </Link>
 

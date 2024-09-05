@@ -1,71 +1,81 @@
 import React from 'react';
-import { Container, Progress } from 'reactstrap';
-import Slider from 'react-slick';
+import { Container, Row, Col } from 'reactstrap';
 import data from '../hooks/demo_data';
 import { useCurrentUser } from '../hooks/telegram';
-
 import { formatBalance } from '../utils/formatBalance';
-import { TelegramShareButton } from 'react-share';
+import TelegramBackButton from '../components/navs/TelegramBackButton';
 
-const LeagueSlider = () => {
+import dollar from '../assets/images/dollar.png';
+
+import './league.css';
+
+const LeaguePage = () => {
+  const { levels } = data;
   const currentUser = useCurrentUser();
 
-  const { levels } = data;
+  const currentLevel = levels.find((lvl) => {
+    return lvl.level === Number(currentUser.levelId);
+  });
 
-  // Slider settings
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
+  // Find the current level's information
+  const nextLevel = levels.find((lvl) => {
+    return lvl.level === Number(currentUser.levelId + 1);
+  });
 
   return (
-    <Container className="d-flex justify-content-center">
-      <TelegramShareButton />
-
-      <Slider {...settings}>
-        {levels.map((level) => (
-          <div key={level.level}>
-            <div className="leageue-head">
-              <h2>{level.name}</h2>
-              <p>
-                Your number of points determines the level you are. The higher
-                the level, the more juicy the rewards.
-              </p>
-            </div>
-
-            <div className="league-detail">
-              <img
-                src={level.icon}
-                alt={`${level.name} icon`}
-                style={{ width: '100px', height: '100px' }}
-              />
-              <p>From {formatBalance(level.tokensRequiredForLevel)}</p>
-
-              {currentUser.levelId === level.level && (
-                <div>
-                  <Progress
-                    value={Math.min(
-                      (currentUser.tokens / level.tokensRequiredForLevel) * 100,
-                      100
-                    )}
-                    color="purple"
-                    style={{ height: '5px', marginTop: '20px' }}
-                  />
-                  <p className="progress-amount">
-                    {formatBalance(currentUser.balance)} /{' '}
-                    {formatBalance(level.tokensRequiredForLevel)}
-                  </p>
-                </div>
-              )}
+    <Container className="level-page">
+      <TelegramBackButton />
+      {/* Top Section: Current Level Info */}
+      <Row className="current-level-info">
+        <Col>
+          <div className="level-badge">
+            <img src={currentLevel.icon} alt={currentLevel.name} />
+          </div>
+          <div className="level-details">
+            <h3>{currentLevel.name} Leage</h3>
+            <div className="d-flex justify-content-between">
+              <span>Next Level: {currentUser.levelId + 1}</span>
+              <span>
+                <img src={dollar} alt=" " width={25} height={25} />
+                {formatBalance(nextLevel.tokensRequiredForLevel)} (
+                {formatBalance(
+                  nextLevel.tokensRequiredForLevel - currentUser.totalBalance
+                )}{' '}
+                more)
+              </span>
             </div>
           </div>
+        </Col>
+      </Row>
+
+      {/* List of Levels */}
+      <Row className="levels-list">
+        {levels.map((level) => (
+          <Col
+            key={level.level}
+            xs="12"
+            className={`level-item ${
+              level.level === currentUser.levelId ? 'current-level' : ''
+            }`}
+          >
+            <div className="level-name d-flex align-items-center">
+              <div className="level-icon">
+                <img src={level.icon} alt="" width={50} height={50} />
+              </div>
+              <div className="d-flex flex-column align-items-start">
+                <strong>{level.name}</strong>
+                <span>
+                  <img src={dollar} alt=" " width={25} height={25} />
+                  {formatBalance(level.tokensRequiredForLevel)}
+                </span>
+              </div>
+            </div>
+            <div className="level-number">{level.level}</div>
+          </Col>
         ))}
-      </Slider>
+      </Row>
     </Container>
   );
 };
 
-export default LeagueSlider;
+export default LeaguePage;

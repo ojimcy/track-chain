@@ -1,0 +1,47 @@
+
+.current-level-info {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.level-badge img {
+  width: 80%;
+}
+
+.level-details h3 {
+  font-size: 1.8em;
+}
+
+.level-details p {
+  margin: 5px 0;
+}
+
+.levels-list .level-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #222;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.levels-list .current-level {
+  border: 2px solid rgba(243, 156, 18, 0.5); 
+  box-shadow: 0 0 10px rgba(243, 156, 18, 0.5); 
+}
+
+
+.level-number {
+  background-color: #444;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.level-name strong {
+  font-size: 1.2em;
+}
