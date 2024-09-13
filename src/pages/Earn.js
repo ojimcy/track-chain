@@ -14,6 +14,7 @@ import {
   FaCalendarCheck,
   FaCheck,
   FaGreaterThan,
+  FaTasks,
   FaTelegram,
   FaTiktok,
   FaTwitter,
@@ -43,6 +44,7 @@ const taskIcons = {
   youtube: <FaYoutube className="task-icon" />,
   tiktok: <FaTiktok className="task-icon" />,
   referral: <FaUsers className="task-icon" />,
+  partner: <FaTasks className="task-icon" />,
 };
 
 function Earn() {
