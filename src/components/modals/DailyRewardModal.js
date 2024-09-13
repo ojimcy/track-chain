@@ -108,12 +108,12 @@ function DailyRewardModal({ isOpen, toggle }) {
             <div
               key={index}
               className={`daily-reward-item ${
-                index + 1 <= currentDay && checkedIn ? 'active' : ''
+                index + 1 <= currentDay ? 'active' : ''
               }`}
             >
               <div className="day">Day {reward.day}</div>
               <div className="">
-                {index + 1 <= currentDay && checkedIn ? (
+                {index + 1 <= currentDay ? (
                   <FaCheck color="green" size={24} />
                 ) : (
                   <img src={dollar} alt="" width={25} />

@@ -111,7 +111,7 @@ const CardContainer = ({ cards, category, fetchCards }) => {
           isOpen={isModalOpen}
           toggle={toggleModal}
           card={selectedCard}
-          fetchUserData={fetchCards} // Pass fetchCards to update cards after upgrade
+          fetchUserData={fetchCards}
         />
       )}
     </Row>
@@ -121,7 +121,7 @@ const CardContainer = ({ cards, category, fetchCards }) => {
 CardContainer.propTypes = {
   cards: PropTypes.array.isRequired,
   category: PropTypes.string.isRequired,
-  fetchCards: PropTypes.func.isRequired, // Add PropTypes for fetchCards
+  fetchCards: PropTypes.func.isRequired, 
 };
 
 export default CardContainer;

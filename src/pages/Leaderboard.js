@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Container, Row, Button } from 'reactstrap';
 import { Separator } from '../components/common/Seperator';
-import { formatBalanceShort } from '../utils/formatBalance';
+import { formatBalance } from '../utils/formatBalance';
 import { getLeaderboard } from '../lib/server';
 import './leaderboard.css';
 import TelegramBackButton from '../components/navs/TelegramBackButton';
@@ -71,10 +71,10 @@ function Leaderboard() {
                         </div>
                         <div className="info d-flex flex-column">
                           <span className="leaderboard-title">
-                            {user.username}
+                            {user.username || user.first_name}
                           </span>
                           <span className="leaderboard-balance">
-                            {formatBalanceShort(user.balance)}
+                            {formatBalance(user.hmr)}
                           </span>
                         </div>
                       </div>

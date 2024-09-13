@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useContext } from 'react';
 import './mine.css';
 import dollar from '../assets/images/dollar.png';
 import {
@@ -17,18 +17,20 @@ import { Separator } from '../components/common/Seperator';
 import { useCurrentUser } from '../hooks/telegram';
 import comboHolder from '../assets/images/q-mark.png';
 import CardContainer from '../components/mining/CardContainer';
-import { getUserCards } from '../lib/server';
+import { getDailyCombo, getUserCards } from '../lib/server';
 import data from '../hooks/demo_data';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import TelegramBackButton from '../components/navs/TelegramBackButton';
 import CountdownTimer from '../components/common/CountdownTimer';
 import TrackCardContainer from '../components/mining/TrackCardContainer';
+import { WebappContext } from '../context/telegram';
 
 function Mine() {
   const currentUser = useCurrentUser();
   const [activeTab, setActiveTab] = useState('1');
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { dailyCombo, setDailyCombo } = useContext(WebappContext);
 
   const mockCards = data.cards;
   const duration = 24 * 60 * 60 * 1000;
@@ -52,13 +54,28 @@ function Mine() {
     }
   }, [mockCards]);
 
+  const fetchDailyCombo = async () => {
+    try {
+      const res = await getDailyCombo();
+      setDailyCombo(res);
+    } catch (error) {
+      console.error('Error fetching daily combo', error);
+    }
+  };
+
   useEffect(() => {
     fetchCards();
   }, [fetchCards]);
 
+  useEffect(() => {
+    fetchDailyCombo();
+  }, []);
+
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
+
+  console.log('daily initial', dailyCombo);
 
   return (
     <Container>
@@ -88,16 +105,19 @@ function Mine() {
           <Row className="combos mt-4 d-flex justify-content-between align-items-center">
             <Col xs={4}>
               <div className="combo-card">
+                {/* if combo is selected, show the selected combo image */}
                 <img src={comboHolder} alt="" />
               </div>
             </Col>
             <Col xs={4}>
               <div className="combo-card">
+                {/* if combo is selected, show the selected combo image */}
                 <img src={comboHolder} alt="" />
               </div>
             </Col>
             <Col xs={4}>
               <div className="combo-card">
+                {/* if combo is selected, show the selected combo image */}
                 <img src={comboHolder} alt="" />
               </div>
             </Col>

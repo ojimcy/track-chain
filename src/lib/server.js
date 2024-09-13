@@ -7,6 +7,7 @@ import {
   DAILYREWARD,
   ENERGYLEVELS,
   GET_CARDS,
+  GET_DAILY_COMBO,
   GET_MINED_TOKENS,
   GET_USER_CARDS,
   LEADERBOARD,
@@ -14,6 +15,7 @@ import {
   MULTITAPLEVELS,
   MY_DOWNLINES,
   SAVETAPS,
+  SUBMIT_COMBO,
   SYNC_ACCOUNT,
   TASK,
   TASKS,
@@ -140,5 +142,15 @@ export const claimTokens = async () => {
 
 export const getMinedTokens = async () => {
   const result = await axios.get(GET_MINED_TOKENS());
+  return result.data;
+};
+
+export const getDailyCombo = async () => {
+  const result = await axios.get(GET_DAILY_COMBO());
+  return result.data;
+};
+
+export const submitCombo = async (combos) => {
+  const result = await axios.post(SUBMIT_COMBO(), { combos });
   return result.data;
 };

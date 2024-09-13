@@ -9,6 +9,8 @@ export const WebappProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loadingPageIsVissible, setLoadingPageIsVisible] = useState(true);
   const [taps, setTaps] = useState([]);
+  const [comboCards, setComboCards] = useState([]);
+  const [dailyCombo, setDailyCombo] = useState([]);
 
   useEffect(() => {
     if (!window.Telegram || !window.Telegram.WebApp) return;
@@ -36,6 +38,10 @@ export const WebappProvider = ({ children }) => {
         hideLoadingPage,
         taps,
         setTaps,
+        comboCards,
+        setComboCards,
+        dailyCombo,
+        setDailyCombo,
       }}
     >
       {children}

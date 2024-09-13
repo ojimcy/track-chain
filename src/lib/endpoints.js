@@ -23,3 +23,5 @@ export const GET_CARDS = () => `${ROOT}/cards`;
 export const GET_USER_CARDS = () => `${ROOT}/user-cards`;
 export const CLAIM_TOKENS = () => `${ROOT}/claim`;
 export const GET_MINED_TOKENS = () => `${ROOT}/get-mined-tokens`;
+export const GET_DAILY_COMBO = () => `${ROOT}/daily-combo`;
+export const SUBMIT_COMBO = () => `${ROOT}/submit-combo`;

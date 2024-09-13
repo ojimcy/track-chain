@@ -41,24 +41,22 @@ function MainNav() {
     <header>
       <Container>
         <div className="nav-card d-flex align-items-center justify-content-between mt-2">
-          <Link className="nav-card-link" to="#">
-            <div className="user-avatar align-items-center justify-content-between card-item">
-              <span className="main-avatar">
-                {currentUser.username.charAt(0)}
-              </span>
-              <Link to="/league" style={{ color: '#ffffff' }}>
-                <div className="level d-flex flex-column">
-                  <span className="">LV {currentUser.levelId}</span>
-                  <div className="progress-bar-container">
-                    <div
-                      className="bar-progress"
-                      style={{ width: `${progress}%` }}
-                    />
-                  </div>
+          <div className="user-avatar align-items-center justify-content-between card-item">
+            <span className="main-avatar">
+              {currentUser.username.charAt(0)}
+            </span>
+            <Link to="/league" style={{ color: '#ffffff' }}>
+              <div className="level d-flex flex-column">
+                <span className="">LV {currentUser.levelId}</span>
+                <div className="progress-bar-container">
+                  <div
+                    className="bar-progress"
+                    style={{ width: `${progress}%` }}
+                  />
                 </div>
-              </Link>
-            </div>
-          </Link>
+              </div>
+            </Link>
+          </div>
 
           <Row className="hmr-links d-flex justify-content-between align-items-center">
             <Col xs={3} className="links-image">

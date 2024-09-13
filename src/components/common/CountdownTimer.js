@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-const CountdownTimer = ({ duration }) => {
+const CountdownTimer = ({ serverTime }) => {
   const [timeRemaining, setTimeRemaining] = useState(null);
 
   useEffect(() => {
-    const calculateNext16 = () => {
+    const calculateTimeToMidnight = () => {
       const now = new Date();
-      const next16 = new Date(now);
-      next16.setHours(16, 0, 0, 0);
 
-      if (now >= next16) {
-        next16.setDate(next16.getDate() + 1);
-      }
+      // Set the target to midnight (00:00:00) of the next day
+      const nextMidnight = new Date(now);
+      nextMidnight.setHours(24, 0, 0, 0); 
 
-      return next16.getTime() - now.getTime();
+      // Time remaining in milliseconds until midnight
+      return nextMidnight.getTime() - now.getTime();
     };
 
-    setTimeRemaining(calculateNext16());
+    // Set the initial time remaining
+    setTimeRemaining(calculateTimeToMidnight());
 
+    // Update the countdown every second
     const interval = setInterval(() => {
       setTimeRemaining((prev) => {
         const newTimeRemaining = prev - 1000;
@@ -30,16 +31,15 @@ const CountdownTimer = ({ duration }) => {
       });
     }, 1000);
 
+    // Cleanup the interval on unmount
     return () => clearInterval(interval);
-  }, [duration]);
+  }, [serverTime]);
 
+  // Function to format the time remaining in HH:MM:SS format
   const formatTime = (ms) => {
     const totalSeconds = Math.floor(ms / 1000);
     const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
-    const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(
-      2,
-      '0'
-    );
+    const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
     const seconds = String(totalSeconds % 60).padStart(2, '0');
     return `${hours}:${minutes}:${seconds}`;
   };
@@ -52,7 +52,7 @@ const CountdownTimer = ({ duration }) => {
 };
 
 CountdownTimer.propTypes = {
-  duration: PropTypes.number.isRequired,
+  serverTime: PropTypes.string.isRequired, 
 };
 
 export default CountdownTimer;
