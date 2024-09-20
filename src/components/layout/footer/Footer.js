@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { FaTasks, FaUsers, FaTrophy, FaGem } from 'react-icons/fa';
 import './Footer.css';
 
-import level from '../../../assets/images/lvl1.png';
+import level from '../../../assets/images/lvl1.jpeg';
 
 function Footer() {
   const location = useLocation();
@@ -24,7 +24,7 @@ function Footer() {
                         location.pathname === '/' ? 'active' : ''
                       }`}
                     >
-                      <img src={level} alt="" width={30} />
+                      <img className='tap-footer-img' src={level} alt="" width={30} />
                       <span>Tap</span>
                     </Link>
                   </li>

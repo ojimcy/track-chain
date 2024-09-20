@@ -1,13 +1,13 @@
-import lvl1 from '../assets/images/lvl1.png';
-import lvl2 from '../assets/images/lvl2.png';
-import lvl3 from '../assets/images/lvl3.png';
-import lvl4 from '../assets/images/lvl4.png';
-import lvl5 from '../assets/images/lvl5.png';
-import lvl6 from '../assets/images/lvl6.png';
-import lvl7 from '../assets/images/lvl7.png';
-import lvl8 from '../assets/images/lvl8.png';
-import lvl9 from '../assets/images/lvl9.png';
-import lvl10 from '../assets/images/lvl10.png';
+import lvl1 from '../assets/images/lvl1.jpeg';
+import lvl2 from '../assets/images/lvl2.jpeg';
+import lvl3 from '../assets/images/lvl3.jpeg';
+import lvl4 from '../assets/images/lvl4.jpeg';
+import lvl5 from '../assets/images/lvl5.jpeg';
+import lvl6 from '../assets/images/lvl6.jpeg';
+import lvl7 from '../assets/images/lvl7.jpeg';
+import lvl8 from '../assets/images/lvl8.jpeg';
+import lvl9 from '../assets/images/lvl9.jpeg';
+import lvl10 from '../assets/images/lvl10.jpeg';
 
 // import placeholder from '../assets/images/placeholder.png';
 

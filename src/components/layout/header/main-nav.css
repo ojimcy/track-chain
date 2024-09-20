@@ -146,3 +146,7 @@
   background: #8a8a8a;
   border-radius: 50%;
 }
+
+.links-image img {
+  border-radius: 50%;
+}

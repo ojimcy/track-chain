@@ -3,24 +3,13 @@ import {
   Col,
   Container,
   Row,
-  Button,
   Modal,
   ModalHeader,
   ModalBody,
+  Button,
 } from 'reactstrap';
-import taskImg1 from '../assets/images/taske.png';
 import './earn.css';
-import {
-  FaCalendarCheck,
-  FaCheck,
-  FaGreaterThan,
-  FaTasks,
-  FaTelegram,
-  FaTiktok,
-  FaTwitter,
-  FaUsers,
-  FaYoutube,
-} from 'react-icons/fa';
+import { FaCalendarCheck, FaCheck, FaGreaterThan } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import {
   useCurrentUser,
@@ -38,13 +27,30 @@ import TelegramBackButton from '../components/navs/TelegramBackButton';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import { formatBalance } from '../utils/formatBalance';
 
-const taskIcons = {
-  telegram: <FaTelegram className="task-icon" />,
-  twitter: <FaTwitter className="task-icon" />,
-  youtube: <FaYoutube className="task-icon" />,
-  tiktok: <FaTiktok className="task-icon" />,
-  referral: <FaUsers className="task-icon" />,
-  partner: <FaTasks className="task-icon" />,
+import telegram from '../assets/images/tasks/telegram.png';
+import twitter from '../assets/images/tasks/twitter.png';
+import blum from '../assets/images/tasks/blum.png';
+import mdogs from '../assets/images/tasks/mdogs.jpg';
+import youtube from '../assets/images/tasks/youtube.png';
+import xempire from '../assets/images/tasks/xempire.jpeg';
+import agent301 from '../assets/images/tasks/agent-301.png';
+import referral from '../assets/images/lvl1.jpeg';
+import memefi from '../assets/images/tasks/memefi.png';
+import major from '../assets/images/tasks/major.png';
+import tomarket from '../assets/images/tasks/tomarket.png';
+
+const taskImages = {
+  telegram,
+  twitter,
+  youtube,
+  blum,
+  mdogs,
+  xempire,
+  agent301,
+  referral,
+  memefi,
+  major,
+  tomarket,
 };
 
 function Earn() {
@@ -58,6 +64,8 @@ function Earn() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [taskStatuses, setTaskStatuses] = useState({});
+  const [showSpinner, setShowSpinner] = useState(false);
+  const [canClaim, setCanClaim] = useState(false); // New state to track claim availability
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -88,6 +96,7 @@ function Earn() {
     setSelectedTask(task);
     setModal(!modal);
     setCountdown(0);
+    setCanClaim(false); // Reset claim state when modal is toggled
   };
 
   const toggleRewardModal = () => {
@@ -98,20 +107,31 @@ function Earn() {
     const { id, type, link } = task;
 
     if (taskStatuses[id] === 'start') {
-      if (type === 'referral') {
-        const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(
-          useReferralLink(currentUser)
-        )}`;
-        webapp.openTelegramLink(telegramUrl);
-      } else if (type === 'telegram') {
-        webapp.openTelegramLink(link);
-      } else {
-        webapp.openLink(link);
-      }
-      setTaskStatuses((prevStatuses) => ({
-        ...prevStatuses,
-        [id]: 'claim',
-      }));
+      // Show the spinner and prevent claiming immediately
+      setShowSpinner(true);
+      setCanClaim(false);
+
+      // Delay for 3 seconds before enabling "Claim"
+      setTimeout(() => {
+        if (type === 'referral') {
+          const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(
+            useReferralLink(currentUser)
+          )}`;
+          webapp.openTelegramLink(telegramUrl);
+        } else if (type === 'telegram') {
+          webapp.openTelegramLink(link);
+        } else {
+          webapp.openLink(link);
+        }
+
+        // Allow claiming and hide the spinner
+        setTaskStatuses((prevStatuses) => ({
+          ...prevStatuses,
+          [id]: 'claim',
+        }));
+        setShowSpinner(false);
+        setCanClaim(true); // Enable the "Claim" button
+      }, 3000); // 3 seconds delay for showing the claim button
     } else if (taskStatuses[id] === 'claim') {
       completeTask(currentUser.id, id, 'no proof')
         .then(async () => {
@@ -224,7 +244,11 @@ function Earn() {
                       >
                         <div className="task-info d-flex align-items-center">
                           <div className="task-icon">
-                            {taskIcons[task.type]}
+                            <img
+                              src={taskImages[task.type]}
+                              alt={task.type}
+                              className="task-image"
+                            />
                           </div>
                           <div className="info d-flex flex-column">
                             <span className="task-title">
@@ -263,7 +287,11 @@ function Earn() {
                       >
                         <div className="task-info d-flex align-items-center">
                           <div className="task-icon">
-                            {taskIcons[task.type]}
+                            <img
+                              src={taskImages[task.type]}
+                              alt={task.type}
+                              className="task-image"
+                            />
                           </div>
                           <div className="info d-flex flex-column">
                             <span className="task-title">
@@ -300,39 +328,26 @@ function Earn() {
               <div className="modal-title">
                 <p>{selectedTask.name}</p>
               </div>
-              <img className="task-modal-logo" src={taskImg1} alt="Logo" />
-              <p className="description">{selectedTask.description}</p>
-              <p className="reward">+{formatBalance(selectedTask.reward)}</p>
-
-              {selectedTask.completed ? (
-                <span className="task-modal-completed">Task Completed</span>
-              ) : (
-                <Button
-                  className="modal-btn"
-                  color={
-                    taskStatuses[selectedTask.id] === 'completed'
-                      ? 'success'
-                      : taskStatuses[selectedTask.id] === 'claim'
-                      ? 'success'
-                      : 'primary'
-                  }
-                  onClick={() => handleTaskClick(selectedTask)}
-                  disabled={
-                    countdown > 0 ||
-                    taskStatuses[selectedTask.id] === 'completed'
-                  }
-                >
-                  {taskStatuses[selectedTask.id] === 'claim'
-                    ? 'Claim'
-                    : 'Start'}
-                </Button>
-              )}
-
-              {countdown > 0 && (
-                <span className="task-modal-error">
-                  Kindly complete the task and try again in {countdown} seconds
-                </span>
-              )}
+              <img
+                className="task-modal-logo"
+                src={taskImages[selectedTask.type]}
+                alt={selectedTask.type}
+              />
+              <p className="text-center">
+                Complete this task to claim {formatBalance(selectedTask.reward)}{' '}
+                SHREK tokens
+              </p>
+              <div className="claim-button text-center">
+                {showSpinner && <LoadingSpinner />}
+                {canClaim && (
+                  <Button
+                    className="btn btn-primary"
+                    onClick={() => handleTaskClick(selectedTask)}
+                  >
+                    Claim
+                  </Button>
+                )}
+              </div>
             </ModalBody>
           </Modal>
         )}

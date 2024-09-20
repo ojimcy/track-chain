@@ -66,3 +66,7 @@ footer {
     padding: 16px 1px;
   }
 }
+
+.tap-footer-img {
+  border-radius: 50%;
+}

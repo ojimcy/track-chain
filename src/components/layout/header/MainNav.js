@@ -4,7 +4,7 @@ import './main-nav.css';
 import { Col, Container, Row } from 'reactstrap';
 
 import dollar from '../../../assets/images/dollar.png';
-import shrek from '../../../assets/images/lvl1.png';
+import shrek from '../../../assets/images/lvl1.jpeg';
 import { formatBalanceShort } from '../../../utils/formatBalance';
 import { useCurrentUser } from '../../../hooks/telegram';
 import { getLevels } from '../../../lib/server';
