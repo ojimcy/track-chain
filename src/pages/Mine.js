@@ -17,7 +17,7 @@ import { Separator } from '../components/common/Seperator';
 import { useCurrentUser } from '../hooks/telegram';
 import comboHolder from '../assets/images/q-mark.png';
 import CardContainer from '../components/mining/CardContainer';
-import { getDailyCombo, getUserCards } from '../lib/server';
+import { getUserCards } from '../lib/server';
 import data from '../hooks/demo_data';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import TelegramBackButton from '../components/navs/TelegramBackButton';
@@ -27,10 +27,10 @@ import { WebappContext } from '../context/telegram';
 
 function Mine() {
   const currentUser = useCurrentUser();
+  const { selectedComboCard } = useContext(WebappContext);
   const [activeTab, setActiveTab] = useState('1');
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { dailyCombo, setDailyCombo } = useContext(WebappContext);
 
   const mockCards = data.cards;
   const duration = 24 * 60 * 60 * 1000;
@@ -54,28 +54,15 @@ function Mine() {
     }
   }, [mockCards]);
 
-  const fetchDailyCombo = async () => {
-    try {
-      const res = await getDailyCombo();
-      setDailyCombo(res);
-    } catch (error) {
-      console.error('Error fetching daily combo', error);
-    }
-  };
-
   useEffect(() => {
     fetchCards();
   }, [fetchCards]);
-
-  useEffect(() => {
-    fetchDailyCombo();
-  }, []);
 
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
-  console.log('daily initial', dailyCombo);
+  selectedComboCard && console.log('Selected combo', selectedComboCard);
 
   return (
     <Container>

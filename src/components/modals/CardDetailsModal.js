@@ -13,8 +13,8 @@ import { WebappContext } from '../../context/telegram';
 
 const CardDetailsModal = ({ isOpen, toggle, card, fetchUserData }) => {
   const currentUser = useCurrentUser();
-  const { comboCards, setComboCards, dailyCombo } = useContext(WebappContext);
-  console.log('updated', dailyCombo);
+  const { dailyCombo, selectedComboCard, comboCards, setSelectedComboCard } =
+    useContext(WebappContext);
 
   const [showConfetti, setShowConfetti] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -27,34 +27,47 @@ const CardDetailsModal = ({ isOpen, toggle, card, fetchUserData }) => {
 
   // Check if the card is part of the daily combo
   const isPartOfCombo =
-    Array.isArray(dailyCombo) && dailyCombo.includes(card.id);
+    dailyCombo &&
+    (card.id === dailyCombo.trackCard ||
+      card.id === dailyCombo.otherCard1 ||
+      card.id === dailyCombo.otherCard2);
 
-  // Handle combo submission when all 3 correct cards are selected
-  const checkComboCompletion = async () => {
-    if (comboCards.length === 3) {
+  // Handle the combo submission logic
+  const handleComboSubmission = async () => {
+    if (selectedComboCard.length === 3) {
+      setLoading(true);
       try {
-        await submitCombo(comboCards);
+        await submitCombo(selectedComboCard);
         toast.success('Combo successfully completed!', {
           position: 'top-right',
           autoClose: 3000,
         });
-        setComboCards([]);
+        // Optionally, clear the combo after successful submission
+        setSelectedComboCard([]);
       } catch (error) {
+        console.error('Failed to submit combo', error);
         toast.error('Failed to submit combo', {
           position: 'top-right',
           autoClose: 3000,
         });
+      } finally {
+        setLoading(false);
       }
     }
   };
 
   useEffect(() => {
-    checkComboCompletion();
-  }, [comboCards]);
+    if (selectedComboCard.length === 3) {
+      handleComboSubmission();
+    }
+  }, [selectedComboCard]);
 
+  console.log('Combo cards', comboCards);
+
+  // Handle card upgrade
   const handleCardUpgrade = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
       await upgradeCard(card.id);
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 3000);
@@ -65,11 +78,14 @@ const CardDetailsModal = ({ isOpen, toggle, card, fetchUserData }) => {
         closeOnClick: true,
       });
 
+      // If the card is part of the daily combo, add it to the selected cards
       if (isPartOfCombo) {
-        // Add card to comboCards if it's part of the daily combo
-        setComboCards((prev) => [...prev, card.id]);
+        setSelectedComboCard((prev) =>
+          prev.includes(card.id) ? prev : [...prev, card.id]
+        );
       }
 
+      // Refresh user data and close the modal
       await fetchUserData();
       toggle();
     } catch (error) {
@@ -84,8 +100,6 @@ const CardDetailsModal = ({ isOpen, toggle, card, fetchUserData }) => {
       setLoading(false);
     }
   };
-
-  console.log('daily combos', dailyCombo);
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} className="main-modal">
@@ -135,7 +149,7 @@ const CardDetailsModal = ({ isOpen, toggle, card, fetchUserData }) => {
 CardDetailsModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
-  card: PropTypes.object,
+  card: PropTypes.object.isRequired,
   fetchUserData: PropTypes.func.isRequired,
 };
 

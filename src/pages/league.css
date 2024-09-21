@@ -6,6 +6,7 @@
 
 .level-badge img {
   width: 80%;
+  border-radius: 25px;
 }
 
 .level-details h3 {
@@ -44,4 +45,9 @@
 
 .level-name strong {
   font-size: 1.2em;
+}
+
+.level-icon img {
+  border-radius: 50%;
+  margin-right: 8px;
 }

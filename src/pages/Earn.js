@@ -7,6 +7,7 @@ import {
   ModalHeader,
   ModalBody,
   Button,
+  Spinner,
 } from 'reactstrap';
 import './earn.css';
 import { FaCalendarCheck, FaCheck, FaGreaterThan } from 'react-icons/fa';
@@ -38,6 +39,12 @@ import referral from '../assets/images/lvl1.jpeg';
 import memefi from '../assets/images/tasks/memefi.png';
 import major from '../assets/images/tasks/major.png';
 import tomarket from '../assets/images/tasks/tomarket.png';
+import cats from '../assets/images/tasks/cats.png';
+import coub from '../assets/images/tasks/coub.jpg';
+import hotwallet from '../assets/images/tasks/hotwallet.png';
+import yescoin from '../assets/images/tasks/yesccoin.png';
+import mnemonics from '../assets/images/tasks/mnemonics.jpeg';
+import freeDurov from '../assets/images/tasks/freedouruv.jpeg';
 
 const taskImages = {
   telegram,
@@ -51,6 +58,12 @@ const taskImages = {
   memefi,
   major,
   tomarket,
+  cats,
+  coub,
+  hotwallet,
+  yescoin,
+  mnemonics,
+  freeDurov,
 };
 
 function Earn() {
@@ -65,13 +78,13 @@ function Earn() {
   const [loading, setLoading] = useState(true);
   const [taskStatuses, setTaskStatuses] = useState({});
   const [showSpinner, setShowSpinner] = useState(false);
-  const [canClaim, setCanClaim] = useState(false); // New state to track claim availability
 
   useEffect(() => {
     const fetchTasks = async () => {
       try {
         const resp = await getTasks(currentUser.id);
-        setTasks(resp);
+        const sortedTasks = resp.sort((a, b) => a.id - b.id); 
+        setTasks(sortedTasks);
         const initialStatuses = {};
         resp.forEach((task) => {
           initialStatuses[task.id] = task.completed ? 'completed' : 'start';
@@ -96,7 +109,6 @@ function Earn() {
     setSelectedTask(task);
     setModal(!modal);
     setCountdown(0);
-    setCanClaim(false); // Reset claim state when modal is toggled
   };
 
   const toggleRewardModal = () => {
@@ -107,30 +119,26 @@ function Earn() {
     const { id, type, link } = task;
 
     if (taskStatuses[id] === 'start') {
-      // Show the spinner and prevent claiming immediately
-      setShowSpinner(true);
-      setCanClaim(false);
-
       // Delay for 3 seconds before enabling "Claim"
-      setTimeout(() => {
-        if (type === 'referral') {
-          const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(
-            useReferralLink(currentUser)
-          )}`;
-          webapp.openTelegramLink(telegramUrl);
-        } else if (type === 'telegram') {
-          webapp.openTelegramLink(link);
-        } else {
-          webapp.openLink(link);
-        }
+      if (type === 'referral') {
+        const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(
+          useReferralLink(currentUser)
+        )}`;
+        webapp.openTelegramLink(telegramUrl);
+      } else if (type === 'telegram') {
+        webapp.openTelegramLink(link);
+      } else {
+        webapp.openLink(link);
+      }
 
+      setShowSpinner(true);
+      setTimeout(() => {
         // Allow claiming and hide the spinner
         setTaskStatuses((prevStatuses) => ({
           ...prevStatuses,
           [id]: 'claim',
         }));
         setShowSpinner(false);
-        setCanClaim(true); // Enable the "Claim" button
       }, 3000); // 3 seconds delay for showing the claim button
     } else if (taskStatuses[id] === 'claim') {
       completeTask(currentUser.id, id, 'no proof')
@@ -333,21 +341,43 @@ function Earn() {
                 src={taskImages[selectedTask.type]}
                 alt={selectedTask.type}
               />
-              <p className="text-center">
-                Complete this task to claim {formatBalance(selectedTask.reward)}{' '}
-                SHREK tokens
-              </p>
-              <div className="claim-button text-center">
-                {showSpinner && <LoadingSpinner />}
-                {canClaim && (
-                  <Button
-                    className="btn btn-primary"
-                    onClick={() => handleTaskClick(selectedTask)}
-                  >
-                    Claim
-                  </Button>
-                )}
-              </div>
+              <p className="description">{selectedTask.description}</p>
+              <p className="reward">+{formatBalance(selectedTask.reward)}</p>
+
+              {selectedTask.completed ? (
+                <span className="task-modal-completed">Task Completed</span>
+              ) : (
+                <Button
+                  className="modal-btn"
+                  color={
+                    taskStatuses[selectedTask.id] === 'completed'
+                      ? 'success'
+                      : taskStatuses[selectedTask.id] === 'claim'
+                      ? 'success'
+                      : 'primary'
+                  }
+                  onClick={() => handleTaskClick(selectedTask)}
+                  disabled={
+                    countdown > 0 ||
+                    taskStatuses[selectedTask.id] === 'completed' ||
+                    showSpinner
+                  }
+                >
+                  {showSpinner ? (
+                    <Spinner />
+                  ) : taskStatuses[selectedTask.id] === 'claim' ? (
+                    'Claim'
+                  ) : (
+                    'Start'
+                  )}
+                </Button>
+              )}
+
+              {countdown > 0 && (
+                <span className="task-modal-error">
+                  Kindly complete the task and try again in {countdown} seconds
+                </span>
+              )}
             </ModalBody>
           </Modal>
         )}

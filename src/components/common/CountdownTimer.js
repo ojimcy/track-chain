@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 
-const CountdownTimer = ({ serverTime }) => {
+const CountdownTimer = () => {
   const [timeRemaining, setTimeRemaining] = useState(null);
 
   useEffect(() => {
@@ -10,7 +9,7 @@ const CountdownTimer = ({ serverTime }) => {
 
       // Set the target to midnight (00:00:00) of the next day
       const nextMidnight = new Date(now);
-      nextMidnight.setHours(24, 0, 0, 0); 
+      nextMidnight.setHours(24, 0, 0, 0);
 
       // Time remaining in milliseconds until midnight
       return nextMidnight.getTime() - now.getTime();
@@ -33,13 +32,16 @@ const CountdownTimer = ({ serverTime }) => {
 
     // Cleanup the interval on unmount
     return () => clearInterval(interval);
-  }, [serverTime]);
+  }, []);
 
   // Function to format the time remaining in HH:MM:SS format
   const formatTime = (ms) => {
     const totalSeconds = Math.floor(ms / 1000);
     const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
-    const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+    const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(
+      2,
+      '0'
+    );
     const seconds = String(totalSeconds % 60).padStart(2, '0');
     return `${hours}:${minutes}:${seconds}`;
   };
@@ -49,10 +51,6 @@ const CountdownTimer = ({ serverTime }) => {
       {timeRemaining !== null ? formatTime(timeRemaining) : 'Loading...'}
     </span>
   );
-};
-
-CountdownTimer.propTypes = {
-  serverTime: PropTypes.string.isRequired, 
 };
 
 export default CountdownTimer;

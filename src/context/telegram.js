@@ -1,5 +1,6 @@
 import React from 'react';
 import { createContext, useEffect, useState } from 'react';
+import { getDailyCombo } from '../lib/server';
 
 export const WebappContext = createContext(undefined);
 
@@ -9,8 +10,8 @@ export const WebappProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loadingPageIsVissible, setLoadingPageIsVisible] = useState(true);
   const [taps, setTaps] = useState([]);
-  const [comboCards, setComboCards] = useState([]);
   const [dailyCombo, setDailyCombo] = useState([]);
+  const [selectedComboCard, setSelectedComboCard] = useState([]);
 
   useEffect(() => {
     if (!window.Telegram || !window.Telegram.WebApp) return;
@@ -26,6 +27,19 @@ export const WebappProvider = ({ children }) => {
     setLoadingPageIsVisible(false);
   };
 
+  useEffect(() => {
+    const fetchDailyCombo = async () => {
+      try {
+        const res = await getDailyCombo();
+        setDailyCombo(res);
+      } catch (error) {
+        console.error('Error fetching daily combo', error);
+      }
+    };
+
+    fetchDailyCombo();
+  }, []);
+
   return (
     <WebappContext.Provider
       value={{
@@ -38,10 +52,10 @@ export const WebappProvider = ({ children }) => {
         hideLoadingPage,
         taps,
         setTaps,
-        comboCards,
-        setComboCards,
         dailyCombo,
         setDailyCombo,
+        selectedComboCard,
+        setSelectedComboCard,
       }}
     >
       {children}
