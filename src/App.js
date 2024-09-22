@@ -11,6 +11,7 @@ import Mine from './pages/Mine';
 import MineLayout from './components/layout/MineLayout';
 import Leaderboard from './pages/Leaderboard';
 import LeaguePage from './pages/League';
+import TapLayout from './components/layout/TapLayout';
 
 const App = () => {
   try {
@@ -23,11 +24,22 @@ const App = () => {
       <Router>
         <Routes>
           <Route
+            path="/"
+            element={
+              <TapLayout>
+                <Routes>
+                  <Route index element={<Tap />} />
+                </Routes>
+              </TapLayout>
+            }
+          />
+
+          <Route
             path="/*"
             element={
               <Layout>
                 <Routes>
-                  <Route index element={<Tap />} />
+                  {/* <Route index element={<Tap />} /> */}
                   <Route path="earn" element={<Earn />} />
                   <Route path="frens" element={<Frens />} />
                   <Route path="boost" element={<Boost />} />
@@ -48,7 +60,6 @@ const App = () => {
               </MineLayout>
             }
           />
-
         </Routes>
       </Router>
     );

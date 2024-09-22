@@ -22,7 +22,7 @@
 }
 
 .mine-page .combo {
-  background-color: #1f1f1f;
+  background-color: #312D03;
   padding: 7px;
   border-radius: 10px;
   text-align: center;
@@ -38,7 +38,7 @@
   justify-content: space-around;
   margin: 20px 0 !important;
   padding: 7px 0;
-  background-color: #1f1f1f;
+  background-color: #312D03;
   border-radius: 10px;
   border: none !important;
   flex-wrap: nowrap;
@@ -51,7 +51,7 @@
 }
 
 .mine-page .tab .nav-link.active {
-  background-color: #333;
+  background-color: #1D1208;
   border-radius: 10px;
   color: #ffffff;
   border: none;
@@ -140,8 +140,7 @@
 }
 
 .combos .combo-card {
-  background-color: #1f1f1f;
-  border: 1px solid #91550d;
+  background-color: #312D03;
   width: 110px;
   display: flex;
   align-items: center;
@@ -152,10 +151,6 @@
 
 .combos .combo-card img {
   width: 75px;
-}
-
-.no-upgrade {
-  color: #d3c3c3;
 }
 
 .mine-card.can-upgrade {
@@ -172,7 +167,7 @@
 }
 
 .earn-per-hour-no-upgrade {
-  color: #f44336;
+  color: #580f0a;
 }
 
 .card-level-upgrade {
@@ -180,7 +175,7 @@
 }
 
 .card-level-no-upgrade {
-  color: #f44336;
+  color: #580f0a;
 }
 
 .insufficient {

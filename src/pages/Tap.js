@@ -31,6 +31,8 @@ import ClaimTokensModal from '../components/modals/ClaimMinedTokensModal';
 import { toast } from 'react-toastify';
 import CustomConfetti from '../components/common/CustomConfetti';
 
+import checks from '../assets/images/check.jpg';
+
 function Tap() {
   const { levels } = data;
   const { setUser } = useContext(WebappContext);
@@ -220,6 +222,12 @@ function Tap() {
     });
   };
 
+  // Check if the lastCheckinDate is today
+  const lastCheckinDate = new Date(currentUser.lastCheckinDate);
+  const today = new Date();
+  const isCheckinToday =
+    lastCheckinDate.toDateString() === today.toDateString();
+
   return (
     <div className="mining-page mt-3">
       {showConfetti && <CustomConfetti />}
@@ -234,18 +242,24 @@ function Tap() {
 
           <Row className="top-links d-flex justify-content-between">
             <Col>
-              <Link to="#" className="top-link" onClick={toggleRewardModal}>
+              <Link to="#" className={`top-link ${isCheckinToday && 'daily-task-completed'}`} onClick={toggleRewardModal}>
                 <div className="link-content d-flex align-items-center">
                   <img src={reward} alt="Daily Rewards" />
                   <span className="link-title">Daily Rewards</span>
                   <span className="timer">
                     <CountdownTimer duration={duration} />
                   </span>
+
+                  {isCheckinToday && (
+                    <div className="green-tick">
+                      <img src={checks} alt="check" />
+                    </div>
+                  )}
                 </div>
               </Link>
             </Col>
             <Col>
-              <Link onClick={handlePuzzleClick} className="top-link">
+              <Link onClick={handlePuzzleClick} className={`top-link ${''}`}>
                 <div className="link-content d-flex align-items-center">
                   <img src={puzzle} alt="Daily Combo" />
                   <span className="link-title">Word Puzzle</span>
@@ -256,7 +270,7 @@ function Tap() {
               </Link>
             </Col>
             <Col>
-              <Link onClick={handlePuzzleClick} className="top-link">
+              <Link onClick={handlePuzzleClick} className={`top-link ${''}`}>
                 <div className="link-content d-flex align-items-center">
                   <img src={cal} alt="Daily Combo" />
                   <span className="link-title">Daily Combo</span>
