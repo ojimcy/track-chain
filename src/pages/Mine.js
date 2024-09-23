@@ -29,9 +29,10 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 import TelegramBackButton from '../components/navs/TelegramBackButton';
 import CountdownTimer from '../components/common/CountdownTimer';
 import TrackCardContainer from '../components/mining/TrackCardContainer';
-import CustomConfetti from '../components/common/CustomConfetti';
+// import CustomConfetti from '../components/common/CustomConfetti';
 import { WebappContext } from '../context/telegram';
 import { toast } from 'react-toastify';
+import RewardAnimation from '../components/common/RewardAnimation';
 
 function Mine() {
   const currentUser = useCurrentUser();
@@ -41,7 +42,8 @@ function Mine() {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(false);
   const [comboCard, setComboCard] = useState([]);
-  const [showConfetti, setShowConfetti] = useState(false);
+  // const [showConfetti, setShowConfetti] = useState(false);
+  const [isRewardAnimationVisible, setRewardAnimationVisible] = useState(false);
 
   const mockCards = data.cards;
   const duration = 24 * 60 * 60 * 1000;
@@ -99,8 +101,14 @@ function Mine() {
         ];
         await submitCombo(comboData);
         await fetchCards();
-        setShowConfetti(true);
-        setTimeout(() => setShowConfetti(false), 3000);
+
+        setRewardAnimationVisible(true);
+
+        // Hide reward animation after 3 seconds
+        setTimeout(() => setRewardAnimationVisible(false), 3000);
+
+        // setShowConfetti(true);
+        // setTimeout(() => setShowConfetti(false), 3000);
       } catch (error) {
         console.error('Failed to submit combo', error);
         toast.error(error.response?.data?.message || 'Failed to submit combo', {
@@ -121,7 +129,8 @@ function Mine() {
     <Container>
       <TelegramBackButton />
       <div className="mine-page">
-      {showConfetti && <CustomConfetti />}
+      {/* {showConfetti && <CustomConfetti />} */}
+      <RewardAnimation isVisible={isRewardAnimationVisible} />
         <div className="mine-header">
           <div className="balance">
             <span>

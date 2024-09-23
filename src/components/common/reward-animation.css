@@ -1,0 +1,90 @@
+/* Container for the reward animation */
+.reward-animation-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5); /* Optional overlay */
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* When animation is active */
+.reward-animation-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Zoom-in animation for reward image */
+@keyframes zoomIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.reward-image {
+  width: 100px;
+  height: 100px;
+  animation: zoomIn 1.5s ease-in-out forwards;
+}
+
+/* Star animation */
+@keyframes starPop {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
+
+.star {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-image: url('../../assets/images/dollar.png');
+  background-size: cover;
+  animation: starPop 1s ease-in-out forwards;
+  animation-delay: 1s; /* Delay after the zoom-in */
+}
+
+.star-1 {
+  top: -50px;
+  left: 0;
+}
+
+.star-2 {
+  top: -30px;
+  right: 0;
+}
+
+.star-3 {
+  bottom: -50px;
+  left: 50px;
+}
+
+.star-4 {
+  bottom: -30px;
+  right: 50px;
+}
