@@ -151,7 +151,11 @@ function Mine() {
                   }`}
                 >
                   <img src={card.image || comboHolder} alt="" />
-                  <span className='combo-name'>{card.name}</span>
+                  <span className="combo-name">
+                    {card.name.length > 20
+                      ? `${card.name.slice(0, 20)}...`
+                      : card.name}
+                  </span>
                 </div>
               </Col>
             ))}
