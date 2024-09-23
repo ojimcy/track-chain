@@ -37,7 +37,9 @@ const CardDetailsModal = ({ isOpen, toggle, card, fetchUserData }) => {
     if (selectedComboCard.length === 3) {
       setLoading(true);
       try {
-        await submitCombo(selectedComboCard);
+        const res = await submitCombo(selectedComboCard);
+        console.log('combos res', res, selectedComboCard);
+
         toast.success('Combo successfully completed!', {
           position: 'top-right',
           autoClose: 3000,

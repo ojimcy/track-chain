@@ -58,9 +58,9 @@ header {
     rgba(102, 102, 102, 0) 100%
   );
   border-image-slice: 1;
-  border-radius: 10px; /* Adjust the value as needed */
-  overflow: hidden; /* This is key to make sure the content follows the rounded corners */
-  -webkit-mask-image: -webkit-radial-gradient(white, black); /* Helps with clipping the border radius */
+  border-radius: 10px;
+  overflow: hidden; 
+  -webkit-mask-image: -webkit-radial-gradient(white, black); 
 }
 
 .top-link .link-content {
