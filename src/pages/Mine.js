@@ -18,7 +18,12 @@ import { Separator } from '../components/common/Seperator';
 import { useCurrentUser, useTelegramUser } from '../hooks/telegram';
 import comboHolder from '../assets/images/q-mark.png';
 import CardContainer from '../components/mining/CardContainer';
-import { getUserByTelegramID, getUserCards, submitCombo } from '../lib/server';
+import {
+  getUserByTelegramID,
+  getUserCards,
+  getUserComboCard,
+  submitCombo,
+} from '../lib/server';
 import data from '../hooks/demo_data';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import TelegramBackButton from '../components/navs/TelegramBackButton';
@@ -34,6 +39,7 @@ function Mine() {
   const [activeTab, setActiveTab] = useState('1');
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [comboCard, setComboCard] = useState([]);
 
   const mockCards = data.cards;
   const duration = 24 * 60 * 60 * 1000;
@@ -58,13 +64,25 @@ function Mine() {
     }
   }, [mockCards, telegramUser]);
 
+  const fetchUserComboCard = useCallback(async () => {
+    try {
+      const combo = await getUserComboCard();
+      if (combo) {
+        setComboCard([combo.trackCard, combo.otherCard1, combo.otherCard2]);
+      }
+    } catch (error) {
+      console.error('Failed to fetch combo card', error);
+    }
+  }, []);
+
   useEffect(() => {
     fetchCards();
-  }, [fetchCards]);
+    fetchUserComboCard();
+  }, [fetchCards, fetchUserComboCard]);
 
   // Filter the cards whose id is in selectedComboCard
   const selectedCards = cards.filter((card) =>
-    selectedComboCard.includes(card.id)
+    (comboCard.length ? comboCard : selectedComboCard).includes(card.id)
   );
 
   // Handle the combo submission logic
@@ -98,8 +116,6 @@ function Mine() {
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
-
-  selectedComboCard && console.log('Selected combo', selectedComboCard);
 
   return (
     <Container>
@@ -146,13 +162,13 @@ function Mine() {
               ))}
           </Row>
           {/* Submit Combo Button */}
-          <Row>
+          <Row className="mt-3">
             <Col>
               <Button
                 className="combo-btn w-100"
                 onClick={handleComboSubmission}
               >
-                Submit Combo
+                Claim Rewards
               </Button>
             </Col>
           </Row>

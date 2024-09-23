@@ -10,6 +10,7 @@ import {
   GET_DAILY_COMBO,
   GET_MINED_TOKENS,
   GET_USER_CARDS,
+  GET_USER_COMBO_CARD,
   LEADERBOARD,
   LEVELS,
   MULTITAPLEVELS,
@@ -154,5 +155,10 @@ export const submitCombo = async (combos) => {
   const [trackCard, otherCard1, otherCard2] = combos;
   const payload = { trackCard, otherCard1, otherCard2 };
   const result = await axios.post(SUBMIT_COMBO(), payload);
+  return result.data;
+};
+
+export const getUserComboCard = async () => {
+  const result = await axios.get(GET_USER_COMBO_CARD());
   return result.data;
 };

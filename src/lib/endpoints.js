@@ -25,3 +25,4 @@ export const CLAIM_TOKENS = () => `${ROOT}/claim`;
 export const GET_MINED_TOKENS = () => `${ROOT}/get-mined-tokens`;
 export const GET_DAILY_COMBO = () => `${ROOT}/daily-combo`;
 export const SUBMIT_COMBO = () => `${ROOT}/submit-combo`;
+export const GET_USER_COMBO_CARD = () => `${ROOT}/submit-combo`;

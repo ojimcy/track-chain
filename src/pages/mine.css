@@ -142,6 +142,7 @@
 .combos .combo-card {
   background-color: #312D03;
   width: 110px;
+  height: 110px;
   display: flex;
   align-items: center;
   justify-content: center;
