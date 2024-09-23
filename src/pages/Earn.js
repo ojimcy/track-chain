@@ -35,7 +35,7 @@ import mdogs from '../assets/images/tasks/mdogs.jpg';
 import youtube from '../assets/images/tasks/youtube.png';
 import xempire from '../assets/images/tasks/xempire.jpeg';
 import agent301 from '../assets/images/tasks/agent-301.png';
-import referral from '../assets/images/lvl1.jpeg';
+import referral from '../assets/images/level7.png';
 import memefi from '../assets/images/tasks/memefi.png';
 import major from '../assets/images/tasks/major.png';
 import tomarket from '../assets/images/tasks/tomarket.png';

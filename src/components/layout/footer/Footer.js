@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { FaTasks, FaUsers, FaTrophy, FaGem } from 'react-icons/fa';
 import './Footer.css';
 
-import level from '../../../assets/images/lvl1.jpeg';
+import level from '../../../assets/images/level7.png';
 
 function Footer() {
   const location = useLocation();
