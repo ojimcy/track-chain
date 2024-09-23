@@ -42,6 +42,7 @@ function Mine() {
     try {
       setLoading(true);
       const res = await getUserCards();
+      await getUserByTelegramID(telegramUser.id);
 
       // Map cards to include the image from mockCards
       const cardsWithImages = res.map((card) => {
@@ -55,15 +56,7 @@ function Mine() {
     } finally {
       setLoading(false);
     }
-  }, [mockCards]);
-
-  const fetchUserData = useCallback(async () => {
-    try {
-      await getUserByTelegramID(telegramUser.id);
-    } catch (error) {
-      console.error('Failed to fetch user data:', error);
-    }
-  }, [telegramUser]);
+  }, [mockCards, telegramUser]);
 
   useEffect(() => {
     fetchCards();
@@ -85,7 +78,7 @@ function Mine() {
           selectedComboCard[2],
         ];
         await submitCombo(comboData);
-        await fetchUserData();
+        await fetchCards();
         toast.success('Combo successfully completed!', {
           position: 'top-right',
           autoClose: 3000,
