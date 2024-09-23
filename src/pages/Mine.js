@@ -145,7 +145,11 @@ function Mine() {
           <Row className="combos mt-4 d-flex justify-content-between align-items-center">
             {selectedCards.map((card, index) => (
               <Col xs={4} key={index}>
-                <div className="combo-card">
+                <div
+                  className={`combo-card ${
+                    comboCard.length ? 'combo-card-completed' : ''
+                  }`}
+                >
                   <img src={card.image || comboHolder} alt="" />
                   <span>{card.name}</span>
                 </div>
@@ -169,6 +173,7 @@ function Mine() {
                 color="primary"
                 className="p-3 combo-btn w-100"
                 onClick={handleComboSubmission}
+                disabled={comboCard.length}
               >
                 Claim Rewards
               </Button>
