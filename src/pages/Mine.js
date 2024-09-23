@@ -58,6 +58,11 @@ function Mine() {
     fetchCards();
   }, [fetchCards]);
 
+  // Filter the cards whose id is in selectedComboCard
+  const selectedCards = cards.filter((card) =>
+    selectedComboCard.includes(card.id)
+  );
+
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
@@ -90,24 +95,23 @@ function Mine() {
             </p>
           </div>
           <Row className="combos mt-4 d-flex justify-content-between align-items-center">
-            <Col xs={4}>
-              <div className="combo-card">
-                {/* if combo is selected, show the selected combo image */}
-                <img src={comboHolder} alt="" />
-              </div>
-            </Col>
-            <Col xs={4}>
-              <div className="combo-card">
-                {/* if combo is selected, show the selected combo image */}
-                <img src={comboHolder} alt="" />
-              </div>
-            </Col>
-            <Col xs={4}>
-              <div className="combo-card">
-                {/* if combo is selected, show the selected combo image */}
-                <img src={comboHolder} alt="" />
-              </div>
-            </Col>
+            {selectedCards.map((card, index) => (
+              <Col xs={4} key={index}>
+                <div className="combo-card">
+                  <img src={card.image || comboHolder} alt="" />
+                </div>
+              </Col>
+            ))}
+            {/* If there are less than 3 cards, fill the remaining slots */}
+            {Array(3 - selectedCards.length)
+              .fill(null)
+              .map((_, index) => (
+                <Col xs={4} key={`placeholder-${index}`}>
+                  <div className="combo-card">
+                    <img src={comboHolder} alt="" />
+                  </div>
+                </Col>
+              ))}
           </Row>
         </div>
         <div className="card-container">
