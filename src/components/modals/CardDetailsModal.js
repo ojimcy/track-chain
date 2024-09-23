@@ -44,11 +44,13 @@ const CardDetailsModal = ({ isOpen, toggle, card, fetchUserData }) => {
           position: 'top-right',
           autoClose: 3000,
         });
-        // Optionally, clear the combo after successful submission
+
+        // Clear the selected combo after successful submission
         setSelectedComboCard([]);
+        await fetchUserData(); 
       } catch (error) {
         console.error('Failed to submit combo', error);
-        toast.error('Failed to submit combo', {
+        toast.error(error.response?.data?.error || 'Failed to submit combo', {
           position: 'top-right',
           autoClose: 3000,
         });
