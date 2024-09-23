@@ -152,7 +152,7 @@ export const getDailyCombo = async () => {
 
 export const submitCombo = async (combos) => {
   const [trackCard, otherCard1, otherCard2] = combos;
-  const data = { trackCard, otherCard1, otherCard2 };
-  const result = await axios.post(SUBMIT_COMBO(), data);
+  const payload = { trackCard, otherCard1, otherCard2 };
+  const result = await axios.post(SUBMIT_COMBO(), payload);
   return result.data;
 };

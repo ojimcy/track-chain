@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback, useContext } from 'react';
 import './mine.css';
 import dollar from '../assets/images/dollar.png';
 import {
+  Button,
   Col,
   Container,
   Nav,
@@ -17,13 +18,14 @@ import { Separator } from '../components/common/Seperator';
 import { useCurrentUser } from '../hooks/telegram';
 import comboHolder from '../assets/images/q-mark.png';
 import CardContainer from '../components/mining/CardContainer';
-import { getUserCards } from '../lib/server';
+import { getUserCards, submitCombo } from '../lib/server';
 import data from '../hooks/demo_data';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import TelegramBackButton from '../components/navs/TelegramBackButton';
 import CountdownTimer from '../components/common/CountdownTimer';
 import TrackCardContainer from '../components/mining/TrackCardContainer';
 import { WebappContext } from '../context/telegram';
+import { toast } from 'react-toastify';
 
 function Mine() {
   const currentUser = useCurrentUser();
@@ -62,6 +64,34 @@ function Mine() {
   const selectedCards = cards.filter((card) =>
     selectedComboCard.includes(card.id)
   );
+
+  // Handle the combo submission logic
+  const handleComboSubmission = async () => {
+    if (selectedComboCard.length === 3) {
+      setLoading(true);
+      try {
+        const comboData = [
+          selectedComboCard[0],
+          selectedComboCard[1],
+          selectedComboCard[2],
+        ];
+        await submitCombo(comboData);
+
+        toast.success('Combo successfully completed!', {
+          position: 'top-right',
+          autoClose: 3000,
+        });
+      } catch (error) {
+        console.error('Failed to submit combo', error);
+        toast.error(error.response?.data?.error || 'Failed to submit combo', {
+          position: 'top-right',
+          autoClose: 3000,
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
 
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
@@ -112,6 +142,17 @@ function Mine() {
                   </div>
                 </Col>
               ))}
+          </Row>
+          {/* Submit Combo Button */}
+          <Row>
+            <Col>
+              <Button
+                className="combo-btn w-100"
+                onClick={handleComboSubmission}
+              >
+                Submit Combo
+              </Button>
+            </Col>
           </Row>
         </div>
         <div className="card-container">
