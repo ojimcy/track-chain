@@ -15,10 +15,10 @@ import {
 import classnames from 'classnames';
 import { formatBalance } from '../utils/formatBalance';
 import { Separator } from '../components/common/Seperator';
-import { useCurrentUser } from '../hooks/telegram';
+import { useCurrentUser, useTelegramUser } from '../hooks/telegram';
 import comboHolder from '../assets/images/q-mark.png';
 import CardContainer from '../components/mining/CardContainer';
-import { getUserCards, submitCombo } from '../lib/server';
+import { getUserByTelegramID, getUserCards, submitCombo } from '../lib/server';
 import data from '../hooks/demo_data';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import TelegramBackButton from '../components/navs/TelegramBackButton';
@@ -30,6 +30,7 @@ import { toast } from 'react-toastify';
 function Mine() {
   const currentUser = useCurrentUser();
   const { selectedComboCard } = useContext(WebappContext);
+  const telegramUser = useTelegramUser();
   const [activeTab, setActiveTab] = useState('1');
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -56,6 +57,14 @@ function Mine() {
     }
   }, [mockCards]);
 
+  const fetchUserData = useCallback(async () => {
+    try {
+      await getUserByTelegramID(telegramUser.id);
+    } catch (error) {
+      console.error('Failed to fetch user data:', error);
+    }
+  }, [telegramUser]);
+
   useEffect(() => {
     fetchCards();
   }, [fetchCards]);
@@ -76,7 +85,7 @@ function Mine() {
           selectedComboCard[2],
         ];
         await submitCombo(comboData);
-
+        await fetchUserData();
         toast.success('Combo successfully completed!', {
           position: 'top-right',
           autoClose: 3000,
