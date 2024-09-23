@@ -67,6 +67,8 @@ function Tap() {
     try {
       setLoading(true);
       const response = await getMinedTokens();
+      console.log('timing', response);
+      
       setMinedTokens(response.minedTokens);
     } catch (error) {
       console.error('Error fetching mined tokens:', error);
