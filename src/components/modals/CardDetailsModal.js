@@ -13,7 +13,7 @@ import { WebappContext } from '../../context/telegram';
 
 const CardDetailsModal = ({ isOpen, toggle, card, fetchUserData }) => {
   const currentUser = useCurrentUser();
-  const { dailyCombo, selectedComboCard, comboCards, setSelectedComboCard } =
+  const { dailyCombo, selectedComboCard, setSelectedComboCard } =
     useContext(WebappContext);
 
   const [showConfetti, setShowConfetti] = useState(false);
@@ -34,39 +34,37 @@ const CardDetailsModal = ({ isOpen, toggle, card, fetchUserData }) => {
 
   // Handle the combo submission logic
   const handleComboSubmission = async () => {
-    if (selectedComboCard.length === 3) {
-      setLoading(true);
-      try {
-        const res = await submitCombo(selectedComboCard);
-        console.log('combos res', res, selectedComboCard);
+    setLoading(true);
+    try {
+      const res = await submitCombo(selectedComboCard);
+      console.log('combos res', res, selectedComboCard);
 
-        toast.success('Combo successfully completed!', {
-          position: 'top-right',
-          autoClose: 3000,
-        });
+      toast.success('Combo successfully completed!', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
 
-        // Clear the selected combo after successful submission
-        setSelectedComboCard([]);
-        await fetchUserData(); 
-      } catch (error) {
-        console.error('Failed to submit combo', error);
-        toast.error(error.response?.data?.error || 'Failed to submit combo', {
-          position: 'top-right',
-          autoClose: 3000,
-        });
-      } finally {
-        setLoading(false);
-      }
+      // Clear the selected combo after successful submission
+      setSelectedComboCard([]);
+      await fetchUserData(); // Refresh user data if necessary
+    } catch (error) {
+      console.error('Failed to submit combo', error);
+      toast.error(error.response?.data?.error || 'Failed to submit combo', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
+    } finally {
+      setLoading(false);
     }
   };
+
+  console.log(selectedComboCard.length);
 
   useEffect(() => {
     if (selectedComboCard.length === 3) {
       handleComboSubmission();
     }
   }, [selectedComboCard]);
-
-  console.log('Combo cards', comboCards);
 
   // Handle card upgrade
   const handleCardUpgrade = async () => {
