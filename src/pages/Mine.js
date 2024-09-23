@@ -147,6 +147,7 @@ function Mine() {
               <Col xs={4} key={index}>
                 <div className="combo-card">
                   <img src={card.image || comboHolder} alt="" />
+                  <span>{card.name}</span>
                 </div>
               </Col>
             ))}
@@ -162,10 +163,11 @@ function Mine() {
               ))}
           </Row>
           {/* Submit Combo Button */}
-          <Row className="mt-3">
+          <Row className="mt-3 w-100">
             <Col>
               <Button
-                className="combo-btn w-100"
+                color="primary"
+                className="p-3 combo-btn w-100"
                 onClick={handleComboSubmission}
               >
                 Claim Rewards
