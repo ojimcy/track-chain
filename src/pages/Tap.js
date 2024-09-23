@@ -230,9 +230,9 @@ function Tap() {
 
   return (
     <div className="mining-page mt-3">
-      {showConfetti && <CustomConfetti />}
       <Container>
         <div className="mining-content">
+          {showConfetti && <CustomConfetti />}
           <div className="balance d-flex align-items-center">
             <img src={dollar} alt="Dollar Icon" width={50} />
             <span className="earnings">
@@ -242,7 +242,13 @@ function Tap() {
 
           <Row className="top-links d-flex justify-content-between">
             <Col>
-              <Link to="#" className={`top-link ${isCheckinToday && 'daily-task-completed'}`} onClick={toggleRewardModal}>
+              <Link
+                to="#"
+                className={`top-link ${
+                  isCheckinToday && 'daily-task-completed'
+                }`}
+                onClick={toggleRewardModal}
+              >
                 <div className="link-content d-flex align-items-center">
                   <img src={reward} alt="Daily Rewards" />
                   <span className="link-title">Daily Rewards</span>
