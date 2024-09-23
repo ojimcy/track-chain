@@ -150,6 +150,10 @@
   border-radius: 15px;
 }
 
+.combos .combo-card-completed {
+  border: 2px solid #0e5a0c;
+}
+
 .combos .combo-card img {
   width: 75px;
 }
