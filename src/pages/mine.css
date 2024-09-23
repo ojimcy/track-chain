@@ -144,6 +144,7 @@
   width: 110px;
   height: 110px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 10px;
@@ -152,6 +153,11 @@
 
 .combos .combo-card-completed {
   border: 2px solid #0e5a0c;
+}
+
+.combos .combo-name {
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .combos .combo-card img {

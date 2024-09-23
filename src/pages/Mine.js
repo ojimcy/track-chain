@@ -151,7 +151,7 @@ function Mine() {
                   }`}
                 >
                   <img src={card.image || comboHolder} alt="" />
-                  <span>{card.name}</span>
+                  <span className='combo-name'>{card.name}</span>
                 </div>
               </Col>
             ))}
@@ -171,7 +171,7 @@ function Mine() {
             <Col>
               <Button
                 color="primary"
-                className="p-3 combo-btn w-100"
+                className="p-2 combo-btn w-100"
                 onClick={handleComboSubmission}
                 disabled={comboCard.length}
               >
