@@ -29,6 +29,7 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 import TelegramBackButton from '../components/navs/TelegramBackButton';
 import CountdownTimer from '../components/common/CountdownTimer';
 import TrackCardContainer from '../components/mining/TrackCardContainer';
+import CustomConfetti from '../components/common/CustomConfetti';
 import { WebappContext } from '../context/telegram';
 import { toast } from 'react-toastify';
 
@@ -40,6 +41,7 @@ function Mine() {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(false);
   const [comboCard, setComboCard] = useState([]);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const mockCards = data.cards;
   const duration = 24 * 60 * 60 * 1000;
@@ -97,13 +99,11 @@ function Mine() {
         ];
         await submitCombo(comboData);
         await fetchCards();
-        toast.success('Combo successfully completed!', {
-          position: 'top-right',
-          autoClose: 3000,
-        });
+        setShowConfetti(true);
+        setTimeout(() => setShowConfetti(false), 3000);
       } catch (error) {
         console.error('Failed to submit combo', error);
-        toast.error(error.response?.data?.error || 'Failed to submit combo', {
+        toast.error(error.response?.data?.message || 'Failed to submit combo', {
           position: 'top-right',
           autoClose: 3000,
         });
@@ -121,6 +121,7 @@ function Mine() {
     <Container>
       <TelegramBackButton />
       <div className="mine-page">
+      {showConfetti && <CustomConfetti />}
         <div className="mine-header">
           <div className="balance">
             <span>
