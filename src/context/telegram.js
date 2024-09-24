@@ -31,6 +31,7 @@ export const WebappProvider = ({ children }) => {
     const fetchDailyCombo = async () => {
       try {
         const res = await getDailyCombo();
+
         setDailyCombo(res);
       } catch (error) {
         console.error('Error fetching daily combo', error);
@@ -38,7 +39,7 @@ export const WebappProvider = ({ children }) => {
     };
 
     fetchDailyCombo();
-  }, []);
+  }, [user]);
 
   return (
     <WebappContext.Provider
