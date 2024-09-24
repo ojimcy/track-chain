@@ -65,7 +65,6 @@ const Layout = ({ children }) => {
           <main className="content">
             <div
               className="d-flex justify-content-center align-items-center"
-              style={{ height: '80vh' }}
             >
               <Spinner
                 style={{ width: '3rem', height: '3rem' }}
