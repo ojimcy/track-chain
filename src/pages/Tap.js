@@ -8,21 +8,15 @@ import React, {
 import { Col, Container, Row } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { FaBolt } from 'react-icons/fa';
-import { toast } from 'react-toastify';
 
 import './tap.css';
 import dollar from '../assets/images/dollar.png';
 import cal from '../assets/images/cal.png';
 import reward from '../assets/images/reward.png';
-// import rocket from '../assets/images/rocket.png';
+import rocket from '../assets/images/rocket.png';
 import puzzle from '../assets/images/puzzle.png';
-import checks from '../assets/images/check.jpg';
-
+import data from '../hooks/demo_data';
 import DailyRewardModal from '../components/modals/DailyRewardModal';
-import ClaimTokensModal from '../components/modals/ClaimMinedTokensModal';
-import CountdownTimer from '../components/common/CountdownTimer';
-import CustomConfetti from '../components/common/CustomConfetti';
-
 import { useCurrentUser, useTelegramUser } from '../hooks/telegram';
 import { WebappContext } from '../context/telegram';
 import {
@@ -32,7 +26,12 @@ import {
   saveTaps,
 } from '../lib/server';
 import { formatBalance } from '../utils/formatBalance';
-import data from '../hooks/demo_data';
+import CountdownTimer from '../components/common/CountdownTimer';
+import ClaimTokensModal from '../components/modals/ClaimMinedTokensModal';
+import { toast } from 'react-toastify';
+import CustomConfetti from '../components/common/CustomConfetti';
+
+import checks from '../assets/images/check.jpg';
 
 function Tap() {
   const { levels } = data;
@@ -40,21 +39,20 @@ function Tap() {
   const currentUser = useCurrentUser();
   const telegramUser = useTelegramUser();
   const { taps, setTaps } = useContext(WebappContext);
-
   const [balance, setBalance] = useState(currentUser.balance);
   const [animatedBalance, setAnimatedBalance] = useState(currentUser.balance);
   const [energy, setEnergy] = useState(currentUser.energyLimit);
   const [rewardModal, setRewardModal] = useState(false);
   const [claimModal, setClaimModal] = useState(false);
-  const [minedTokens, setMinedTokens] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [showConfetti, setShowConfetti] = useState(false);
 
   const scoreRef = useRef(0);
-  const duration = 24 * 60 * 60 * 1000;
-  const puzzleDuration = 72 * 60 * 60 * 1000;
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [minedTokens, setMinedTokens] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const currentLevel = levels.find((lvl) => lvl.level === currentUser.levelId);
+  const duration = 24 * 60 * 60 * 1000;
+  const puzzleDuration = 72 * 60 * 60 * 1000;
 
   const fetchUserData = useCallback(async () => {
     try {
@@ -66,10 +64,10 @@ function Tap() {
   }, [telegramUser, setUser]);
 
   const fetchMinedTokens = useCallback(async () => {
-    setLoading(true);
     try {
-      const { minedTokens } = await getMinedTokens();
-      setMinedTokens(minedTokens);
+      setLoading(true);
+      const response = await getMinedTokens();
+      setMinedTokens(response.minedTokens);
     } catch (error) {
       console.error('Error fetching mined tokens:', error);
     } finally {
@@ -81,46 +79,60 @@ function Tap() {
     fetchMinedTokens();
   }, [fetchMinedTokens]);
 
+  const toggleRewardModal = useCallback(() => {
+    setRewardModal((prev) => !prev);
+  }, []);
+
+  const toggleClaimModal = useCallback(() => {
+    setClaimModal((prev) => !prev);
+  }, []);
+
   const handleTap = (event) => {
-    const touches = event.touches || [
-      { clientX: event.clientX, clientY: event.clientY },
-    ];
-    const energyRequired = touches.length * currentUser.multiTap;
+    const touches = event.touches;
 
-    if (energy >= energyRequired) {
-      const newTaps = touches.map((touch, index) => {
+    if (energy >= touches?.length * currentUser.multiTap) {
+      const newTaps = [];
+      let energyUsed = 0;
+
+      for (let i = 0; i < touches?.length; i++) {
+        const touch = touches[i];
         const rect = event.target.getBoundingClientRect();
-        return {
-          id: Date.now() + index,
-          x: touch.clientX - rect.left,
-          y: touch.clientY - rect.top,
-          progress: 0,
-        };
-      });
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+        const newTapId = Date.now() + i;
 
-      const newBalance = balance + energyRequired;
-      animateBalanceIncrease(balance, newBalance);
+        newTaps.push({ id: newTapId, x, y, progress: 0 });
+        energyUsed += currentUser.multiTap;
+      }
+
+      // Calculate the new balance based on energy used
+      const newBalance = balance + energyUsed;
+
+      // Animate the balance increase
+      animateBalanceIncrease(balance, newBalance, 2000);
+
+      // Update the state with the new values
       setBalance(newBalance);
-      scoreRef.current += energyRequired;
-      setEnergy(energy - energyRequired);
+      scoreRef.current = scoreRef.current + energyUsed;
+      setEnergy(energy - energyUsed);
       setTaps((prevTaps) => [...prevTaps, ...newTaps]);
       saveScores(scoreRef.current);
-      newTaps.forEach((tap) => animateTap(tap.id));
+      newTaps.forEach((tap) => animateTap(tap.x, tap.y, tap.id));
     }
   };
 
-  const animateTap = (tapId) => {
+  const animateTap = (x, y, tapId) => {
     const animationDuration = 1000;
     const startTime = performance.now();
 
     const updateAnimation = (currentTime) => {
-      const progress = Math.min(
-        (currentTime - startTime) / animationDuration,
-        1
-      );
+      const elapsedTime = currentTime - startTime;
+      const progress = Math.min(elapsedTime / animationDuration, 1);
+
       setTaps((prevTaps) =>
         prevTaps.map((tap) => (tap.id === tapId ? { ...tap, progress } : tap))
       );
+
       if (progress < 1) {
         requestAnimationFrame(updateAnimation);
       } else {
@@ -132,10 +144,15 @@ function Tap() {
   };
 
   const saveScores = async (score) => {
-    if (score >= 20 * currentUser.multiTap && energy > 0) {
+    if (score < 20 * currentUser.multiTap || energy == 0) {
+      return;
+    }
+
+    if (score > 0) {
       try {
-        await saveTaps(score);
+        const currentScore = parseInt(score);
         scoreRef.current = 0;
+        await saveTaps(currentScore);
       } catch (error) {
         console.error('Error saving taps:', error.response.data);
       }
@@ -155,38 +172,39 @@ function Tap() {
   }, [energy, currentUser.energyLimit]);
 
   useEffect(() => {
-    if (currentUser.hmr > 0) {
-      setClaimModal(true);
-    }
-  }, [currentUser.hmr]);
+    currentUser.hmr > 0 && setClaimModal(true);
+  }, []);
 
-  const animateBalanceIncrease = (start, end) => {
-    const duration = 2000;
+  const animateBalanceIncrease = (start, end, duration) => {
     const startTime = performance.now();
 
-    const updateBalance = (currentTime) => {
-      const progress = Math.min((currentTime - startTime) / duration, 1);
+    const animate = (currentTime) => {
+      const elapsedTime = currentTime - startTime;
+      const progress = Math.min(elapsedTime / duration, 1);
       const newBalance = start + progress * (end - start);
+
       setAnimatedBalance(newBalance.toFixed(0));
 
       if (progress < 1) {
-        requestAnimationFrame(updateBalance);
+        requestAnimationFrame(animate);
       }
     };
 
-    requestAnimationFrame(updateBalance);
+    requestAnimationFrame(animate);
   };
 
   const handleClaimTokens = async () => {
-    setLoading(true);
     try {
+      setLoading(true);
       await claimTokens();
       fetchUserData();
+
       const newBalance = balance + minedTokens;
-      animateBalanceIncrease(balance, newBalance);
+      animateBalanceIncrease(balance, newBalance, 2000);
+
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 3000);
-      setClaimModal(false);
+      toggleClaimModal();
     } catch (error) {
       console.error('Error claiming tokens:', error);
       toast.error('Failed to claim tokens');
@@ -195,9 +213,20 @@ function Tap() {
     }
   };
 
+  const handlePuzzleClick = () => {
+    toast.info(`Coming soon!!!`, {
+      position: 'top-right',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+    });
+  };
+
+  // Check if the lastCheckinDate is today
+  const lastCheckinDate = new Date(currentUser.lastCheckinDate);
+  const today = new Date();
   const isCheckinToday =
-    new Date(currentUser.lastCheckinDate).toDateString() ===
-    new Date().toDateString();
+    lastCheckinDate.toDateString() === today.toDateString();
 
   return (
     <div className="mining-page mt-3">
@@ -206,7 +235,9 @@ function Tap() {
           {showConfetti && <CustomConfetti />}
           <div className="balance d-flex align-items-center">
             <img src={dollar} alt="Dollar Icon" width={50} />
-            <span className="earnings">{formatBalance(animatedBalance)}</span>
+            <span className="earnings">
+              {animatedBalance && formatBalance(animatedBalance)}
+            </span>
           </div>
 
           <Row className="top-links d-flex justify-content-between">
@@ -216,7 +247,7 @@ function Tap() {
                 className={`top-link ${
                   isCheckinToday && 'daily-task-completed'
                 }`}
-                onClick={() => setRewardModal(!rewardModal)}
+                onClick={toggleRewardModal}
               >
                 <div className="link-content d-flex align-items-center">
                   <img src={reward} alt="Daily Rewards" />
@@ -224,6 +255,7 @@ function Tap() {
                   <span className="timer">
                     <CountdownTimer duration={duration} />
                   </span>
+
                   {isCheckinToday && (
                     <div className="green-tick">
                       <img src={checks} alt="check" />
@@ -233,9 +265,9 @@ function Tap() {
               </Link>
             </Col>
             <Col>
-              <Link onClick={() => toast.info('Coming soon!!!')}>
+              <Link onClick={handlePuzzleClick} className={`top-link ${''}`}>
                 <div className="link-content d-flex align-items-center">
-                  <img src={puzzle} alt="Word Puzzle" />
+                  <img src={puzzle} alt="Daily Combo" />
                   <span className="link-title">Word Puzzle</span>
                   <span className="timer">
                     <CountdownTimer duration={puzzleDuration} />
@@ -244,7 +276,7 @@ function Tap() {
               </Link>
             </Col>
             <Col>
-              <Link to="/mine">
+              <Link to='/mine' className={`top-link ${''}`}>
                 <div className="link-content d-flex align-items-center">
                   <img src={cal} alt="Daily Combo" />
                   <span className="link-title">Daily Combo</span>
@@ -270,33 +302,47 @@ function Tap() {
                   position: 'absolute',
                   left: `${tap.x}px`,
                   top: `${tap.y}px`,
-                  transform: `scale(${1 + tap.progress})`,
                   opacity: 1 - tap.progress,
+                  transform: `scale(${1 + tap.progress * 2})`,
+                  transition: 'opacity 1s, transform 1s',
                 }}
-              />
+              >
+                +{currentUser.multiTap}
+              </div>
             ))}
           </div>
 
-          <div className="energy d-flex align-items-center justify-content-center">
-            <FaBolt size={30} color="#FFC107" />
-            <span className="energy-label">{energy}</span>
+          <div className="boost-area">
+            <div className="energy d-flex flex-row align-items-center">
+              <FaBolt className="lightning-icon" size={25} />
+              <span>
+                {energy}/{currentUser.energyLimit}
+              </span>
+            </div>
+
+            <div className="booster d-flex flex-row align-items-center">
+              <Link className="" to="/boost">
+                <img src={rocket} alt="" />
+                <span style={{ color: '#ffffff' }}>Boost</span>
+              </Link>
+            </div>
           </div>
         </div>
+      </Container>
 
-        <DailyRewardModal
-          isOpen={rewardModal}
-          toggle={() => setRewardModal(!rewardModal)}
-          onRewardClaim={fetchUserData}
-        />
+      {rewardModal && (
+        <DailyRewardModal isOpen={rewardModal} toggle={toggleRewardModal} />
+      )}
 
+      {claimModal && (
         <ClaimTokensModal
           isOpen={claimModal}
-          toggle={() => setClaimModal(!claimModal)}
+          toggle={toggleClaimModal}
+          handleClaim={handleClaimTokens}
           minedTokens={minedTokens}
-          onClaim={handleClaimTokens}
           loading={loading}
         />
-      </Container>
+      )}
     </div>
   );
 }
