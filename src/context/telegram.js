@@ -38,7 +38,7 @@ export const WebappProvider = ({ children }) => {
     };
 
     fetchDailyCombo();
-  }, []);
+  }, [user]);
 
   return (
     <WebappContext.Provider
