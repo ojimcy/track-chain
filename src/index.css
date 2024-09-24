@@ -120,7 +120,7 @@ section {
 }
 
 .loading-page {
-  background-image: url('./assets/images/');
+  background-image: url('./assets/images/loading-page.jpeg');
   background-size: 'cover';
   background-position: 'center';
   height: '100vh';
