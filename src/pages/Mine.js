@@ -85,6 +85,8 @@ function Mine() {
     const fetchUserComboCard = async () => {
       try {
         const combo = await getUserComboCard();
+        console.log('daily combo', combo);
+
         if (combo) {
           setComboCard([combo.trackCard, combo.otherCard1, combo.otherCard2]);
         }
@@ -130,7 +132,7 @@ function Mine() {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
-  console.log('combo cards', cards);
+  console.log('selected cards', selectedCards);
 
   return (
     <Container>
