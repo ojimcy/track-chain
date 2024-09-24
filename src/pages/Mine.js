@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import './mine.css';
 import dollar from '../assets/images/dollar.png';
 import {
@@ -47,49 +47,53 @@ function Mine() {
   const mockCards = data.cards;
   const duration = 24 * 60 * 60 * 1000;
 
-  const fetchCards = useCallback(async () => {
+  const fetchCards = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
       const res = await getUserCards();
-
-      // Map cards to include the image from mockCards
       const cardsWithImages = res.map((card) => {
         const mockCard = mockCards.find((mock) => mock.id === card.id);
         return { ...card, image: mockCard ? mockCard.image : '' };
       });
-
       setCards(cardsWithImages);
     } catch (error) {
       console.error('Error fetching cards', error);
     } finally {
       setLoading(false);
     }
-  }, [mockCards]);
+  };
 
-  const fetchUserData = useCallback(async () => {
+  const fetchUserData = async () => {
     try {
       const user = await getUserByTelegramID(telegramUser.id);
       setUser(user);
     } catch (error) {
       console.error('Failed to fetch user data:', error);
     }
-  }, [telegramUser, setUser]);
-
-  const fetchUserComboCard = useCallback(async () => {
-    try {
-      const combo = await getUserComboCard();
-      if (combo) {
-        setComboCard([combo.trackCard, combo.otherCard1, combo.otherCard2]);
-      }
-    } catch (error) {
-      console.error('Failed to fetch combo card', error);
-    }
-  }, []);
+  };
 
   useEffect(() => {
     fetchCards();
+  }, [mockCards]);
+
+  useEffect(() => {
+    fetchUserData();
+  }, [telegramUser, setUser]);
+
+  // Fetch User Combo Card
+  useEffect(() => {
+    const fetchUserComboCard = async () => {
+      try {
+        const combo = await getUserComboCard();
+        if (combo) {
+          setComboCard([combo.trackCard, combo.otherCard1, combo.otherCard2]);
+        }
+      } catch (error) {
+        console.error('Failed to fetch combo card', error);
+      }
+    };
     fetchUserComboCard();
-  }, [fetchCards, fetchUserComboCard]);
+  }, []);
 
   // Filter the cards whose id is in selectedComboCard
   const selectedCards = cards.filter((card) =>
@@ -125,6 +129,8 @@ function Mine() {
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
+
+  console.log('combo cards', cards);
 
   return (
     <Container>
