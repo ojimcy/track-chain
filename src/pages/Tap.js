@@ -276,7 +276,7 @@ function Tap() {
               </Link>
             </Col>
             <Col>
-              <Link onClick={handlePuzzleClick} className={`top-link ${''}`}>
+              <Link to='/mine' className={`top-link ${''}`}>
                 <div className="link-content d-flex align-items-center">
                   <img src={cal} alt="Daily Combo" />
                   <span className="link-title">Daily Combo</span>

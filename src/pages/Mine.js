@@ -9,6 +9,7 @@ import {
   NavItem,
   NavLink,
   Row,
+  Spinner,
   TabContent,
   TabPane,
 } from 'reactstrap';
@@ -35,7 +36,7 @@ import { toast } from 'react-toastify';
 
 function Mine() {
   const currentUser = useCurrentUser();
-  const { selectedComboCard } = useContext(WebappContext);
+  const { selectedComboCard, setUser } = useContext(WebappContext);
   const telegramUser = useTelegramUser();
   const [activeTab, setActiveTab] = useState('1');
   const [cards, setCards] = useState([]);
@@ -50,7 +51,6 @@ function Mine() {
     try {
       setLoading(true);
       const res = await getUserCards();
-      await getUserByTelegramID(telegramUser.id);
 
       // Map cards to include the image from mockCards
       const cardsWithImages = res.map((card) => {
@@ -64,7 +64,16 @@ function Mine() {
     } finally {
       setLoading(false);
     }
-  }, [mockCards, telegramUser]);
+  }, [mockCards]);
+
+  const fetchUserData = useCallback(async () => {
+    try {
+      const user = await getUserByTelegramID(telegramUser.id);
+      setUser(user);
+    } catch (error) {
+      console.error('Failed to fetch user data:', error);
+    }
+  }, [telegramUser, setUser]);
 
   const fetchUserComboCard = useCallback(async () => {
     try {
@@ -98,7 +107,7 @@ function Mine() {
           selectedComboCard[2],
         ];
         await submitCombo(comboData);
-        await fetchCards();
+        await fetchUserData();
         setShowConfetti(true);
         setTimeout(() => setShowConfetti(false), 3000);
       } catch (error) {
@@ -121,7 +130,7 @@ function Mine() {
     <Container>
       <TelegramBackButton />
       <div className="mine-page">
-      {showConfetti && <CustomConfetti />}
+        {showConfetti && <CustomConfetti />}
         <div className="mine-header">
           <div className="balance">
             <span>
@@ -151,10 +160,14 @@ function Mine() {
                     comboCard.length ? 'combo-card-completed' : ''
                   }`}
                 >
-                  <img src={card.image || comboHolder} alt="" />
+                  <img
+                    src={card.image || comboHolder}
+                    alt=""
+                    style={{ maxHeight: '80%' }}
+                  />
                   <span className="combo-name">
-                    {card.name.length > 20
-                      ? `${card.name.slice(0, 20)}...`
+                    {card.name.length > 15
+                      ? `${card.name.slice(0, 15)}...`
                       : card.name}
                   </span>
                 </div>
@@ -178,9 +191,11 @@ function Mine() {
                 color="primary"
                 className="p-2 combo-btn w-100"
                 onClick={handleComboSubmission}
-                disabled={comboCard.length}
+                disabled={
+                  comboCard.length || selectedCards.length < 3 || loading
+                }
               >
-                Claim Rewards
+                Claim Rewards {loading && <Spinner />}
               </Button>
             </Col>
           </Row>
