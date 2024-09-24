@@ -228,11 +228,13 @@ function Tap() {
   const isCheckinToday =
     lastCheckinDate.toDateString() === today.toDateString();
 
+    console.log('combo cards selected', comboCard);
+    
   return (
     <div className="mining-page mt-3">
       <Container>
         <div className="mining-content">
-          {showConfetti && <CustomConfetti />}
+          {showConfetti You dey hear consistency you think say na play play 😂😂😩&& <CustomConfetti />}
           <div className="balance d-flex align-items-center">
             <img src={dollar} alt="Dollar Icon" width={50} />
             <span className="earnings">

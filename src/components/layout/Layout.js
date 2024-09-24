@@ -4,16 +4,13 @@ import MainNav from './header/MainNav';
 import Footer from './footer/Footer';
 import { WebappContext } from '../../context/telegram';
 import { getUserByTelegramID } from '../../lib/server';
-import {
-  useTelegramUser,
-  // useCurrentUser,
-  // useInitData,
-} from '../../hooks/telegram';
+import { useTelegramUser } from '../../hooks/telegram';
 import { Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
+import { FaFacebook, FaTwitter, FaYoutube } from 'react-icons/fa';
 
 const Layout = ({ children }) => {
-  //const initData = useInitData();
   const {
     webapp,
     setUser,
@@ -25,10 +22,8 @@ const Layout = ({ children }) => {
 
   useEffect(() => {
     if (!telegramUser) {
-      // hideLoadingPage();
       return;
     }
-    // if (currentUser) return;
     showLoadingPage();
 
     const fn = async () => {
@@ -46,7 +41,6 @@ const Layout = ({ children }) => {
             closeOnClick: true,
           }
         );
-
         return;
       }
       setUser(user);
@@ -67,19 +61,43 @@ const Layout = ({ children }) => {
       )}
 
       {loadingPageIsVissible && (
-        <div className="page-content">
+        <div className="page-content loading-page">
           <main className="content">
             <div
               className="d-flex justify-content-center align-items-center"
-              style={{ height: '100vh' }}
+              style={{ height: '80vh' }}
             >
               <Spinner
                 style={{ width: '3rem', height: '3rem' }}
                 color="primary"
               />
-              {/* You can change 'primary' to any other color theme like secondary, success, info, etc. */}
             </div>
           </main>
+
+          {/* Social Links */}
+          <div className="social-links">
+            <Link
+              to="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaFacebook />
+            </Link>
+            <Link
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaTwitter />
+            </Link>
+            <Link
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaYoutube />
+            </Link>
+          </div>
         </div>
       )}
     </div>
