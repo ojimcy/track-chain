@@ -113,8 +113,6 @@ function Mine() {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
-  console.log('selected cards', selectedCards);
-
   return (
     <Container>
       <TelegramBackButton />
