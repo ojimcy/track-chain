@@ -35,7 +35,7 @@ import checks from '../assets/images/check.jpg';
 
 function Tap() {
   const { levels } = data;
-  const { setUser } = useContext(WebappContext);
+  const { setUser, comboCard } = useContext(WebappContext);
   const currentUser = useCurrentUser();
   const telegramUser = useTelegramUser();
   const { taps, setTaps } = useContext(WebappContext);
@@ -276,7 +276,12 @@ function Tap() {
               </Link>
             </Col>
             <Col>
-              <Link to='/mine' className={`top-link ${''}`}>
+              <Link
+                to="/mine"
+                className={`top-link ${
+                  comboCard ? 'daily-task-completed' : ''
+                }`}
+              >
                 <div className="link-content d-flex align-items-center">
                   <img src={cal} alt="Daily Combo" />
                   <span className="link-title">Daily Combo</span>

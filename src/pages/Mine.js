@@ -22,7 +22,6 @@ import CardContainer from '../components/mining/CardContainer';
 import {
   getUserByTelegramID,
   getUserCards,
-  getUserComboCard,
   submitCombo,
 } from '../lib/server';
 import data from '../hooks/demo_data';
@@ -36,12 +35,11 @@ import { toast } from 'react-toastify';
 
 function Mine() {
   const currentUser = useCurrentUser();
-  const { selectedComboCard, setUser } = useContext(WebappContext);
+  const { selectedComboCard, setUser, comboCard } = useContext(WebappContext);
   const telegramUser = useTelegramUser();
   const [activeTab, setActiveTab] = useState('1');
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [comboCard, setComboCard] = useState([]);
   const [showConfetti, setShowConfetti] = useState(false);
 
   const mockCards = data.cards;
@@ -79,23 +77,6 @@ function Mine() {
   useEffect(() => {
     fetchUserData();
   }, [telegramUser, setUser]);
-
-  // Fetch User Combo Card
-  useEffect(() => {
-    const fetchUserComboCard = async () => {
-      try {
-        const combo = await getUserComboCard();
-        console.log('daily combo', combo);
-
-        if (combo) {
-          setComboCard([combo.trackCard, combo.otherCard1, combo.otherCard2]);
-        }
-      } catch (error) {
-        console.error('Failed to fetch combo card', error);
-      }
-    };
-    fetchUserComboCard();
-  }, []);
 
   // Filter the cards whose id is in selectedComboCard
   const selectedCards = cards.filter((card) =>
@@ -153,7 +134,7 @@ function Mine() {
           </div>
           <div className="combo">
             <p className="mb-2">
-              Find 3 cards combination today to claim 5M points
+              Find 3 cards combination today to claim 5M coins
             </p>
             <Separator />
             <p className="mt-2">

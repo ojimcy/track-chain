@@ -1,6 +1,6 @@
 import React from 'react';
 import { createContext, useEffect, useState } from 'react';
-import { getDailyCombo } from '../lib/server';
+import { getDailyCombo, getUserComboCard } from '../lib/server';
 
 export const WebappContext = createContext(undefined);
 
@@ -12,6 +12,7 @@ export const WebappProvider = ({ children }) => {
   const [taps, setTaps] = useState([]);
   const [dailyCombo, setDailyCombo] = useState([]);
   const [selectedComboCard, setSelectedComboCard] = useState([]);
+  const [comboCard, setComboCard] = useState([]);
 
   useEffect(() => {
     if (!window.Telegram || !window.Telegram.WebApp) return;
@@ -27,17 +28,29 @@ export const WebappProvider = ({ children }) => {
     setLoadingPageIsVisible(false);
   };
 
-  useEffect(() => {
-    const fetchDailyCombo = async () => {
-      try {
-        const res = await getDailyCombo();
-        setDailyCombo(res);
-      } catch (error) {
-        console.error('Error fetching daily combo', error);
+  const fetchUserComboCard = async () => {
+    try {
+      const combo = await getUserComboCard();
+      if (combo) {
+        setComboCard([combo.trackCard, combo.otherCard1, combo.otherCard2]);
       }
-    };
+    } catch (error) {
+      console.error('Failed to fetch combo card', error);
+    }
+  };
 
+  const fetchDailyCombo = async () => {
+    try {
+      const res = await getDailyCombo();
+      setDailyCombo(res);
+    } catch (error) {
+      console.error('Error fetching daily combo', error);
+    }
+  };
+
+  useEffect(() => {
     fetchDailyCombo();
+    fetchUserComboCard();
   }, [user]);
 
   return (
@@ -56,6 +69,8 @@ export const WebappProvider = ({ children }) => {
         setDailyCombo,
         selectedComboCard,
         setSelectedComboCard,
+        comboCard,
+        setComboCard,
       }}
     >
       {children}
