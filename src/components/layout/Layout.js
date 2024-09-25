@@ -15,7 +15,7 @@ const Layout = ({ children }) => {
     webapp,
     setUser,
     loadingPageIsVissible,
-    hideLoadingPage,
+    // hideLoadingPage,
     showLoadingPage,
   } = useContext(WebappContext);
   const telegramUser = useTelegramUser();
@@ -44,7 +44,7 @@ const Layout = ({ children }) => {
         return;
       }
       setUser(user);
-      hideLoadingPage();
+      // hideLoadingPage();
     };
 
     fn();
