@@ -8,6 +8,7 @@ import TelegramBackButton from '../components/navs/TelegramBackButton';
 import dollar from '../assets/images/dollar.png';
 
 import './league.css';
+import { Link } from 'react-router-dom';
 
 const LeaguePage = () => {
   const { levels } = data;
@@ -33,17 +34,27 @@ const LeaguePage = () => {
           </div>
           <div className="level-details">
             <h3>{currentLevel.name} Leage</h3>
-            <div className="d-flex justify-content-between">
-              <span>Next Level: {currentUser.levelId + 1}</span>
-              <span>
-                <img src={dollar} alt=" " width={25} height={25} />
-                {formatBalance(nextLevel.tokensRequiredForLevel)} (
-                {formatBalance(
-                  nextLevel.tokensRequiredForLevel - currentUser.totalBalance
-                )}{' '}
-                more)
-              </span>
-            </div>
+            {nextLevel ? (
+              <div className="d-flex justify-content-between">
+                <span>Next Level: {currentUser.levelId + 1}</span>
+                <span>
+                  <img src={dollar} alt=" " width={25} height={25} />
+                  {formatBalance(nextLevel.tokensRequiredForLevel)} (
+                  {formatBalance(
+                    nextLevel.tokensRequiredForLevel - currentUser.totalBalance
+                  )}{' '}
+                  more)
+                </span>
+              </div>
+            ) : (
+              <div className="d-flex justify-content-between">
+                <span>
+                  {' '}
+                  <Link to="loading">Congratulations</Link> , you are at the
+                  highest level!
+                </span>
+              </div>
+            )}
           </div>
         </Col>
       </Row>
