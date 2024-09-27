@@ -65,13 +65,10 @@ function Tap() {
 
   const fetchMinedTokens = useCallback(async () => {
     try {
-      setLoading(true);
       const response = await getMinedTokens();
       setMinedTokens(response.minedTokens);
     } catch (error) {
       console.error('Error fetching mined tokens:', error);
-    } finally {
-      setLoading(false);
     }
   }, []);
 
@@ -228,8 +225,6 @@ function Tap() {
   const isCheckinToday =
     lastCheckinDate.toDateString() === today.toDateString();
 
-    console.log('combo cards selected', comboCard);
-    
   return (
     <div className="mining-page mt-3">
       <Container>
@@ -279,9 +274,9 @@ function Tap() {
             </Col>
             <Col>
               <Link
-                to="/mine"
+                to="/home/mine"
                 className={`top-link ${
-                  comboCard ? 'daily-task-completed' : ''
+                  comboCard.length === 3 ? 'daily-task-completed' : ''
                 }`}
               >
                 <div className="link-content d-flex align-items-center">
@@ -290,6 +285,12 @@ function Tap() {
                   <span className="timer">
                     <CountdownTimer duration={puzzleDuration} />
                   </span>
+
+                  {comboCard.length === 3 && (
+                    <div className="green-tick">
+                      <img src={checks} alt="check" />
+                    </div>
+                  )}
                 </div>
               </Link>
             </Col>

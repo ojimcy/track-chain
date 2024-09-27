@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import WOW from 'wowjs';
-import Tap from './pages/Tap';
+// import Tap from './pages/Tap';
 import Earn from './pages/Earn';
 import Frens from './pages/Frens';
 import Layout from './components/layout/Layout';
@@ -12,6 +12,8 @@ import MineLayout from './components/layout/MineLayout';
 import Leaderboard from './pages/Leaderboard';
 import LeaguePage from './pages/League';
 import TapLayout from './components/layout/TapLayout';
+import LoadingPage from './components/common/LoadingPage';
+import Tap from './pages/Tap';
 
 const App = () => {
   try {
@@ -26,6 +28,14 @@ const App = () => {
           <Route
             path="/"
             element={
+              <Routes>
+                <Route index element={<LoadingPage />} />
+              </Routes>
+            }
+          />
+          <Route
+            path="/home"
+            element={
               <TapLayout>
                 <Routes>
                   <Route index element={<Tap />} />
@@ -33,9 +43,8 @@ const App = () => {
               </TapLayout>
             }
           />
-
           <Route
-            path="/*"
+            path="/home/*"
             element={
               <Layout>
                 <Routes>
@@ -49,9 +58,8 @@ const App = () => {
               </Layout>
             }
           />
-
           <Route
-            path="/mine"
+            path="/home/mine"
             element={
               <MineLayout>
                 <Routes>

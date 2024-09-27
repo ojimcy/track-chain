@@ -1,0 +1,59 @@
+/* Background container for the loading page */
+.loading-container {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  background-image: url('../../assets/images/loading-page.jpeg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* Green overlay */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+}
+
+/* Content style */
+.content {
+  z-index: 2;
+  color: white;
+  text-align: center;
+}
+
+.content h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.content p {
+  font-size: 1.5rem;
+}
+
+/* Social links at the bottom */
+.social-links {
+  position: absolute;
+  bottom: 20px;
+  z-index: 2;
+  display: flex;
+  gap: 15px;
+}
+
+.social-links a {
+  color: white;
+  margin: 0 10px;
+  font-size: 2rem;
+  transition: color 0.3s;
+}
+
+.social-links a:hover {
+  color: lightgray;
+}

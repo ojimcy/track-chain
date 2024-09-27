@@ -81,9 +81,10 @@ function Earn() {
 
   useEffect(() => {
     const fetchTasks = async () => {
+      setLoading(true);
       try {
         const resp = await getTasks(currentUser.id);
-        const sortedTasks = resp.sort((a, b) => a.id - b.id); 
+        const sortedTasks = resp.sort((a, b) => a.id - b.id);
         setTasks(sortedTasks);
         const initialStatuses = {};
         resp.forEach((task) => {

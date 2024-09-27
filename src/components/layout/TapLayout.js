@@ -9,7 +9,6 @@ import {
   // useCurrentUser,
   // useInitData,
 } from '../../hooks/telegram';
-import { Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
 
 const TapLayout = ({ children }) => {
@@ -67,23 +66,6 @@ const TapLayout = ({ children }) => {
           <main className="content">{children}</main>
           <Footer />
         </>
-      )}
-
-      {loadingPageIsVissible && (
-        <div className="page-content">
-          <main className="content">
-            <div
-              className="d-flex justify-content-center align-items-center"
-              style={{ height: '100vh' }}
-            >
-              <Spinner
-                style={{ width: '3rem', height: '3rem' }}
-                color="primary"
-              />
-              {/* You can change 'primary' to any other color theme like secondary, success, info, etc. */}
-            </div>
-          </main>
-        </div>
       )}
     </div>
   );

@@ -19,20 +19,25 @@ function Footer() {
                 <ul className="footer-links list-unstyled">
                   <li>
                     <Link
-                      to="/"
+                      to="/home"
                       className={`d-flex flex-column align-items-center ${
-                        location.pathname === '/' ? 'active' : ''
+                        location.pathname === '/home' ? 'active' : ''
                       }`}
                     >
-                      <img className='tap-footer-img' src={level} alt="" width={30} />
+                      <img
+                        className="tap-footer-img"
+                        src={level}
+                        alt=""
+                        width={30}
+                      />
                       <span>Tap</span>
                     </Link>
                   </li>
                   <li>
                     <Link
-                      to="/earn"
+                      to="/home/earn"
                       className={`d-flex flex-column align-items-center ${
-                        location.pathname === '/earn' ? 'active' : ''
+                        location.pathname === '/home/earn' ? 'active' : ''
                       }`}
                     >
                       <FaTasks size={28} />
@@ -41,9 +46,9 @@ function Footer() {
                   </li>
                   <li>
                     <Link
-                      to="/mine"
+                      to="/home/mine"
                       className={`d-flex flex-column align-items-center ${
-                        location.pathname === '/mine' ? 'active' : ''
+                        location.pathname === '/home/mine' ? 'active' : ''
                       }`}
                     >
                       <FaGem size={28} />
@@ -52,9 +57,11 @@ function Footer() {
                   </li>
                   <li>
                     <Link
-                      to="/leaderboard"
+                      to="/home/leaderboard"
                       className={`d-flex flex-column align-items-center ${
-                        location.pathname === '/leaderboard' ? 'active' : ''
+                        location.pathname === '/home/leaderboard'
+                          ? 'active'
+                          : ''
                       }`}
                     >
                       <FaTrophy size={28} />
@@ -63,9 +70,9 @@ function Footer() {
                   </li>
                   <li>
                     <Link
-                      to="/frens"
+                      to="/home/frens"
                       className={`d-flex flex-column align-items-center ${
-                        location.pathname === '/frens' ? 'active' : ''
+                        location.pathname === '/home/frens' ? 'active' : ''
                       }`}
                     >
                       <FaUsers size={28} />

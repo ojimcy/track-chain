@@ -57,6 +57,7 @@
 
 .task-info .info {
   margin-left: 15px;
+  text-align: left;
 }
 
 .task-info .info .task-title {
