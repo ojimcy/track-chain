@@ -13,13 +13,7 @@ import { toast } from 'react-toastify';
 
 const TapLayout = ({ children }) => {
   //const initData = useInitData();
-  const {
-    webapp,
-    setUser,
-    loadingPageIsVissible,
-    hideLoadingPage,
-    showLoadingPage,
-  } = useContext(WebappContext);
+  const { webapp, setUser } = useContext(WebappContext);
   const telegramUser = useTelegramUser();
 
   useEffect(() => {
@@ -28,7 +22,6 @@ const TapLayout = ({ children }) => {
       return;
     }
     // if (currentUser) return;
-    showLoadingPage();
 
     const fn = async () => {
       console.log('telegramUser', telegramUser);
@@ -49,7 +42,6 @@ const TapLayout = ({ children }) => {
         return;
       }
       setUser(user);
-      hideLoadingPage();
     };
 
     fn();
@@ -60,13 +52,11 @@ const TapLayout = ({ children }) => {
       className="page-content"
       style={{ background: 'linear-gradient(180deg, #152701 0%, #67b60d 81%)' }}
     >
-      {!loadingPageIsVissible && (
-        <>
-          <MainNav />
-          <main className="content">{children}</main>
-          <Footer />
-        </>
-      )}
+      <>
+        <MainNav />
+        <main className="content">{children}</main>
+        <Footer />
+      </>
     </div>
   );
 };

@@ -14,6 +14,7 @@ import LeaguePage from './pages/League';
 import TapLayout from './components/layout/TapLayout';
 import LoadingPage from './components/common/LoadingPage';
 import Tap from './pages/Tap';
+import WordPuzzleGame from './pages/WordPuzzleGame';
 
 const App = () => {
   try {
@@ -54,6 +55,7 @@ const App = () => {
                   <Route path="boost" element={<Boost />} />
                   <Route path="leaderboard" element={<Leaderboard />} />
                   <Route path="league" element={<LeaguePage />} />
+                  <Route path="puzzle" element={<WordPuzzleGame />} />
                 </Routes>
               </Layout>
             }

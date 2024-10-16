@@ -9,13 +9,7 @@ import { toast } from 'react-toastify';
 
 const Layout = ({ children }) => {
   //const initData = useInitData();
-  const {
-    webapp,
-    setUser,
-    loadingPageIsVissible,
-    hideLoadingPage,
-    showLoadingPage,
-  } = useContext(WebappContext);
+  const { webapp, setUser } = useContext(WebappContext);
   const telegramUser = useTelegramUser();
 
   useEffect(() => {
@@ -24,7 +18,6 @@ const Layout = ({ children }) => {
       return;
     }
     // if (currentUser) return;
-    showLoadingPage();
 
     const fn = async () => {
       console.log('telegramUser', telegramUser);
@@ -42,7 +35,6 @@ const Layout = ({ children }) => {
         return;
       }
       setUser(user);
-      hideLoadingPage();
     };
 
     fn();
@@ -50,14 +42,11 @@ const Layout = ({ children }) => {
 
   return (
     <div className="page-content">
-      {!loadingPageIsVissible && (
-        <>
-          <MainNav />
-          <main className="content">{children}</main>
-          <Footer />
-        </>
-      )}
-
+      <>
+        <MainNav />
+        <main className="content">{children}</main>
+        <Footer />
+      </>
     </div>
   );
 };

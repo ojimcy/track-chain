@@ -210,16 +210,17 @@ function Tap() {
     }
   };
 
-  const handlePuzzleClick = () => {
-    toast.info(`Coming soon!!!`, {
-      position: 'top-right',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-    });
-  };
+  // const handlePuzzleClick = () => {
+  //   toast.info(`Coming soon!!!`, {
+  //     position: 'top-right',
+  //     autoClose: 3000,
+  //     hideProgressBar: false,
+  //     closeOnClick: true,
+  //   });
+  // };
 
   // Check if the lastCheckinDate is today
+  
   const lastCheckinDate = new Date(currentUser.lastCheckinDate);
   const today = new Date();
   const isCheckinToday =
@@ -262,7 +263,7 @@ function Tap() {
               </Link>
             </Col>
             <Col>
-              <Link onClick={handlePuzzleClick} className={`top-link ${''}`}>
+              <Link to='/home/puzzle' className={`top-link ${''}`}>
                 <div className="link-content d-flex align-items-center">
                   <img src={puzzle} alt="Daily Combo" />
                   <span className="link-title">Word Puzzle</span>

@@ -45,7 +45,7 @@ function MainNav() {
             <span className="main-avatar">
               {currentUser.username.charAt(0)}
             </span>
-            <Link to="/league" style={{ color: '#ffffff' }}>
+            <Link to="/home/league" style={{ color: '#ffffff' }}>
               <div className="level d-flex flex-column">
                 <span className="">LV {currentUser.levelId}</span>
                 <div className="progress-bar-container">

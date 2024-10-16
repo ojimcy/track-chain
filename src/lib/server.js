@@ -11,12 +11,14 @@ import {
   GET_MINED_TOKENS,
   GET_USER_CARDS,
   GET_USER_COMBO_CARD,
+  GET_WORD_OF_THE_DAY,
   LEADERBOARD,
   LEVELS,
   MULTITAPLEVELS,
   MY_DOWNLINES,
   SAVETAPS,
   SUBMIT_COMBO,
+  SUBMIT_WORD_OF_THE_DAY,
   SYNC_ACCOUNT,
   TASK,
   TASKS,
@@ -160,5 +162,16 @@ export const submitCombo = async (combos) => {
 
 export const getUserComboCard = async () => {
   const result = await axios.get(GET_USER_COMBO_CARD());
+  return result.data;
+};
+export const getWordOfTheDay = async () => {
+  const result = await axios.get(GET_WORD_OF_THE_DAY());
+  return result.data;
+};
+
+export const submitWordOfTheDay = async (userGuess) => {
+  const result = await axios.post(SUBMIT_WORD_OF_THE_DAY(), {
+    guess: userGuess,
+  });
   return result.data;
 };

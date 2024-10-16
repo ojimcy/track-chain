@@ -26,3 +26,5 @@ export const GET_MINED_TOKENS = () => `${ROOT}/get-mined-tokens`;
 export const GET_DAILY_COMBO = () => `${ROOT}/daily-combo`;
 export const SUBMIT_COMBO = () => `${ROOT}/submit-combo`;
 export const GET_USER_COMBO_CARD = () => `${ROOT}/get-user-combo-card`;
+export const GET_WORD_OF_THE_DAY = () => `${ROOT}/word-of-the-day`;
+export const SUBMIT_WORD_OF_THE_DAY = () => `${ROOT}/word-of-the-day`;
