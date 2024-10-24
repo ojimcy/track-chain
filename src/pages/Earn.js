@@ -33,6 +33,7 @@ import twitter from '../assets/images/tasks/twitter.png';
 import blum from '../assets/images/tasks/blum.png';
 import mdogs from '../assets/images/tasks/mdogs.jpg';
 import youtube from '../assets/images/tasks/youtube.png';
+import youtube_video from '../assets/images/tasks/youtube.png';
 import xempire from '../assets/images/tasks/xempire.jpeg';
 import agent301 from '../assets/images/tasks/agent-301.png';
 import referral from '../assets/images/level7.png';
@@ -64,6 +65,7 @@ const taskImages = {
   yescoin,
   mnemonics,
   freeDurov,
+  youtube_video,
 };
 
 function Earn() {
@@ -241,8 +243,50 @@ function Earn() {
                 </Col>
                 <Separator />
               </Row>
+              {tasks.some(
+                (task) => task.type === 'youtube_video' && !task.completed
+              ) && (
+                <Row>
+                  <h3  className="mt-4">Youtube Videos</h3>
+                  {tasks
+                    .filter(
+                      (task) => task.type === 'youtube_video' && !task.completed
+                    )
+                    .map((task) => (
+                      <React.Fragment key={task.id}>
+                        <Col xs={12}>
+                          <Link
+                            to="#"
+                            className="task-card d-flex justify-content-between align-items-center my-1"
+                            onClick={() => toggleModal(task)}
+                          >
+                            <div className="task-info d-flex align-items-center">
+                              <div className="task-icon">
+                                <img
+                                  src={taskImages[task.type]}
+                                  alt={task.type}
+                                  className="task-image"
+                                />
+                              </div>
+                              <div className="info d-flex flex-column">
+                                <span className="task-title">
+                                  {task.description}
+                                </span>
+                                <span className="task-reward">
+                                  +{formatBalance(task.reward)}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="task-status">Start</div>
+                          </Link>
+                        </Col>
+                        <Separator />
+                      </React.Fragment>
+                    ))}
+                </Row>
+              )}
               <Row>
-                <h3 className="mt-5">Tasks List</h3>
+                <h3 className="mt-4">Tasks List</h3>
                 {activeTasks.map((task) => (
                   <React.Fragment key={task.id}>
                     <Col xs={12}>

@@ -30,7 +30,6 @@ function Frens() {
   const [showAll, setShowAll] = useState(false);
   const [loading, setLoading] = useState(false);
 
-
   useEffect(() => {
     if (!telegramUser) return;
     const fn = async () => {
@@ -170,7 +169,7 @@ function Frens() {
                             </div>
                             <div className="info d-flex flex-column">
                               <span className="frens-title">
-                                {downline.username}
+                                {downline.username || downline.telegramId}
                               </span>
                               <span className="frens-level">
                                 {downline.levelID}

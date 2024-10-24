@@ -23,6 +23,7 @@ import {
   claimTokens,
   getMinedTokens,
   getUserByTelegramID,
+  getWordOfTheDay,
   saveTaps,
 } from '../lib/server';
 import { formatBalance } from '../utils/formatBalance';
@@ -44,6 +45,7 @@ function Tap() {
   const [energy, setEnergy] = useState(currentUser.energyLimit);
   const [rewardModal, setRewardModal] = useState(false);
   const [claimModal, setClaimModal] = useState(false);
+  const [todayGuess, setTodayGuess] = useState('');
 
   const scoreRef = useRef(0);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -75,6 +77,21 @@ function Tap() {
   useEffect(() => {
     fetchMinedTokens();
   }, [fetchMinedTokens]);
+
+  useEffect(() => {
+    // Fetch word of the day and hint from the API
+    const fetchWordOfTheDay = async () => {
+      try {
+        const res = await getWordOfTheDay();
+
+        setTodayGuess(res.guess);
+      } catch (error) {
+        console.error('Failed to load word of the day.', error);
+      }
+    };
+
+    fetchWordOfTheDay();
+  }, []);
 
   const toggleRewardModal = useCallback(() => {
     setRewardModal((prev) => !prev);
@@ -220,7 +237,7 @@ function Tap() {
   // };
 
   // Check if the lastCheckinDate is today
-  
+
   const lastCheckinDate = new Date(currentUser.lastCheckinDate);
   const today = new Date();
   const isCheckinToday =
@@ -263,13 +280,22 @@ function Tap() {
               </Link>
             </Col>
             <Col>
-              <Link to='/home/puzzle' className={`top-link ${''}`}>
+              <Link
+                to="/home/puzzle"
+                className={`top-link ${todayGuess && 'daily-task-completed'}`}
+              >
                 <div className="link-content d-flex align-items-center">
                   <img src={puzzle} alt="Daily Combo" />
                   <span className="link-title">Word Puzzle</span>
                   <span className="timer">
                     <CountdownTimer duration={puzzleDuration} />
                   </span>
+
+                  {todayGuess && (
+                    <div className="green-tick">
+                      <img src={checks} alt="check" />
+                    </div>
+                  )}
                 </div>
               </Link>
             </Col>
