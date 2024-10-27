@@ -21,14 +21,22 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import { Separator } from '../components/common/Seperator';
 import DailyRewardModal from '../components/modals/DailyRewardModal';
-import { completeTask, getTasks, getUserByTelegramID } from '../lib/server';
+import {
+  completeTask,
+  completeDailyTask,
+  getTasks,
+  getUserByTelegramID,
+} from '../lib/server';
 import { toast } from 'react-toastify';
 import { WebappContext } from '../context/telegram';
 import TelegramBackButton from '../components/navs/TelegramBackButton';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import { formatBalance } from '../utils/formatBalance';
 
+import tg_stories from '../assets/tg-stories.mp4';
+
 import telegram from '../assets/images/tasks/telegram.png';
+import daily_telegram_stories from '../assets/images/tasks/telegram.png';
 import twitter from '../assets/images/tasks/twitter.png';
 import blum from '../assets/images/tasks/blum.png';
 import mdogs from '../assets/images/tasks/mdogs.jpg';
@@ -37,6 +45,7 @@ import youtube_video from '../assets/images/tasks/youtube.png';
 import xempire from '../assets/images/tasks/xempire.jpeg';
 import agent301 from '../assets/images/tasks/agent-301.png';
 import referral from '../assets/images/level7.png';
+import daily_referral from '../assets/images/level7.png';
 import memefi from '../assets/images/tasks/memefi.png';
 import major from '../assets/images/tasks/major.png';
 import tomarket from '../assets/images/tasks/tomarket.png';
@@ -49,6 +58,7 @@ import freeDurov from '../assets/images/tasks/freedouruv.jpeg';
 
 const taskImages = {
   telegram,
+  daily_telegram_stories,
   twitter,
   youtube,
   blum,
@@ -56,6 +66,7 @@ const taskImages = {
   xempire,
   agent301,
   referral,
+  daily_referral,
   memefi,
   major,
   tomarket,
@@ -118,6 +129,31 @@ function Earn() {
     setRewardModal(!rewardModal);
   };
 
+  const handleTelegramStoryShare = async (task) => {
+    try {
+      // Check if the Telegram Web App supports stories
+      if (!webapp.isVersionAtLeast('6.4')) {
+        toast.error('Please update your Telegram app to share stories');
+        return;
+      }
+
+      // Get the content to be shared (assuming it's provided in task.storyContent)
+      const storyContent = task.storyContent || {
+        text: `Don't miss to be part of Trackchain_Shrek community 
+
+                Individual referral link #Shrek #Friendshipiskey🗝️
+                `,
+        media: tg_stories,
+      };
+
+      // Open Telegram's story sharing interface
+      await webapp.switchInlineQuery(storyContent.text, ['stories']);
+    } catch (error) {
+      toast.error('Failed to share story. Please try again.');
+      console.error('Story sharing error:', error);
+    }
+  };
+
   const handleTaskClick = async (task) => {
     const { id, type, link } = task;
 
@@ -130,7 +166,9 @@ function Earn() {
         webapp.openTelegramLink(telegramUrl);
       } else if (type === 'telegram') {
         webapp.openTelegramLink(link);
-      } else {
+      } else if (type === 'daily_telegram_stories')
+        await handleTelegramStoryShare(task);
+      else {
         webapp.openLink(link);
       }
 
@@ -144,29 +182,59 @@ function Earn() {
         setShowSpinner(false);
       }, 3000); // 3 seconds delay for showing the claim button
     } else if (taskStatuses[id] === 'claim') {
-      completeTask(currentUser.id, id, 'no proof')
-        .then(async () => {
-          setTasks((prevTasks) =>
-            prevTasks.map((t) => (t.id === id ? { ...t, completed: true } : t))
-          );
-          setTaskStatuses((prevStatuses) => ({
-            ...prevStatuses,
-            [id]: 'completed',
-          }));
-          let user = await getUserByTelegramID(telegramUser.id);
-          setUser(user);
-          toast.success('Task completed!', {
-            position: 'top-right',
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
+      if (task.isDaily) {
+        completeDailyTask(currentUser.id, id)
+          .then(async () => {
+            setTasks((prevTasks) =>
+              prevTasks.map((t) =>
+                t.id === id ? { ...t, completed: true } : t
+              )
+            );
+            setTaskStatuses((prevStatuses) => ({
+              ...prevStatuses,
+              [id]: 'completed',
+            }));
+            let user = await getUserByTelegramID(telegramUser.id);
+            setUser(user);
+            toast.success('Task completed!', {
+              position: 'top-right',
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+            });
+            toggleModal();
+          })
+          .catch((error) => {
+            console.error('Error completing task:', error.response.data);
+            toast.error(error.response?.data.error);
           });
-          toggleModal();
-        })
-        .catch((error) => {
-          console.error('Error completing task:', error.response.data);
-          toast.error(error.response?.data.error);
-        });
+      } else {
+        completeTask(currentUser.id, id, 'no proof')
+          .then(async () => {
+            setTasks((prevTasks) =>
+              prevTasks.map((t) =>
+                t.id === id ? { ...t, completed: true } : t
+              )
+            );
+            setTaskStatuses((prevStatuses) => ({
+              ...prevStatuses,
+              [id]: 'completed',
+            }));
+            let user = await getUserByTelegramID(telegramUser.id);
+            setUser(user);
+            toast.success('Task completed!', {
+              position: 'top-right',
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+            });
+            toggleModal();
+          })
+          .catch((error) => {
+            console.error('Error completing task:', error.response.data);
+            toast.error(error.response?.data.error);
+          });
+      }
     }
   };
 
@@ -233,7 +301,7 @@ function Earn() {
                     <div className="task-status">
                       {isCheckinToday ? (
                         <div className="completed">
-                          <FaCheck />
+                          <FaCheck color="green" />
                         </div>
                       ) : (
                         <FaGreaterThan />
@@ -241,13 +309,52 @@ function Earn() {
                     </div>
                   </Link>
                 </Col>
+                {tasks
+                  .filter((task) => task.isDaily)
+                  .map((task) => (
+                    <React.Fragment key={task.id}>
+                      <Col xs={12}>
+                        <Link
+                          to="#"
+                          className={`task-card d-flex justify-content-between align-items-center my-1 ${
+                            task.completed && 'daily-completed'
+                          }`}
+                          onClick={() => toggleModal(task)}
+                        >
+                          <div className="task-info d-flex align-items-center">
+                            <div className="task-icon">
+                              <img
+                                src={taskImages[task.type]}
+                                alt={task.type}
+                                className="task-image"
+                              />
+                            </div>
+                            <div className="info d-flex flex-column">
+                              <span className="task-title">
+                                {task.description}
+                              </span>
+                              <span className="task-reward">
+                                +{formatBalance(task.reward)}
+                              </span>
+                            </div>
+                          </div>
+                          {task.completed ? (
+                            <FaCheck color="green" />
+                          ) : (
+                            <div className="task-status">Start</div>
+                          )}
+                        </Link>
+                      </Col>
+                      <Separator />
+                    </React.Fragment>
+                  ))}
                 <Separator />
               </Row>
               {tasks.some(
                 (task) => task.type === 'youtube_video' && !task.completed
               ) && (
                 <Row>
-                  <h3  className="mt-4">Youtube Videos</h3>
+                  <h3 className="mt-4">Youtube Videos</h3>
                   {tasks
                     .filter(
                       (task) => task.type === 'youtube_video' && !task.completed
@@ -287,45 +394,47 @@ function Earn() {
               )}
               <Row>
                 <h3 className="mt-4">Tasks List</h3>
-                {activeTasks.map((task) => (
-                  <React.Fragment key={task.id}>
-                    <Col xs={12}>
-                      <Link
-                        to="#"
-                        className="task-card d-flex justify-content-between align-items-center my-1"
-                        onClick={() => toggleModal(task)}
-                      >
-                        <div className="task-info d-flex align-items-center">
-                          <div className="task-icon">
-                            <img
-                              src={taskImages[task.type]}
-                              alt={task.type}
-                              className="task-image"
-                            />
-                          </div>
-                          <div className="info d-flex flex-column">
-                            <span className="task-title">
-                              {task.description}
-                            </span>
-                            <span className="task-reward">
-                              +{formatBalance(task.reward)}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="task-status">
-                          {task.completed ? (
-                            <div className="completed">
-                              <FaCheck />
+                {activeTasks
+                  .filter((task) => !task.isDaily)
+                  .map((task) => (
+                    <React.Fragment key={task.id}>
+                      <Col xs={12}>
+                        <Link
+                          to="#"
+                          className="task-card d-flex justify-content-between align-items-center my-1"
+                          onClick={() => toggleModal(task)}
+                        >
+                          <div className="task-info d-flex align-items-center">
+                            <div className="task-icon">
+                              <img
+                                src={taskImages[task.type]}
+                                alt={task.type}
+                                className="task-image"
+                              />
                             </div>
-                          ) : (
-                            'Start'
-                          )}
-                        </div>
-                      </Link>
-                    </Col>
-                    <Separator />
-                  </React.Fragment>
-                ))}
+                            <div className="info d-flex flex-column">
+                              <span className="task-title">
+                                {task.description}
+                              </span>
+                              <span className="task-reward">
+                                +{formatBalance(task.reward)}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="task-status">
+                            {task.completed ? (
+                              <div className="completed">
+                                <FaCheck />
+                              </div>
+                            ) : (
+                              'Start'
+                            )}
+                          </div>
+                        </Link>
+                      </Col>
+                      <Separator />
+                    </React.Fragment>
+                  ))}
               </Row>
             </TabPanel>
             <TabPanel>

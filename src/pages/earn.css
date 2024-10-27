@@ -204,3 +204,7 @@
   object-fit: contain;
   border-radius: 50%;
 }
+
+.daily-completed {
+  color: #bda6a6;
+}

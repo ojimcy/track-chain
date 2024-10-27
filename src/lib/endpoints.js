@@ -10,6 +10,8 @@ export const BOOST_ENERGY = () => `${ROOT}/boost-energy`;
 export const TASK = (id) => `${ROOT}/tasks/${id}`;
 export const COMPLET_TASK = (userID, taskID) =>
   `${ROOT}/user/${userID}/complete-task/${taskID}`;
+export const COMPLETE_DAILY_TASK = (userID, taskID) =>
+  `${ROOT}/user/${userID}/complete-daily-task/${taskID}`;
 export const TASKS = (userID) => `${ROOT}/user/${userID}/tasks`;
 export const USER_LEVEL = (userID) => `${ROOT}/user/${userID}/level`;
 export const LEVELS = () => `${ROOT}/levels`;

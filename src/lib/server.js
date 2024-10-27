@@ -4,6 +4,7 @@ import {
   BOOST_TAPS,
   CLAIM_TOKENS,
   COMPLET_TASK,
+  COMPLETE_DAILY_TASK,
   DAILYREWARD,
   ENERGYLEVELS,
   GET_CARDS,
@@ -85,6 +86,11 @@ export const getTask = async () => {
 
 export const completeTask = async (userId, taskId, proof) => {
   const result = await axios.post(COMPLET_TASK(userId, taskId), { proof });
+  return result.data;
+};
+
+export const completeDailyTask = async (userId, taskId) => {
+  const result = await axios.post(COMPLETE_DAILY_TASK(userId, taskId));
   return result.data;
 };
 

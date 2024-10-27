@@ -323,6 +323,12 @@ function Tap() {
             </Col>
           </Row>
 
+          <Row>
+            <div className='sherk-balance'>
+              {currentUser.shrekBalance} SHREK
+            </div>
+          </Row>
+
           <div
             className="tap-area"
             onTouchStart={handleTap}
