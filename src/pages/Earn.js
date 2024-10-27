@@ -145,11 +145,39 @@ function Earn() {
                 `,
         media: tg_stories,
       };
+      // Use Telegram's native share API
+      const canShare = await webapp.showPopup({
+        title: 'Share to Stories',
+        message:
+          'Would you like to share this content to your Telegram stories?',
+        buttons: [
+          { id: 'share', type: 'default', text: 'Share to Stories' },
+          { id: 'cancel', type: 'cancel', text: 'Cancel' },
+        ],
+      });
 
-      // Open Telegram's story sharing interface
-      await webapp.switchInlineQuery(storyContent.text, ['stories']);
+      if (canShare?.button_id === 'share') {
+        try {
+          // Use telegram's native story sharing
+          await webapp.invoke('shareStory', {
+            text: storyContent.text,
+            media: storyContent.media,
+          });
+
+          // Start verification process
+        } catch (error) {
+          if (error.message.includes('USER_PRIVACY_RESTRICTED')) {
+            toast.error(
+              'Unable to share story. Please check your privacy settings.'
+            );
+          } else {
+            toast.error('Failed to share story. Please try again.');
+          }
+          console.error('Story sharing error:', error);
+        }
+      }
     } catch (error) {
-      toast.error('Failed to share story. Please try again.');
+      toast.error('Failed to initiate story sharing. Please try again.');
       console.error('Story sharing error:', error);
     }
   };
