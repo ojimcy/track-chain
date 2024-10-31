@@ -324,7 +324,7 @@ function Tap() {
           </Row>
 
           <Row>
-            <div className='sherk-balance'>
+            <div className='shrek-balance'>
               {currentUser.shrekBalance} SHREK
             </div>
           </Row>

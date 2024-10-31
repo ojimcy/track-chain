@@ -33,11 +33,11 @@ import TelegramBackButton from '../components/navs/TelegramBackButton';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import { formatBalance } from '../utils/formatBalance';
 
-import tg_stories from '../assets/tg-stories.mp4';
-
 import telegram from '../assets/images/tasks/telegram.png';
 import daily_telegram_stories from '../assets/images/tasks/telegram.png';
+import daily_telegram from '../assets/images/tasks/telegram.png';
 import twitter from '../assets/images/tasks/twitter.png';
+import daily_twitter from '../assets/images/tasks/twitter.png';
 import blum from '../assets/images/tasks/blum.png';
 import mdogs from '../assets/images/tasks/mdogs.jpg';
 import youtube from '../assets/images/tasks/youtube.png';
@@ -59,6 +59,8 @@ import freeDurov from '../assets/images/tasks/freedouruv.jpeg';
 const taskImages = {
   telegram,
   daily_telegram_stories,
+  daily_telegram,
+  daily_twitter,
   twitter,
   youtube,
   blum,
@@ -129,74 +131,23 @@ function Earn() {
     setRewardModal(!rewardModal);
   };
 
-  const handleTelegramStoryShare = async (task) => {
-    try {
-      // Check if the Telegram Web App supports stories
-      if (!webapp.isVersionAtLeast('6.4')) {
-        toast.error('Please update your Telegram app to share stories');
-        return;
-      }
-
-      // Get the content to be shared (assuming it's provided in task.storyContent)
-      const storyContent = task.storyContent || {
-        text: `Don't miss to be part of Trackchain_Shrek community 
-
-                Individual referral link #Shrek #Friendshipiskey🗝️
-                `,
-        media: tg_stories,
-      };
-      // Use Telegram's native share API
-      const canShare = await webapp.showPopup({
-        title: 'Share to Stories',
-        message:
-          'Would you like to share this content to your Telegram stories?',
-        buttons: [
-          { id: 'share', type: 'default', text: 'Share to Stories' },
-          { id: 'cancel', type: 'cancel', text: 'Cancel' },
-        ],
-      });
-
-      if (canShare?.button_id === 'share') {
-        try {
-          // Use telegram's native story sharing
-          await webapp.invoke('shareStory', {
-            text: storyContent.text,
-            media: storyContent.media,
-          });
-
-          // Start verification process
-        } catch (error) {
-          if (error.message.includes('USER_PRIVACY_RESTRICTED')) {
-            toast.error(
-              'Unable to share story. Please check your privacy settings.'
-            );
-          } else {
-            toast.error('Failed to share story. Please try again.');
-          }
-          console.error('Story sharing error:', error);
-        }
-      }
-    } catch (error) {
-      toast.error('Failed to initiate story sharing. Please try again.');
-      console.error('Story sharing error:', error);
-    }
-  };
-
   const handleTaskClick = async (task) => {
     const { id, type, link } = task;
 
     if (taskStatuses[id] === 'start') {
       // Delay for 3 seconds before enabling "Claim"
-      if (type === 'referral') {
+      if (
+        type === 'referral' ||
+        type === 'daily_referral' ||
+        type === 'daily_telegram'
+      ) {
         const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(
           useReferralLink(currentUser)
         )}`;
         webapp.openTelegramLink(telegramUrl);
       } else if (type === 'telegram') {
         webapp.openTelegramLink(link);
-      } else if (type === 'daily_telegram_stories')
-        await handleTelegramStoryShare(task);
-      else {
+      } else {
         webapp.openLink(link);
       }
 
@@ -421,9 +372,11 @@ function Earn() {
                 </Row>
               )}
               <Row>
-                <h3 className="mt-4">Tasks List</h3>
+                <h3 className="mt-4">One-time Task</h3>
                 {activeTasks
-                  .filter((task) => !task.isDaily)
+                  .filter(
+                    (task) => !task.isDaily || !task.type === 'youtube_video'
+                  )
                   .map((task) => (
                     <React.Fragment key={task.id}>
                       <Col xs={12}>
